@@ -1,6 +1,7 @@
 module StochasticSearch
 
-export NumberParameter, IntegerParameter, FloatParameter
+export Parameter, NumberParameter, IntegerParameter, FloatParameter,
+       EnumParameter
 
 include("parameters.jl")
 
