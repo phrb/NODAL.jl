@@ -21,5 +21,10 @@ type EnumParameter <: Parameter
     name::Symbol
 end
 
+type StringParameter <: Parameter
+    value::String
+    name::Symbol
+end
+
 typealias IntegerParameter NumberParameter{Integer}
 typealias FloatParameter   NumberParameter{FloatingPoint}

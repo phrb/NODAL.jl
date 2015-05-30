@@ -69,21 +69,28 @@ facts("[NumberParameter] constructors") do
 end
 
 facts("[EnumParameter] constructors") do
-    context ("[EnumParameter] constructor") do
-        println(methods(EnumParameter))
-        p = EnumParameter([IntegerParameter(1, 4, 3, :a), 
-            FloatParameter(1.1, 6.2, 3.2, :b)], :test)
-        @fact (typeof(p) == EnumParameter)                   => true
-        @fact (typeof(p.values) <: AbstractArray{Parameter}) => true
-        @fact (typeof(p.values) == Array{Parameter, 1})      => true
-        @fact (p.values[1].value == 3)                       => true
-        @fact (p.values[2].value == 3.2)                     => true
-        @fact (p.values[1].name  == :a)                      => true
-        @fact (p.values[2].name  == :b)                      => true
-        @fact (p.name            == :test)                   => true
-        @fact_throws MethodError    EnumParameter([3, 4], :test)
-        @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
-                                                   2], :test)
-        @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
-    end
+    p = EnumParameter([IntegerParameter(1, 4, 3, :a), 
+        FloatParameter(1.1, 6.2, 3.2, :b)], :test)
+    @fact (typeof(p) == EnumParameter)                   => true
+    @fact (typeof(p.values) <: AbstractArray{Parameter}) => true
+    @fact (typeof(p.values) == Array{Parameter, 1})      => true
+    @fact (p.values[1].value == 3)                       => true
+    @fact (p.values[2].value == 3.2)                     => true
+    @fact (p.values[1].name  == :a)                      => true
+    @fact (p.values[2].name  == :b)                      => true
+    @fact (p.name            == :test)                   => true
+    @fact_throws MethodError    EnumParameter([3, 4], :test)
+    @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
+                                               2], :test)
+    @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
+end
+
+facts("[StringParameter] constructors") do
+    p = StringParameter("value", :test)
+    @fact (typeof(p) == StringParameter) => true
+    @fact (typeof(p) <: Parameter)       => true
+    @fact (p.value == "value")           => true
+    @fact (p.name  == :test)             => true
+    @fact_throws MethodError StringParameter(2, :test)
+    @fact_throws MethodError StringParameter("value")
 end
