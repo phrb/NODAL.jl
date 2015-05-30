@@ -16,7 +16,7 @@ before_install:
     - sudo apt-get install libpcre3-dev julia -y
     - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
 script:
-    - julia -e 'Pkg.init(); Pkg.clone(pwd()); Pkg.test("StochasticSearch")'
+    - julia -e 'Pkg.init(); Pkg.clone(pwd())'
     - julia -e 'for p in split(ENV["PKGADD"],";") Pkg.add(p) end'
     - if [ $JULIAVERSION = "julianightlies" ]; then julia test/runtests.jl; fi
     - if [ $JULIAVERSION = "juliareleases" ]; then julia --code-coverage test/runtests.jl; fi
