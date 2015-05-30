@@ -43,6 +43,26 @@ facts("[NumberParameter] constructors") do
         @fact (p.max   == 2)                          => true
         @fact (p.value == 1)                          => true
     end
+    context("[IntegerParameter] perturbate") do
+        value    = 3
+        interval = 10
+        p = IntegerParameter(0, 100, value, :rand_test)
+        perturbate!(p)
+        @fact (typeof(p.value) <: Integer) => true
+        @fact (p.value <= p.max)           => true
+        @fact (p.value >= p.min)           => true
+        perturbate!(p, interval)
+        @fact (typeof(p.value) <: Integer) => true
+        @fact (p.value <= p.max)           => true
+        @fact (p.value >= p.min)           => true
+        interval = 103 
+        perturbate!(p, interval)
+        @fact (typeof(p.value) <: Integer) => true
+        @fact (p.value <= p.max)           => true
+        @fact (p.value >= p.min)           => true
+        interval = -1
+        @fact_throws ErrorException perturbate!(p, interval)
+    end
     context("[FloatParameter] constructor") do
         p = FloatParameter(0.223, 10.122, 3.12, :test)
         @fact (p.min   == 0.223 ) => true
@@ -65,6 +85,26 @@ facts("[NumberParameter] constructors") do
         @fact (p.min   == 0)                                => true
         @fact (p.max   == 2)                                => true
         @fact (p.value == 1)                                => true
+    end
+    context("[FloatParameter] perturbate") do
+        value    = 3.2
+        interval = 5.6 
+        p = FloatParameter(0., 100., value, :rand_test)
+        perturbate!(p)
+        @fact (typeof(p.value) <: FloatingPoint) => true
+        @fact (p.value <= p.max)                 => true
+        @fact (p.value >= p.min)                 => true
+        perturbate!(p, interval)
+        @fact (typeof(p.value) <: FloatingPoint) => true
+        @fact (p.value <= p.max)                 => true
+        @fact (p.value >= p.min)                 => true
+        interval = 103.0 
+        perturbate!(p, interval)
+        @fact (typeof(p.value) <: FloatingPoint) => true
+        @fact (p.value <= p.max)                 => true
+        @fact (p.value >= p.min)                 => true
+        interval = -1.2
+        @fact_throws ErrorException perturbate!(p, interval)
     end
 end
 

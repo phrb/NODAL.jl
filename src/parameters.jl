@@ -1,6 +1,6 @@
 abstract Parameter
 
-type NumberParameter{T<:Number} <: Parameter
+type NumberParameter{T <: Number} <: Parameter
     min::T
     max::T
     value::T
@@ -16,6 +16,22 @@ type NumberParameter{T<:Number} <: Parameter
     end
 end
 
+typealias IntegerParameter NumberParameter{Integer}
+typealias FloatParameter   NumberParameter{FloatingPoint}
+
+perturbate!(n::NumberParameter) = begin
+    n.value = rand_in(n.min, n.max)
+end
+
+perturbate!(number::NumberParameter, interval::Number) = begin
+    if interval <= 0
+        error("interval must be greater than zero.")
+    end
+    max = number.value + interval > number.max ? number.max : number.value + interval
+    min = number.value - interval < number.min ? number.min : number.value + interval
+    number.value = rand_in(min, max)
+end
+
 type EnumParameter <: Parameter
     values::AbstractArray{Parameter}
     name::Symbol
@@ -26,5 +42,4 @@ type StringParameter <: Parameter
     name::Symbol
 end
 
-typealias IntegerParameter NumberParameter{Integer}
-typealias FloatParameter   NumberParameter{FloatingPoint}
+include("util.jl")
