@@ -1,5 +1,7 @@
 module StochasticSearch
 
-# package code goes here
+export IntParameter, FloatParameter
 
-end # module
+include("parameters.jl")
+
+end

@@ -1,5 +1,6 @@
 using StochasticSearch
-using Base.Test
+using FactCheck
 
-# write your own tests here
-@test 1 == 1
+include("parameter.jl")
+
+FactCheck.exitstatus()
