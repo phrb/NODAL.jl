@@ -1,6 +1,6 @@
 using StochasticSearch, FactCheck
 
-facts("[RealParameter] constructors") do
+facts("[NumberParameter] constructors") do
     context("[IntParameter] constructor") do
         p = IntParameter(0, 10, 3)
         @fact (p.min   == 0 )       => true
