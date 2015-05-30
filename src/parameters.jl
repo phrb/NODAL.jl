@@ -15,5 +15,5 @@ type NumberParameter{T<:Number} <: Parameter
     end
 end
 
-typealias IntParameter   NumberParameter{Int64}
-typealias FloatParameter NumberParameter{Float64}
+typealias IntegerParameter NumberParameter{Integer}
+typealias FloatParameter   NumberParameter{FloatingPoint}
