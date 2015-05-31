@@ -91,7 +91,7 @@ facts("[NumberParameter] constructors") do
         @fact (p.max   == 2)                                => true
         @fact (p.value == 1)                                => true
     end
-    context("[FloatParameter] perturbate") do
+    context("[FloatParameter] perturbate!") do
         value    = 3.2
         interval = 5.6 
         p = FloatParameter(0., 100., value, :rand_test)
@@ -137,7 +137,7 @@ facts("[EnumParameter] constructors") do
     @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
                                                2], :test)
     @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
-    context("[EnumParameter] perturbate!") do
+    context("[EnumParameter] perturbate! and perturbate_elements!") do
     p = EnumParameter([IntegerParameter(1, 4, 3, :a),
         IntegerParameter(1, 6, 3, :b)], 2, :test)
     perturbate_elements!(p)
@@ -159,8 +159,10 @@ facts("[StringParameter] constructors") do
     @fact (typeof(p) <: Parameter)       => true
     @fact (p.value == "value")           => true
     @fact (p.name  == :test)             => true
-    perturbate!(p)
-    @fact (p.value == "value")           => true
-    @fact_throws MethodError StringParameter(2, :test)
-    @fact_throws MethodError StringParameter("value")
+    context("[StringParameter] perturbate!") do
+        perturbate!(p)
+        @fact (p.value == "value")           => true
+        @fact_throws MethodError StringParameter(2, :test)
+        @fact_throws MethodError StringParameter("value")
+    end
 end
