@@ -17,14 +17,14 @@ facts("[NumberParameter] constructors") do
         @fact (typeof(p) <: NumberParameter{Float32}) => true
     end
     context("[IntegerParameter] constructor") do
-        @fact (IntegerParameter <: NumberParameter)    => true
+        @fact (IntegerParameter <: NumberParameter)   => true
         p = IntegerParameter(0, 10, 3, :test)
-        @fact (typeof(p) <: NumberParameter{Integer})  => true
-        @fact (typeof(p) <: IntegerParameter)          => true
-        @fact (p.min   == 0 )                          => true
-        @fact (p.max   == 10)                          => true
-        @fact (p.value == 3 )                          => true
-        @fact (p.name  == :test)                       => true
+        @fact (typeof(p) <: NumberParameter{Integer}) => true
+        @fact (typeof(p) <: IntegerParameter)         => true
+        @fact (p.min   == 0 )                         => true
+        @fact (p.max   == 10)                         => true
+        @fact (p.value == 3 )                         => true
+        @fact (p.name  == :test)                      => true
         @fact_throws ErrorException IntegerParameter(3, 1, 2, :test)
         @fact_throws ErrorException IntegerParameter(1, 3, 0, :test)
         @fact_throws ErrorException IntegerParameter(1, 3, 4, :test)
@@ -43,7 +43,7 @@ facts("[NumberParameter] constructors") do
         @fact (p.max   == 2)                          => true
         @fact (p.value == 1)                          => true
     end
-    context("[IntegerParameter] perturbate") do
+    context("[IntegerParameter] perturbate!") do
         value    = 3
         interval = 10
         p = IntegerParameter(0, 100, value, :rand_test)
@@ -73,7 +73,7 @@ facts("[NumberParameter] constructors") do
         @fact (p.min   == 0.223 ) => true
         @fact (p.max   == 10.122) => true
         @fact (p.value == 3.12  ) => true
-        @fact (p.name  == :test) => true
+        @fact (p.name  == :test)  => true
         @fact_throws ErrorException FloatParameter(3.3, 1.223, 2.4, :test)
         @fact_throws ErrorException FloatParameter(1.443, 3.2332, 1.442, :test)
         @fact_throws ErrorException FloatParameter(1.23, 3.2, 3.23, :test)
