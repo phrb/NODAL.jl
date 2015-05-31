@@ -1,9 +1,9 @@
 module StochasticSearch
 
-export Parameter, NumberParameter, IntegerParameter, FloatParameter,
+export Parameter, NumberParameter, IntegerParameter, FloatParameter, Enum,
        EnumParameter, StringParameter
 
-export perturbate!
+export perturbate!, perturbate_elements!
 
 include("parameters.jl")
 

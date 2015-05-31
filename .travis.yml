@@ -1,25 +1,9 @@
-language: cpp
-compiler:
-    - gcc
+language: julia
 os:
     - linux
+julia:
+    - release
 notifications:
     email: false
-env:
-    matrix:
-        - PKGADD="FactCheck" JULIAVERSION="juliareleases"
-        - PKGADD="FactCheck" JULIAVERSION="julianightlies"
-before_install:
-    - sudo add-apt-repository ppa:staticfloat/julia-deps -y
-    - sudo add-apt-repository ppa:staticfloat/${JULIAVERSION} -y
-    - sudo apt-get update -qq -y
-    - sudo apt-get install libpcre3-dev julia -y
-    - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-script:
-    - julia -e 'Pkg.init(); Pkg.clone(pwd())'
-    - julia -e 'for p in split(ENV["PKGADD"],";") Pkg.add(p) end'
-    - if [ $JULIAVERSION = "julianightlies" ]; then julia test/runtests.jl; fi
-    - if [ $JULIAVERSION = "juliareleases" ]; then julia --code-coverage test/runtests.jl; fi
-
 after_success:
-    - if [[ $JULIAVERSION = "juliareleases" && `uname` = "Linux" ]]; then julia -e 'cd(Pkg.dir("StochasticSearch")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'; fi
+    - julia -e 'cd(Pkg.dir("StochasticSearch")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
