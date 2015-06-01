@@ -118,25 +118,48 @@ facts("[NumberParameter] constructors") do
     end
 end
 
-facts("[EnumParameter] constructors") do
-    p = EnumParameter([IntegerParameter(1, 4, 3, :a),
-                       IntegerParameter(1, 6, 3, :b)], :test)
-    @fact (typeof(p) <: Enum{IntegerParameter})             => true
-    @fact (typeof(p.values) <: AbstractArray)               => true
-    @fact (typeof(p.values)  == Array{IntegerParameter, 1}) => true
-    @fact (p.values[1].value == 3)                          => true
-    @fact (p.values[2].value == 3)                          => true
-    @fact (p.values[1].name  == :a)                         => true
-    @fact (p.values[2].name  == :b)                         => true
-    @fact (p.name            == :test)                      => true
-    p = EnumParameter([IntegerParameter(1, 4, 3, :a),
-                       IntegerParameter(1, 6, 2, :b)], 1, :test)
-    @fact (p.current       == 1)                            => true
-    @fact (p.value.value   == 3)                            => true
-    @fact_throws MethodError    EnumParameter([3, 4], :test)
-    @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
-                                               2], :test)
-    @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
+facts("[Enum] constructors") do
+    p = Enum{IntegerParameter}([IntegerParameter(1, 3, 2, :a)], :test)
+    @fact (typeof(p.value) == IntegerParameter)                 => true
+    @fact (typeof(p)       <: Enum{IntegerParameter})           => true
+    p = Enum{NumberParameter}([IntegerParameter(1, 3, 2, :a),
+                               FloatParameter(1.1,2.3,1.4, :b)],
+                               :test)
+    @fact (typeof(p.value) <: NumberParameter)                  => true
+    @fact (typeof(p)       <: Enum{NumberParameter})            => true
+    p = Enum{Parameter}([IntegerParameter(1, 3, 2, :a),
+                         FloatParameter(1.1,2.3,1.4, :b),
+                         StringParameter("value", :c)],
+                         :test)
+    @fact (typeof(p.value) <: Parameter)                        => true
+    @fact (typeof(p)       <: Enum{Parameter})                  => true
+    context("[EnumParameter] constructors") do
+        p = EnumParameter([IntegerParameter(1, 4, 3, :a),
+                           IntegerParameter(1, 6, 3, :b)], :test)
+        @fact (typeof(p) <: Enum{IntegerParameter})             => true
+        @fact (typeof(p.values) <: AbstractArray)               => true
+        @fact (typeof(p.values)  == Array{IntegerParameter, 1}) => true
+        @fact (p.values[1].value == 3)                          => true
+        @fact (p.values[2].value == 3)                          => true
+        @fact (p.values[1].name  == :a)                         => true
+        @fact (p.values[2].name  == :b)                         => true
+        @fact (p.name            == :test)                      => true
+        p = EnumParameter([IntegerParameter(1, 4, 3, :a),
+                           IntegerParameter(1, 6, 2, :b)], 1, :test)
+        @fact (p.current       == 1)                            => true
+        @fact (p.value.value   == 3)                            => true
+        p = EnumParameter([FloatParameter(1.2, 4.3, 3.2, :a),
+                           IntegerParameter(1, 6, 2, :b)], 1, :test)
+        @fact (typeof(p) <: Enum{NumberParameter})              => true
+        p = EnumParameter([FloatParameter(1.2, 4.3, 3.2, :a),
+                           IntegerParameter(1, 6, 2, :b),
+                           StringParameter("value", :s)], :test)
+        @fact (typeof(p) <: Enum{Parameter})                    => true
+        @fact_throws MethodError    EnumParameter([3, 4], :test)
+        @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
+                                                   2], :test)
+        @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
+    end
     context("[EnumParameter] perturbate! and perturbate_elements!") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
             IntegerParameter(1, 6, 3, :b)], 2, :test)

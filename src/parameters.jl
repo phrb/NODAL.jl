@@ -16,8 +16,31 @@ type NumberParameter{T <: Number} <: Parameter
     end
 end
 
+type Enum{T <: Parameter} <: Parameter
+    values::AbstractArray{T}
+    current::Int
+    name::Symbol
+    value::Parameter
+    Enum{T <: Parameter}(values::AbstractArray{T}, current::Int, name::Symbol) = begin
+        if current > length(values) || current < 1
+            error("current is out of bounds.")
+        end
+        new(values, current, name, values[current])
+    end
+    Enum{T <: Parameter}(values::AbstractArray{T}, name::Symbol) = begin
+        current = rand(1:length(values))
+        new(values, current, name, values[current])
+    end
+end
+
+type StringParameter <: Parameter
+    value::String
+    name::Symbol
+end
+
 typealias IntegerParameter NumberParameter{Integer}
 typealias FloatParameter   NumberParameter{FloatingPoint}
+typealias EnumParameter Enum{Parameter}
 
 perturbate!(number::NumberParameter) = begin
     number.value = rand_in(number.min, number.max)
@@ -32,23 +55,15 @@ perturbate!(number::NumberParameter, interval::Number) = begin
     number.value = rand_in(min, max)
 end
 
-type Enum{T <: Parameter} <: Parameter
-    values::AbstractArray{T}
-    current::Int
-    name::Symbol
-    value::Parameter
-    Enum{T <: Parameter}(values::AbstractArray{T}, current::Int, name::Symbol) = begin
-        if current > length(values) || current < 1
-            error("current is out of bounds.")
-        end
-        new(values, current, name, values[current])
-    end
-    Enum{T <: Parameter}(values::AbstractArray{T}, name::Symbol) = begin
-        new(values, rand(1:length(values)), name)
-    end
+perturbate!(enum::Enum) = begin
+    enum.current = rand(1:length(enum.values))
+    enum.value   = enum.values[enum.current]
 end
 
-typealias EnumParameter Enum{Parameter}
+
+perturbate!(string::StringParameter) = begin
+    string.value
+end
 
 perturbate_elements!(enum::Enum, element::Int) = begin
     perturbate!(enum.values[element])
@@ -58,20 +73,6 @@ perturbate_elements!(enum::Enum) = begin
     for parameter in enum.values
         perturbate!(parameter)
     end
-end
-
-perturbate!(enum::Enum) = begin
-    enum.current = rand(1:length(enum.values))
-    enum.value   = enum.values[enum.current]
-end
-
-type StringParameter <: Parameter
-    value::String
-    name::Symbol
-end
-
-perturbate!(string::StringParameter) = begin
-    string.value
 end
 
 include("util.jl")
