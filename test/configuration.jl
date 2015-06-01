@@ -15,4 +15,12 @@ facts("[Configuration] constructors") do
     c = Configuration(p, :test)
     @fact (c[:c] == p[:c])             => true
     @fact (c[:d] == p[:d])             => true
+    p = [StringParameter("valuea",  :a),
+         StringParameter("valueb", :b)]
+    c = Configuration(p, :test)
+    @fact (c[:a] == p[1])              => true
+    @fact (c[:b] == p[2])              => true
+    @fact (c.previous[:a] == p[1])     => true
+    @fact (c.previous[:b] == p[2])     => true
+    @fact (c.previous == c.parameters) => true
 end
