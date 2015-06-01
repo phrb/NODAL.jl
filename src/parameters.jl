@@ -60,18 +60,32 @@ perturbate!(enum::Enum) = begin
     enum.value   = enum.values[enum.current]
 end
 
-perturbate!(string::StringParameter) = begin
-    string.value
-end
-
 perturbate_elements!(enum::Enum, element::Int) = begin
     perturbate!(enum.values[element])
 end
 
 perturbate_elements!(enum::Enum) = begin
     for parameter in enum.values
-        perturbate!(parameter)
+        if !(typeof(parameter) <: Enum) && !(typeof(parameter) <: StringParameter)
+            perturbate!(parameter)
+        end
     end
+end
+
+perturbate_elements!(enum::Enum, interval::Array) = begin
+    if length(interval) > length(enum.values)
+        error("too many intervals.")
+    end
+    for i = 1:length(interval)            
+        parameter = enum.values[i]
+        if !(typeof(parameter) <: Enum) && !(typeof(parameter) <: StringParameter)
+            perturbate!(enum.values[i], interval[i])
+        end
+    end
+end
+
+perturbate_elements!(enum::Enum, element::Int, interval::Number) = begin
+    perturbate!(enum.values[element], interval)
 end
 
 include("util.jl")

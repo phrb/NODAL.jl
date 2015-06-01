@@ -183,6 +183,22 @@ facts("[Enum] constructors") do
                            StringParameter("valueb", :b)], :test)
         perturbate!(p)
         @fact (p.values[1].value == "valuea")               => true
+        p = EnumParameter([EnumParameter([StringParameter("a", :aa)], :a1),
+                           StringParameter("b", :bb),
+                           IntegerParameter(1, 4, 3, :a),
+                           EnumParameter([StringParameter("c", :cc)], :c1)],
+                           :a)
+        v = p.value
+        perturbate_elements!(p, 3, 2)
+        @fact (p.value == v)                                => true
+        v = p.values[3]
+        @fact (v.value <= v.max)                            => true
+        @fact (v.value >= v.min)                            => true
+        perturbate_elements!(p, [2])
+        v = p.values[3]
+        @fact (v.value <= v.max)                            => true
+        @fact (v.value >= v.min)                            => true
+        @fact_throws MethodError perturbate_elements!(p, 2, 2)
     end
 end
 
@@ -193,8 +209,7 @@ facts("[StringParameter] constructors") do
     @fact (p.value == "value")           => true
     @fact (p.name  == :test)             => true
     context("[StringParameter] perturbate!") do
-        perturbate!(p)
-        @fact (p.value == "value")       => true
+        @fact_throws MethodError perturbate!(p)
         @fact_throws MethodError StringParameter(2, :test)
         @fact_throws MethodError StringParameter("value")
     end
