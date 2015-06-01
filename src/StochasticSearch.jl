@@ -7,6 +7,7 @@ export Configuration
 
 export perturbate!, perturbate_elements!
 
+include("util.jl")
 include("parameters.jl")
 include("configuration.jl")
 

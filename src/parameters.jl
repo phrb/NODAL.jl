@@ -87,5 +87,3 @@ end
 perturbate_elements!(enum::Enum, element::Int, interval::Number) = begin
     perturbate!(enum.values[element], interval)
 end
-
-include("util.jl")
