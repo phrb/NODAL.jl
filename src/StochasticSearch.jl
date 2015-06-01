@@ -1,6 +1,6 @@
 module StochasticSearch
 
-export Parameter, NumberParameter, IntegerParameter, FloatParameter, Enum,
+export Parameter, NumberParameter, IntegerParameter, FloatParameter,
        EnumParameter, StringParameter
 
 export Configuration
