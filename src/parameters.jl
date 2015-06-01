@@ -20,7 +20,7 @@ type Enum{T <: Parameter} <: Parameter
     values::AbstractArray{T}
     current::Int
     name::Symbol
-    value::Parameter
+    value::T
     Enum{T <: Parameter}(values::AbstractArray{T}, current::Int, name::Symbol) = begin
         if current > length(values) || current < 1
             error("current is out of bounds.")
@@ -40,7 +40,7 @@ end
 
 typealias IntegerParameter NumberParameter{Integer}
 typealias FloatParameter   NumberParameter{FloatingPoint}
-typealias EnumParameter Enum{Parameter}
+typealias EnumParameter    Enum{Parameter}
 
 perturbate!(number::NumberParameter) = begin
     number.value = rand_in(number.min, number.max)
@@ -59,7 +59,6 @@ perturbate!(enum::Enum) = begin
     enum.current = rand(1:length(enum.values))
     enum.value   = enum.values[enum.current]
 end
-
 
 perturbate!(string::StringParameter) = begin
     string.value

@@ -133,6 +133,16 @@ facts("[Enum] constructors") do
                          :test)
     @fact (typeof(p.value) <: Parameter)                        => true
     @fact (typeof(p)       <: Enum{Parameter})                  => true
+    p = Enum{EnumParameter}([EnumParameter([StringParameter("a", :aa)], :a1),
+                             EnumParameter([StringParameter("b", :bb)], :b1),
+                             EnumParameter([StringParameter("c", :cc)], :c1)],
+                             :a)
+    @fact (typeof(p)       == Enum{Enum{StringParameter}})      => true
+    p = EnumParameter([EnumParameter([StringParameter("a", :aa)], :a1),
+                       StringParameter("b", :bb),
+                       EnumParameter([StringParameter("c", :cc)], :c1)],
+                       :a)
+    @fact (typeof(p)       == Enum{Parameter})                  => true
     context("[EnumParameter] constructors") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
                            IntegerParameter(1, 6, 3, :b)], :test)
