@@ -169,10 +169,13 @@ facts("[Enum] constructors") do
         @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a),
                                                    2], :test)
         @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, :a)])
+        @fact_throws ErrorException EnumParameter([IntegerParameter(1, 4, 3, :a),
+                                                   IntegerParameter(1, 6, 3, :b)], 3, :test)
     end
     context("[EnumParameter] perturbate! and perturbate_elements!") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
-            IntegerParameter(1, 6, 3, :b)], 2, :test)
+                           StringParameter("b", :bb),
+                           IntegerParameter(1, 6, 3, :b)], 2, :test)
         perturbate_elements!(p)
         @fact (p.current == 2)                              => true
         p = EnumParameter([FloatParameter(1.1, 4.2, 3.221, :a),
@@ -199,6 +202,7 @@ facts("[Enum] constructors") do
         @fact (v.value <= v.max)                            => true
         @fact (v.value >= v.min)                            => true
         @fact_throws MethodError perturbate_elements!(p, 2, 2)
+        @fact_throws MethodError perturbate_elements!(p, 2)
     end
 end
 
