@@ -55,4 +55,24 @@ facts("[Configuration]") do
         d[:test1][:b] = 23
         @fact_throws MethodError perturb!(c, d)
     end
+    context("[Configuration] neighbor!") do
+        l = [NumberParameter(1, 38, 3, :i0),
+             NumberParameter(4, 66, 55, :i1),
+             StringParameter("value", :i2),
+             NumberParameter(2.33, 85.33, 22.2, :i3)]
+        d = Dict{Symbol, Any}()
+        c = Configuration(l, :test)
+        d[:i0] = 5
+        v = c[:i0].value
+        neighbor!(c, d)
+        @fact (v != c[:i0].value)                           => true
+        v = c[:i0].value
+        neighbor!(c, d, 9)
+        @fact (v != c[:i0].value)                           => true
+        d = Dict{Symbol, Any}()
+        d[:i2] = 5
+        @fact_throws MethodError neighbor!(c, d)
+        @fact_throws MethodError neighbor!(c, d, 2)
+        @fact_throws MethodError neighbor!(c)
+    end
 end

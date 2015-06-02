@@ -20,6 +20,29 @@ facts("[NumberParameter]") do
         p = NumberParameter(1.2, 7.2, 2.34, :test)
         @fact (typeof(p) == NumberParameter{Float64}) => true
     end
+    context("[NumberParameter] neighbor!") do
+        p = NumberParameter(1, 60, 45, :a)
+        n = p.value
+        neighbor!(p)
+        @fact (n != p.value)                          => true
+        n = p.value
+        neighbor!(p, 8)
+        @fact (n != p.value)                          => true
+        n = p.value
+        neighbor!(p, 8, 20)
+        @fact (n != p.value)                          => true
+        p = NumberParameter(1.332, 60.2, 44.3, :a)
+        n = p.value
+        neighbor!(p)
+        @fact (n != p.value)                          => true
+        n = p.value
+        neighbor!(p, 3.2231)
+        @fact (n != p.value)                          => true
+        n = p.value
+        neighbor!(p, 8.332, 20)
+        @fact (n != p.value)                          => true
+        @fact_throws MethodError neighbor!(p, 8.332, 20.2)
+    end
     context("[IntegerParameter] constructor") do
         @fact (IntegerParameter <: NumberParameter)   => true
         p = IntegerParameter(0, 10, 3, :test)
@@ -206,6 +229,16 @@ facts("[EnumParameter]") do
         @fact_throws MethodError    perturb_elements!(p, 2, 2)
         @fact_throws MethodError    perturb_elements!(p, 2)
         @fact_throws ErrorException perturb_elements!(p, [1,3,4,5,6,3])
+    end
+    context("[EnumParameter] neighbor!") do
+        p = EnumParameter([IntegerParameter(1, 4, 3, :a),
+                           StringParameter("b", :bb),
+                           IntegerParameter(1, 6, 3, :b)], 2, :test)
+        n = p.value
+        neighbor!(p)
+        @fact (n != p.value)                          => true
+        @fact_throws MethodError neighbor!(p, 8, 20)
+        @fact_throws MethodError neighbor!(p, 3.2231)
     end
 end
 
