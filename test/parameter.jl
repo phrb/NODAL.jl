@@ -15,6 +15,10 @@ facts("[NumberParameter]") do
         @fact (typeof(p.max)   == Float32)            => true
         @fact (typeof(p.value) == Float32)            => true
         @fact (typeof(p) <: NumberParameter{Float32}) => true
+        p = NumberParameter(1, 7, 2, :test)
+        @fact (typeof(p) == NumberParameter{Int64})   => true
+        p = NumberParameter(1.2, 7.2, 2.34, :test)
+        @fact (typeof(p) == NumberParameter{Float64}) => true
     end
     context("[IntegerParameter] constructor") do
         @fact (IntegerParameter <: NumberParameter)   => true
@@ -195,12 +199,13 @@ facts("[EnumParameter]") do
         v = p.values[3]
         @fact (v.value <= v.max)                            => true
         @fact (v.value >= v.min)                            => true
-        perturbate_elements!(p, [2])
+        perturbate_elements!(p, [2, 3, 4])
         v = p.values[3]
         @fact (v.value <= v.max)                            => true
         @fact (v.value >= v.min)                            => true
-        @fact_throws MethodError perturbate_elements!(p, 2, 2)
-        @fact_throws MethodError perturbate_elements!(p, 2)
+        @fact_throws MethodError    perturbate_elements!(p, 2, 2)
+        @fact_throws MethodError    perturbate_elements!(p, 2)
+        @fact_throws ErrorException perturbate_elements!(p, [1,3,4,5,6,3])
     end
 end
 

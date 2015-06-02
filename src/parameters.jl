@@ -93,7 +93,7 @@ perturbate_elements!(enum::EnumParameter, interval::Array) = begin
     for i = 1:length(interval)            
         parameter = enum.values[i]
         if !(typeof(parameter) <: EnumParameter) && !(typeof(parameter) <: StringParameter)
-            perturbate!(enum.values[i], interval[i])
+            perturbate!(parameter, interval[i])
         end
     end
 end
