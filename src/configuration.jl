@@ -29,36 +29,3 @@ end
 Configuration{T <: Parameter}(parameters::Dict{Symbol, T}, name::Symbol) = begin
     Configuration{T}(parameters, name)
 end
-
-getindex(configuration::Configuration, index::Symbol) = begin
-    configuration.parameters[index]
-end
-
-perturb!(configuration::Configuration) = begin
-    result = Dict{Symbol, Any}()
-    for key in keys(configuration.parameters)
-        if typeof(configuration[key]) <: NumberParameter ||
-                typeof(configuration[key]) <: EnumParameter
-            perturb!(configuration[key])
-        end
-        result[key] = configuration[key].value
-    end
-    update!(configuration)
-    result
-end
-
-perturb!(configuration::Configuration, intervals::Dict{Symbol, Any}) = begin
-    result = Dict{Symbol, Any}()
-    for key in keys(intervals)
-        perturb!(configuration[key], intervals[key])
-        result[key] = configuration[key].value
-    end
-    update!(configuration)
-    result
-end
-
-update!(configuration::Configuration) = begin
-    for key in keys(configuration.parameters)
-        configuration.value[key] = configuration[key].value
-    end
-end

@@ -35,8 +35,8 @@ facts("[Configuration]") do
         @fact (typeof(r[:test1])) == Dict{Symbol, Any}      => true
         @fact (r[:test1][:a] == "valuea")                   => true
         @fact (r[:test1][:b] == "valueb")                   => true
-        @fact (typeof(r[:test1][:c]) <: Number)             => true
         @fact (r[:i2]        == "value")                    => true
+        @fact (typeof(r[:test1][:c]) <: Number)             => true
         @fact (typeof(r[:i0])        <: Number)             => true
         @fact (typeof(r[:i1])        <: Number)             => true
         @fact (typeof(r[:i3])        <: Number)             => true
