@@ -56,11 +56,11 @@ end
 typealias IntegerParameter NumberParameter{Integer}
 typealias FloatParameter   NumberParameter{FloatingPoint}
 
-perturbate!(number::NumberParameter) = begin
+perturb!(number::NumberParameter) = begin
     number.value = rand_in(number.min, number.max)
 end
 
-perturbate!(number::NumberParameter, interval::Number) = begin
+perturb!(number::NumberParameter, interval::Number) = begin
     if interval <= 0
         error("interval must be greater than zero.")
     end
@@ -69,35 +69,36 @@ perturbate!(number::NumberParameter, interval::Number) = begin
     number.value = rand_in(min, max)
 end
 
-perturbate!(enum::EnumParameter) = begin
+perturb!(enum::EnumParameter) = begin
     enum.current = rand(1:length(enum.values))
     enum.value   = enum.values[enum.current]
 end
 
-perturbate_elements!(enum::EnumParameter, element::Int) = begin
-    perturbate!(enum.values[element])
+perturb_elements!(enum::EnumParameter, element::Int) = begin
+    perturb!(enum.values[element])
 end
 
-perturbate_elements!(enum::EnumParameter) = begin
+perturb_elements!(enum::EnumParameter) = begin
     for parameter in enum.values
-        if typeof(parameter) <: NumberParameter
-            perturbate!(parameter)
+        if typeof(parameter) <: NumberParameter ||
+                typeof(parameter) <: EnumParameter
+            perturb!(parameter)
         end
     end
 end
 
-perturbate_elements!(enum::EnumParameter, interval::Array) = begin
+perturb_elements!(enum::EnumParameter, interval::Array) = begin
     if length(interval) > length(enum.values)
         error("too many intervals.")
     end
     for i = 1:length(interval)
         parameter = enum.values[i]
         if typeof(parameter) <: NumberParameter
-            perturbate!(parameter, interval[i])
+            perturb!(parameter, interval[i])
         end
     end
 end
 
-perturbate_elements!(enum::EnumParameter, element::Int, interval::Number) = begin
-    perturbate!(enum.values[element], interval)
+perturb_elements!(enum::EnumParameter, element::Int, interval::Number) = begin
+    perturb!(enum.values[element], interval)
 end
