@@ -5,7 +5,7 @@ export Parameter, NumberParameter, IntegerParameter, FloatParameter,
 
 export Configuration
 
-export perturbate!, perturbate_elements!
+export perturbate!, perturbate_elements!, discard!
 
 include("util.jl")
 include("parameters.jl")
