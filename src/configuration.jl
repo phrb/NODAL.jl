@@ -40,7 +40,7 @@ Configuration(name::Symbol) = begin
     Configuration{Parameter}(name)
 end
 
-convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
+Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.parameters))
         push!(parameter_array, configuration[key])
@@ -48,7 +48,7 @@ convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
     parameter_array
 end
 
-convert!{T <: Any}(::Type{Array{T}}, configuration::Configuration, dict::Array{Symbol}) = begin
+Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, dict::Array{Symbol}) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.value))
         push!(parameter_array, configuration.value[key])

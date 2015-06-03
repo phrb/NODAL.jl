@@ -16,7 +16,7 @@ optimize!(f::Function,
          show_trace::Bool = false,
          extended_trace::Bool = false) = begin
     parameter_dict  = Symbol[]
-    parameter_array = deepcopy(convert!(Array{Number}, initial_x, parameter_dict))
+    parameter_array = deepcopy(convert(Array{Number}, initial_x, parameter_dict))
     if method == :simulated_annealing
         result = Optim.simulated_annealing(f,
                                            parameter_array,

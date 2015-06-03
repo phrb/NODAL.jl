@@ -7,7 +7,10 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, update!, convert
+           optimize!, update!
+
+    # New Methods for Base Functions
+    import Base.convert
 
     # Types
     include("parameters.jl")
@@ -21,7 +24,6 @@ module StochasticSearch
 
     # Optim.jl Interface
     include("optim/optimize!.jl")
-    include("optim/simulated_annealing.jl")
 
     # Utilities;
     include("util/random.jl")

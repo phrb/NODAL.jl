@@ -1,7 +1,7 @@
 using StochasticSearch, FactCheck
 
 facts("[NumberParameter]") do
-    context("[NumberParameter] constructor") do
+    context("constructor") do
         p = NumberParameter{Int8}(convert(Int8, 0), convert(Int8, 2),
                                   convert(Int8, 1), :test)
         @fact (typeof(p.min)   == Int8)               => true
@@ -20,7 +20,7 @@ facts("[NumberParameter]") do
         p = NumberParameter(1.2, 7.2, 2.34, :test)
         @fact (typeof(p) == NumberParameter{Float64}) => true
     end
-    context("[NumberParameter] neighbor!") do
+    context("neighbor!") do
         p = NumberParameter(1, 60, 45, :a)
         n = p.value
         neighbor!(p)
@@ -43,7 +43,7 @@ facts("[NumberParameter]") do
         @fact (n != p.value)                          => true
         @fact_throws MethodError neighbor!(p, 8.332, 20.2)
     end
-    context("[IntegerParameter] constructor") do
+    context("constructor") do
         @fact (IntegerParameter <: NumberParameter)   => true
         p = IntegerParameter(0, 10, 3, :test)
         @fact (typeof(p) <: NumberParameter{Integer}) => true
@@ -70,7 +70,7 @@ facts("[NumberParameter]") do
         @fact (p.max   == 2)                          => true
         @fact (p.value == 1)                          => true
     end
-    context("[IntegerParameter] perturb!") do
+    context("perturb!") do
         value    = 3
         interval = 10
         p = IntegerParameter(0, 100, value, :rand_test)
@@ -95,7 +95,7 @@ facts("[NumberParameter]") do
         interval = 0
         @fact_throws ErrorException perturb!(p, interval)
     end
-    context("[FloatParameter] constructor") do
+    context("constructor") do
         p = FloatParameter(0.223, 10.122, 3.12, :test)
         @fact (p.min   == 0.223 ) => true
         @fact (p.max   == 10.122) => true
@@ -118,7 +118,7 @@ facts("[NumberParameter]") do
         @fact (p.max   == 2)                                => true
         @fact (p.value == 1)                                => true
     end
-    context("[FloatParameter] perturb!") do
+    context("perturb!") do
         value    = 3.2
         interval = 5.6
         p = FloatParameter(0., 100., value, :rand_test)
@@ -170,7 +170,7 @@ facts("[EnumParameter]") do
                        EnumParameter([StringParameter("c", :cc)], :c1)],
                        :a)
     @fact (typeof(p)       <: EnumParameter)                    => true
-    context("[EnumParameter] constructors") do
+    context("constructors") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
                            IntegerParameter(1, 6, 3, :b)], :test)
         @fact (typeof(p)         <: EnumParameter)              => true
@@ -197,7 +197,7 @@ facts("[EnumParameter]") do
         @fact_throws ErrorException EnumParameter([IntegerParameter(1, 4, 3, :a),
                                                    IntegerParameter(1, 6, 3, :b)], 3, :test)
     end
-    context("[EnumParameter] perturb! and perturb_elements!") do
+    context("perturb! and perturb_elements!") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
                            StringParameter("b", :bb),
                            IntegerParameter(1, 6, 3, :b)], 2, :test)
@@ -230,7 +230,7 @@ facts("[EnumParameter]") do
         @fact_throws MethodError    perturb_elements!(p, 2)
         @fact_throws ErrorException perturb_elements!(p, [1,3,4,5,6,3])
     end
-    context("[EnumParameter] neighbor!") do
+    context("neighbor!") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),
                            StringParameter("b", :bb),
                            IntegerParameter(1, 6, 3, :b)], 2, :test)
@@ -248,9 +248,7 @@ facts("[StringParameter]") do
     @fact (typeof(p) <: Parameter)       => true
     @fact (p.value == "value")           => true
     @fact (p.name  == :test)             => true
-    context("[StringParameter] perturb!") do
-        @fact_throws MethodError perturb!(p)
-        @fact_throws MethodError StringParameter(2, :test)
-        @fact_throws MethodError StringParameter("value")
-    end
+    @fact_throws MethodError perturb!(p)
+    @fact_throws MethodError StringParameter(2, :test)
+    @fact_throws MethodError StringParameter("value")
 end
