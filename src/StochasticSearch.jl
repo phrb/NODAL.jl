@@ -7,7 +7,7 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, update!
+           optimize!, update!, convert
 
     # Types
     include("parameters.jl")

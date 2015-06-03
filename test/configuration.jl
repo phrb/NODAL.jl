@@ -1,7 +1,7 @@
 using StochasticSearch, FactCheck
 
 facts("[Configuration]") do
-    context("[Configuration] constructors") do
+    context("constructors") do
         p = [StringParameter("value",  :a),
              IntegerParameter(1, 5, 4, :b)]
         c = Configuration(p, :test)
@@ -20,7 +20,7 @@ facts("[Configuration]") do
         @fact (c[:a] == p[1])                    => true
         @fact (c[:b] == p[2])                    => true
     end
-    context("[Configuration] perturb!") do
+    context("perturb!") do
         p = [StringParameter("valuea",  :a),
              StringParameter("valueb", :b),
              NumberParameter(1, 44, 3, :c)]
@@ -55,7 +55,7 @@ facts("[Configuration]") do
         d[:test1][:b] = 23
         @fact_throws MethodError perturb!(c, d)
     end
-    context("[Configuration] neighbor!") do
+    context("neighbor!") do
         l = [NumberParameter(1, 38, 3, :i0),
              NumberParameter(4, 66, 55, :i1),
              StringParameter("value", :i2),
@@ -73,5 +73,15 @@ facts("[Configuration]") do
         @fact_throws MethodError neighbor!(c, d)
         @fact_throws MethodError neighbor!(c, d, 2)
         @fact_throws MethodError neighbor!(c)
+    end
+    context("update! and convert!") do
+        c     = Configuration(:test)
+        c[:a] = NumberParameter(1, 2323, 2, :i0)
+        a     = convert(Array{Parameter}, c)
+        @fact (a[1] == c[:a])                              => true
+        push!(a, StringParameter("name", :i2))
+        update!(c, a)
+        @fact (c[:i2] != a[1])                             => true
+        @fact (c[:i2].value == a[2].value)                 => true
     end
 end

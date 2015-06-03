@@ -1,6 +1,6 @@
 using StochasticSearch, FactCheck
 
-facts("[Optim.jl]") do
+facts("[Interface] with Optim.jl") do
     context("[simulated_anealing]") do
         f(x::Array) = begin
             return (x[1] - x[4])
