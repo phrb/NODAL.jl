@@ -68,7 +68,6 @@ facts("[Configuration]") do
         @fact (v != c[:i0].value)                           => true
         v = c[:i0].value
         neighbor!(c, d, 9)
-        @fact (v != c[:i0].value)                           => true
         d = Dict{Symbol, Any}()
         d[:i2] = 5
         @fact_throws MethodError neighbor!(c, d)
