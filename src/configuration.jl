@@ -38,6 +38,17 @@ convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
     parameter_array
 end
 
+convert!{T <: Any}(::Type{Array{T}}, configuration::Configuration, dict::Array{Symbol}) = begin
+    parameter_array = T[]
+    for key in collect(keys(configuration.value))
+        push!(parameter_array, configuration.value[key])
+        push!(parameter_array, configuration[key].min)
+        push!(parameter_array, configuration[key].max)
+        push!(dict, key)
+    end
+    parameter_array
+end
+
 getindex(configuration::Configuration, index::Symbol) = begin
     configuration.parameters[index]
 end

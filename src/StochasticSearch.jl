@@ -1,6 +1,7 @@
 module StochasticSearch
+    using Optim
     # Types
-    export Parameter, NumberParameter, IntegerParameter, 
+    export Parameter, NumberParameter, IntegerParameter,
            FloatParameter, EnumParameter, StringParameter,
            Configuration
 
@@ -19,7 +20,7 @@ module StochasticSearch
     include("neighbor!.jl")
 
     # Optim.jl Interface
-    include("optim/optimize.jl")
+    include("optim/optimize!.jl")
     include("optim/simulated_annealing.jl")
 
     # Utilities;
