@@ -6,8 +6,8 @@ perturb!(number::NumberParameter, interval::Number) = begin
     if interval <= 0
         error("interval must be greater than zero.")
     end
-    max = number.value + interval > number.max ? number.max : number.value + interval
-    min = number.value - interval < number.min ? number.min : number.value - interval
+    max = number.value + interval >= number.max ? number.max : number.value + interval
+    min = number.value - interval <= number.min ? number.min : number.value - interval
     number.value = rand_in(min, max)
 end
 

@@ -29,3 +29,19 @@ end
 Configuration{T <: Parameter}(parameters::Dict{Symbol, T}, name::Symbol) = begin
     Configuration{T}(parameters, name)
 end
+
+convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
+    parameter_array = T[]
+    for key in collect(keys(configuration.parameters))
+        push!(parameter_array, configuration[key])
+    end
+    parameter_array
+end
+
+getindex(configuration::Configuration, index::Symbol) = begin
+    configuration.parameters[index]
+end
+
+setindex!{T <: Parameter}(configuration::Configuration, value::T, index::Symbol) = begin
+    configuration.parameters[index] = value
+end

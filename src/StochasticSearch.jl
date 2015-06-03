@@ -4,18 +4,25 @@ module StochasticSearch
     export Parameter, NumberParameter, IntegerParameter, 
            FloatParameter, EnumParameter, StringParameter,
            Configuration
+
     # Methods
-    export perturb!, perturb_elements!, neighbor!
+    export perturb!, perturb_elements!, neighbor!,
+           optimize, update!, copy, copy!
+
     # Types
     include("parameters.jl")
     include("configuration.jl")
+
     # Methods
     include("perturb!.jl")
     include("perturb_elements!.jl")
     include("update!.jl")
     include("neighbor!.jl")
-    # Random values;
-    # accessors.
+
+    # Optim.jl Interface
+    include("optim/simulated_annealing.jl")
+    include("optim/optimize.jl")
+
+    # Utilities;
     include("util/random.jl")
-    include("util/accessing.jl")
 end
