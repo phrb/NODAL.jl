@@ -1,7 +1,5 @@
 log_temperature(t::Real) = 1 / log(t)
 
-constant_temperature(t::Real) = 1.0
-
 default_neighbor!(x::Array{Parameter}, x_proposal::Array{Parameter}) = begin
     @assert size(x) == size(x_proposal)
     for i in 1:length(x)
