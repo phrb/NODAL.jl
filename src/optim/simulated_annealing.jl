@@ -11,10 +11,10 @@ default_neighbor!(x::Array{Parameter}, x_proposal::Array{Parameter}) = begin
 end
 
 simulated_annealing{T}(cost::Function,
-                           initial_x::Array{T};
-                           neighbor!::Function = default_neighbor!,
-                           iterations::Integer = 1_000,
-                           temperature::Function = log_temperature) = begin
+                       initial_x::Array{T};
+                       neighbor!::Function = default_neighbor!,
+                       iterations::Integer = 1_000,
+                       temperature::Function = log_temperature) = begin
     # Maintain current and proposed state
     x, x_proposal = deepcopy(initial_x), deepcopy(initial_x)
     iteration = 0
@@ -56,6 +56,11 @@ simulated_annealing{T}(cost::Function,
                 f_x = f_proposal
             end
         end
-    end        
-    best_x
+    end
+    return MultivariateOptimizationResults("Simulated Annealing",
+                                           initial_x,
+                                           best_x,
+                                           best_f_x,
+                                           iterations,
+                                           f_calls)
 end

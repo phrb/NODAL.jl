@@ -1,5 +1,4 @@
 module StochasticSearch
-    using Optim
     # Types
     export Parameter, NumberParameter, IntegerParameter, 
            FloatParameter, EnumParameter, StringParameter,
@@ -7,7 +6,7 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize, update!, copy, copy!
+           optimize!, update!
 
     # Types
     include("parameters.jl")
@@ -20,8 +19,8 @@ module StochasticSearch
     include("neighbor!.jl")
 
     # Optim.jl Interface
-    include("optim/simulated_annealing.jl")
     include("optim/optimize.jl")
+    include("optim/simulated_annealing.jl")
 
     # Utilities;
     include("util/random.jl")
