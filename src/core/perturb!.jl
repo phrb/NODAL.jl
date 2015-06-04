@@ -13,7 +13,7 @@ end
 
 perturb!(enum::EnumParameter) = begin
     enum.current = rand(1:length(enum.values))
-    enum.value   = enum.values[enum.current]
+    @inbounds enum.value   = enum.values[enum.current]
 end
 
 perturb!(configuration::Configuration) = begin
@@ -32,7 +32,7 @@ end
 perturb!(configuration::Configuration, intervals::Dict{Symbol, Any}) = begin
     result = Dict{Symbol, Any}()
     for key in keys(intervals)
-        perturb!(configuration[key], intervals[key])
+        @inbounds perturb!(configuration[key], intervals[key])
         result[key] = configuration[key].value
     end
     update!(configuration)

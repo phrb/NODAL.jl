@@ -18,7 +18,8 @@ perturb_elements!(enum::EnumParameter, interval::Array) = begin
     for i = 1:length(interval)
         parameter = enum.values[i]
         if typeof(parameter) <: NumberParameter
-            perturb!(parameter, interval[i])
+            @inbounds interv = interval[i]
+            perturb!(parameter, interv)
         end
     end
 end

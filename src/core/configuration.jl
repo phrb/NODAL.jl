@@ -7,8 +7,8 @@ type Configuration{T <: Parameter} <: Parameter
         params = Dict{Symbol, T}()
         values = Dict{Symbol, Any}()
         for parameter in parameters
-            params[parameter.name] = parameter
-            values[parameter.name] = parameter.value
+            @inbounds params[parameter.name] = parameter
+            @inbounds values[parameter.name] = parameter.value
         end
         new(params, name, values)
     end
@@ -16,7 +16,7 @@ type Configuration{T <: Parameter} <: Parameter
     Configuration(parameters::Dict{Symbol, T}, name::Symbol) = begin
         values = Dict{Symbol, Any}()
         for key in keys(parameters)
-            values[key] = parameters[key].value
+            @inbounds values[key] = parameters[key].value
         end
         new(parameters, name, values)
     end
@@ -43,7 +43,7 @@ end
 Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.parameters))
-        push!(parameter_array, configuration[key])
+        @inbounds push!(parameter_array, configuration[key])
     end
     parameter_array
 end
@@ -51,9 +51,10 @@ end
 Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, dict::Array{Symbol}) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.value))
-        push!(parameter_array, configuration.value[key])
-        push!(parameter_array, configuration[key].min)
-        push!(parameter_array, configuration[key].max)
+        @inbounds parameter = configuration[key]
+        push!(parameter_array, parameter.value)
+        push!(parameter_array, parameter.min)
+        push!(parameter_array, parameter.max)
         push!(dict, key)
     end
     parameter_array
