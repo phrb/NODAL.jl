@@ -1,3 +1,6 @@
+#
+# Adapted from 'Optim/src/simulated_annealing.jl'.
+#
 log_temperature(t::Real) = 1 / log(t)
 
 function simulated_annealing{T <: Configuration}(cost::Function,
