@@ -13,5 +13,4 @@ result = optimize!(rosenbrock, configuration, iterations = 100_000)
 println(result)
 
 a = Symbol[]
-c = convert(Array{Number}, configuration, a)
-println(rosenbrock(c))
+println(rosenbrock(convert(Array{Number}, configuration, a)))
