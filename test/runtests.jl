@@ -3,6 +3,6 @@ using FactCheck
 
 include("parameter.jl")
 include("configuration.jl")
-include("simulated_annealing.jl")
+include("optim_interface.jl")
 
 FactCheck.exitstatus()

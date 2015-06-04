@@ -3,28 +3,30 @@ module StochasticSearch
     # Types
     export Parameter, NumberParameter, IntegerParameter,
            FloatParameter, EnumParameter, StringParameter,
-           Configuration
+           Configuration, AbstractResult, Result
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
            optimize!, update!
 
     # New Methods for Base Functions
-    import Base.convert
+    import Base.convert, Base.show
 
     # Types
-    include("parameters.jl")
-    include("configuration.jl")
+    include("core/parameters.jl")
+    include("core/configuration.jl")
+    include("core/results.jl")
 
     # Methods
-    include("perturb!.jl")
-    include("perturb_elements!.jl")
-    include("update!.jl")
-    include("neighbor!.jl")
+    include("core/perturb!.jl")
+    include("core/perturb_elements!.jl")
+    include("core/update!.jl")
+    include("core/neighbor!.jl")
 
     # Optim.jl Interface
     include("optim/optimize!.jl")
 
     # Utilities;
     include("util/random.jl")
+    include("util/show.jl")
 end

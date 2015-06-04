@@ -169,6 +169,7 @@ facts("[EnumParameter]") do
                        StringParameter("b", :bb),
                        EnumParameter([StringParameter("c", :cc)], :c1)],
                        :a)
+    println(p)
     @fact (typeof(p)       <: EnumParameter)                    => true
     context("constructors") do
         p = EnumParameter([IntegerParameter(1, 4, 3, :a),

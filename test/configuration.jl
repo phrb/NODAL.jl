@@ -62,6 +62,7 @@ facts("[Configuration]") do
              NumberParameter(2.33, 85.33, 22.2, :i3)]
         d = Dict{Symbol, Any}()
         c = Configuration(l, :test)
+        println(c)
         d[:i0] = 5
         v = c[:i0].value
         neighbor!(c, d)
