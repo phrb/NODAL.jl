@@ -3,10 +3,10 @@
 #
 log_temperature(t::Real) = 1 / log(t)
 
-function simulated_annealing{T <: Configuration}(cost::Function,
-                                                 initial_x::T;
-                                                 temperature::Function = log_temperature,
-                                                 iterations::Integer   = 100_000)
+simulated_annealing{T <: Configuration}(cost::Function,
+                                        initial_x::T;
+                                        temperature::Function = log_temperature,
+                                        iterations::Integer   = 100_000) = begin
     # Maintain current and proposed state
     x          = deepcopy(initial_x)
     x_proposal = deepcopy(initial_x)

@@ -19,8 +19,7 @@ end
 perturb!(configuration::Configuration) = begin
     result = Dict{Symbol, Any}()
     for key in keys(configuration.parameters)
-        if typeof(configuration[key]) <: NumberParameter ||
-                typeof(configuration[key]) <: EnumParameter
+        if !(typeof(configuration[key]) <: StringParameter)
             perturb!(configuration[key])
         end
         result[key] = configuration[key].value
