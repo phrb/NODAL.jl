@@ -3,11 +3,11 @@ module StochasticSearch
     # Types
     export Parameter, NumberParameter, IntegerParameter,
            FloatParameter, EnumParameter, StringParameter,
-           Configuration, AbstractResult, Result
+           Configuration, Result
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, update!
+           optimize!, update!, optimize
 
     # New Methods for Base Functions
     import Base.convert, Base.show
@@ -22,6 +22,10 @@ module StochasticSearch
     include("core/perturb_elements!.jl")
     include("core/update!.jl")
     include("core/neighbor!.jl")
+
+    # Search
+    include("core/search/simulated_annealing.jl")
+    include("core/search/optimize.jl")
 
     # Optim.jl Interface
     include("optim/optimize!.jl")

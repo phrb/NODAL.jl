@@ -2,6 +2,7 @@ using StochasticSearch, FactCheck
 
 facts("[Configuration]") do
     context("constructors") do
+        c = Configuration(:name_only)
         p = [StringParameter("value",  :a),
              IntegerParameter(1, 5, 4, :b)]
         c = Configuration(p, :test)
@@ -65,7 +66,7 @@ facts("[Configuration]") do
         println(c)
         d[:i0] = 5
         v = c[:i0].value
-        neighbor!(c, d)
+        neighbor!(c, d, 20)
         @fact (v != c[:i0].value)                           => true
         v = c[:i0].value
         neighbor!(c, d, 9)
@@ -73,7 +74,14 @@ facts("[Configuration]") do
         d[:i2] = 5
         @fact_throws MethodError neighbor!(c, d)
         @fact_throws MethodError neighbor!(c, d, 2)
-        @fact_throws MethodError neighbor!(c)
+        l = [NumberParameter(1, 38, 3, :i0)]
+        c = Configuration(l, :test2)
+        v = c[:i0].value
+        neighbor!(c, 20)
+        println("test")
+        println(v)
+        println(c)
+        @fact (v != c[:i0].value)                           => true
     end
     context("update! and convert!") do
         c     = Configuration(:test)

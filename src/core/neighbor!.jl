@@ -1,4 +1,4 @@
-neighbor!(number::NumberParameter, interval::Number = 1, distance::Integer = 1) = begin
+neighbor!(number::NumberParameter, interval::Number = 10, distance::Integer = 1) = begin
     for i = 1:distance
         previous = number.value
         while number.value == previous
@@ -24,5 +24,18 @@ neighbor!(configuration::Configuration, intervals::Dict{Symbol, Any}, distance::
     for i = 1:distance
         neighbor!(configuration[target], intervals[target])
     end
+    update!(configuration)
+    configuration
+end
+
+neighbor!(configuration::Configuration, distance::Integer = 1) = begin
+    key_set = collect(keys(configuration.parameters))
+    target  = key_set[rand(1:length(key_set))]
+    for i = 1:distance
+        if !(typeof(configuration[target]) <: StringParameter)
+            neighbor!(configuration[target])
+        end
+    end
+    update!(configuration)
     configuration
 end
