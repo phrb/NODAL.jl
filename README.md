@@ -77,4 +77,9 @@ $ julia examples/rosenbrock.jl
          current value:     0.950996
 )
 ```
-Finally, 
+The original ```Configuration``` object is already updated with the optimized results. Since we're using the Optim.jl interface for the optimization, we'll have to convert the configuration to an ```Array``` so we can check the results with the ```rosenbrock``` function. This can be done with:
+```jl
+ a = Symbol[]
+ println(rosenbrock(convert(Array{Number}, configuration, a)))
+```
+And would print the value ```0.0006139995371618324```, for this example.
