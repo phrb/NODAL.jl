@@ -3,9 +3,8 @@
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
 
 ===
-StochasticSearch.jl is a package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as FocusedILS and Racing Algorithms. It is an ongoing project, and currently offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). In the future, StochasticSearch.jl will implement its own optimization and local search algorithms. The API will provide tools for implementing parallel and distributed program autotuners.
-
-## Installation
+StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as FocusedILS and Racing Algorithms. It is an ongoing project, and currently offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). In the future, StochasticSearch.jl will implement its own optimization and local search algorithms. The API will provide tools for implementing parallel and distributed program autotuners.
+### Installing
 From the Julia REPL, run:
 ```jl
 Pkg.clone("git@github.com:phrb/StochasticSearch.jl.git")
