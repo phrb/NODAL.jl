@@ -29,7 +29,7 @@ Now we are ready to use the ```optimize``` method, which can be called with just
 ```jl
 result = optimize(rosenbrock, configuration)
 ```
-Without further configuration, 'optimize' will use the default neighboring and perturbation methods implemented by StochasticSearch.jl. Running the complete example program, we get:
+Without further configuration, 'optimize' will use the default neighboring and perturbation methods implemented by StochasticSearch.jl, and will optimize the configuration with the Simulated Annealing method. Running the complete example program, we get:
 ```jl
 % julia examples/rosenbrock.jl      
 *Result               :
@@ -87,10 +87,10 @@ configuration = Configuration([NumberParameter(-2.0,2.0,0.0,:a),
 Here, the interval is ```[-2.0, 2.0]```, and both parameters start at point ```0.0```. In this example we will use the default neighboring and perturbation methods already implemented in StochasticSearch, so the next step is defining the Rosenbrock function. The ```Symbol``` ```:rosenbrock_config``` is simply an identifier for this configuration.
 ```jl
 function rosenbrock(x::Array)
-    return (1.0 - x[1])^2 + 100.0 * (x[4] - x[1]^2)^2
+    return (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 end
 ```
-Note the weird access pattern on ```x```. This is done like this because in the current implementation of the interface to Optim.jl, StochasticSearch converts configurations into ```Array{Number}```, but keeps the intervals they are constrained to inside the array, to be used by the neighboring and pertubation methods.
+StochasticSearch converts configurations into ```Array{Number}```, and does not keep the intervals they are constrained to inside the array. Therefore, the boundaries set by the parameters are not respected when optimizing a configuration in this way.
 
 The optimization is done with:
 ```jl
