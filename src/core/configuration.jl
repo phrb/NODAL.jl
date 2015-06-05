@@ -38,7 +38,7 @@ end
 Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.parameters))
-        @inbounds push!(parameter_array, configuration[key])
+        push!(parameter_array, configuration[key])
     end
     parameter_array
 end
@@ -46,7 +46,7 @@ end
 Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{Symbol}) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.value))
-        @inbounds parameter = configuration[key]
+        parameter = configuration[key]
         push!(parameter_array, parameter.value)
         push!(legend, key)
     end

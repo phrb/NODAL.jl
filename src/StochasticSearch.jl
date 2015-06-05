@@ -23,11 +23,11 @@ module StochasticSearch
     include("core/perturb_elements!.jl")
     include("core/update!.jl")
     include("core/neighbor!.jl")
-    include("core/unit_value.jl")
 
     # Search
     include("core/search/simulated_annealing.jl")
     include("core/search/optimize.jl")
+    include("core/search/simplex_manipulators.jl")
 
     # Optim.jl Interface
     include("optim/optimize!.jl")
