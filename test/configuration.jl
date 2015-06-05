@@ -78,9 +78,6 @@ facts("[Configuration]") do
         c = Configuration(l, "test2")
         v = c["i0"].value
         neighbor!(c, 20)
-        println("test")
-        println(v)
-        println(c)
         @fact (v != c["i0"].value)                           => true
     end
     context("update! and convert!") do
