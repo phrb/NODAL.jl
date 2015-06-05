@@ -1,13 +1,3 @@
-default_neighbor!(x::Array, x_proposal::Array) = begin
-    @assert size(x) == size(x_proposal)
-    i = 1
-    while i + 2 <= length(x)
-        @inbounds x_proposal[i] = rand_in(x[i + 1], x[i + 2])
-        i += 3
-    end
-    return
-end
-
 optimize!(f::Function,
          initial_x::Configuration;
          method::Symbol       = :simulated_annealing,
@@ -15,27 +5,37 @@ optimize!(f::Function,
          store_trace::Bool    = false,
          show_trace::Bool     = false,
          extended_trace::Bool = false,
-         ftol::Real = 1e-8,
-         neighbor!            = default_neighbor!) = begin
+         ftol::Real = 1e-8) = begin
     parameter_dict  = Symbol[]
-    parameter_array = deepcopy(convert(Array{Number}, initial_x, parameter_dict))
+    parameter_array = deepcopy(convert(Array{Float64}, initial_x, parameter_dict))
     if method == :simulated_annealing
+        name = "Simulated Annealing"
         result = Optim.simulated_annealing(f,
                                            parameter_array,
                                            iterations     = iterations,
-                                           neighbor!      = neighbor!,
                                            store_trace    = store_trace,
                                            show_trace     = show_trace,
                                            extended_trace = extended_trace)
         start = deepcopy(initial_x)
         update!(initial_x, result.minimum, parameter_dict)
-        return Result("Simulated Annealing",
-                      start,
-                      initial_x,
-                      result.f_minimum,
-                      result.iterations,
-                      result.f_calls)
+    elseif method == :nelder_mead
+        name = "Nelder Mead"
+        result = Optim.nelder_mead(f,
+                                   parameter_array,
+                                   ftol           = ftol,
+                                   iterations     = iterations,
+                                   store_trace    = store_trace,
+                                   show_trace     = show_trace,
+                                   extended_trace = extended_trace)
+        start = deepcopy(initial_x)
+        update!(initial_x, result.minimum, parameter_dict)
     else
         throw(ArgumentError("Unimplemented Optim.jl interface to method $method"))
     end
+    return Result(name,
+                  start,
+                  initial_x,
+                  result.f_minimum,
+                  result.iterations,
+                  result.f_calls)
 end

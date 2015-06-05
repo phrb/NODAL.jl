@@ -24,11 +24,10 @@ end
 
 update!{T <: Number}(configuration::Configuration,
                      parameters::Array{T},
-                     dict::Array{Symbol}) = begin
-    i = 1
-    while i <= length(parameters)
-        configuration[dict[floor(i / 4) + 1]].value = parameters[i]
-        i += 3
+                     legend::Array{Symbol}) = begin
+    for i in 1:length(parameters)
+        @inbounds symbol = legend[i]
+        configuration[symbol].value = parameters[i]
     end
     update!(configuration)
     configuration

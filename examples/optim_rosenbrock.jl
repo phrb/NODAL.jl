@@ -1,10 +1,10 @@
 using StochasticSearch
 
 function rosenbrock(x::Array)
-    return (1.0 - x[1])^2 + 100.0 * (x[4] - x[1]^2)^2
+    return (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
 end
 
-configuration = Configuration([NumberParameter(-2.0,2.0,0.0,:a), 
+configuration = Configuration([NumberParameter(-2.0,2.0,0.0,:a),
                                NumberParameter(-2.0,2.0,0.0,:b)],
                                :rosenbrock_config)
 

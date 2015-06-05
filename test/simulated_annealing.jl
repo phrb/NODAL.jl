@@ -10,7 +10,7 @@ facts("[Search]") do
                                        NumberParameter(-2.0,2.0,0.0,:i1)],
                                        :rosenbrock_config)
 
-        result = optimize(rosenbrock, configuration)
+        result = optimize(rosenbrock, configuration, iterations = 10_000)
 
         @fact (configuration[:i0].value != result.minimum[:i0].value)   => true
         @fact (rosenbrock(result.minimum) <= rosenbrock(configuration)) => true

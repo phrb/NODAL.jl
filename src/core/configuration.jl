@@ -48,14 +48,12 @@ Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = b
     parameter_array
 end
 
-Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, dict::Array{Symbol}) = begin
+Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{Symbol}) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.value))
         @inbounds parameter = configuration[key]
         push!(parameter_array, parameter.value)
-        push!(parameter_array, parameter.min)
-        push!(parameter_array, parameter.max)
-        push!(dict, key)
+        push!(legend, key)
     end
     parameter_array
 end
