@@ -18,7 +18,7 @@ neighbor!(enum::EnumParameter, distance::Integer = 1) = begin
     enum
 end
 
-neighbor!(configuration::Configuration, intervals::Dict{Symbol, Any}, distance::Integer = 1) = begin
+neighbor!(configuration::Configuration, intervals::Dict{ASCIIString, Any}, distance::Integer = 1) = begin
     key_set = collect(keys(intervals))
     target  = key_set[rand(1:length(key_set))]
     for i = 1:distance

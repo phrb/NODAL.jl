@@ -1,11 +1,11 @@
 type Configuration{T <: Parameter} <: Parameter
-    parameters::Dict{Symbol, T}
-    name::Symbol
-    value::Dict{Symbol, Any}
+    parameters::Dict{ASCIIString, T}
+    name::ASCIIString
+    value::Dict{ASCIIString, Any}
 
-    Configuration(parameters::Array{T, 1}, name::Symbol) = begin
-        params = Dict{Symbol, T}()
-        values = Dict{Symbol, Any}()
+    Configuration(parameters::Array{T, 1}, name::ASCIIString) = begin
+        params = Dict{ASCIIString, T}()
+        values = Dict{ASCIIString, Any}()
         for parameter in parameters
             @inbounds params[parameter.name] = parameter
             @inbounds values[parameter.name] = parameter.value
@@ -13,8 +13,8 @@ type Configuration{T <: Parameter} <: Parameter
         new(params, name, values)
     end
 
-    Configuration(parameters::Dict{Symbol, T}, name::Symbol) = begin
-        values = Dict{Symbol, Any}()
+    Configuration(parameters::Dict{ASCIIString, T}, name::ASCIIString) = begin
+        values = Dict{ASCIIString, Any}()
         for key in keys(parameters)
             @inbounds values[key] = parameters[key].value
         end
@@ -22,16 +22,16 @@ type Configuration{T <: Parameter} <: Parameter
     end
 end
 
-Configuration{T <: Parameter}(parameters::Array{T, 1}, name::Symbol) = begin
+Configuration{T <: Parameter}(parameters::Array{T, 1}, name::ASCIIString) = begin
     Configuration{T}(parameters, name)
 end
 
-Configuration{T <: Parameter}(parameters::Dict{Symbol, T}, name::Symbol) = begin
+Configuration{T <: Parameter}(parameters::Dict{ASCIIString, T}, name::ASCIIString) = begin
     Configuration{T}(parameters, name)
 end
 
-Configuration(name::Symbol) = begin
-    params = Dict{Symbol, Parameter}()
+Configuration(name::ASCIIString) = begin
+    params = Dict{ASCIIString, Parameter}()
     Configuration{Parameter}(params, name)
 end
 
@@ -43,7 +43,7 @@ Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = b
     parameter_array
 end
 
-Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{Symbol}) = begin
+Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{ASCIIString}) = begin
     parameter_array = T[]
     for key in collect(keys(configuration.value))
         parameter = configuration[key]
@@ -53,10 +53,10 @@ Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::A
     parameter_array
 end
 
-getindex(configuration::Configuration, index::Symbol) = begin
+getindex(configuration::Configuration, index::ASCIIString) = begin
     configuration.parameters[index]
 end
 
-setindex!{T <: Parameter}(configuration::Configuration, value::T, index::Symbol) = begin
+setindex!{T <: Parameter}(configuration::Configuration, value::T, index::ASCIIString) = begin
     configuration.parameters[index] = value
 end

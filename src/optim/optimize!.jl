@@ -6,7 +6,7 @@ optimize!(f::Function,
          show_trace::Bool     = false,
          extended_trace::Bool = false,
          ftol::Real = 1e-8) = begin
-    parameter_dict  = Symbol[]
+    parameter_dict  = ASCIIString[]
     parameter_array = deepcopy(convert(Array{Float64}, initial_x, parameter_dict))
     if method == :simulated_annealing
         name = "Simulated Annealing"

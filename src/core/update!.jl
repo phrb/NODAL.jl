@@ -13,7 +13,7 @@ update!{T <: Parameter}(configuration::Configuration, parameters::Array{T}) = be
     configuration
 end
 
-update!{T <: Parameter}(configuration::Configuration, parameters::Dict{Symbol, T}) = begin
+update!{T <: Parameter}(configuration::Configuration, parameters::Dict{ASCIIString, T}) = begin
     key_set = collect(keys(parameters))
     for key in key_set
         configuration[key] = deepcopy(parameters[key])
@@ -24,7 +24,7 @@ end
 
 update!{T <: Any}(configuration::Configuration,
                      parameters::Array{T},
-                     legend::Array{Symbol}) = begin
+                     legend::Array{ASCIIString}) = begin
     for i in 1:length(parameters)
         @inbounds symbol = legend[i]
         configuration[symbol].value = parameters[i]

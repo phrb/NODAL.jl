@@ -17,7 +17,7 @@ perturb!(enum::EnumParameter) = begin
 end
 
 perturb!(configuration::Configuration) = begin
-    result = Dict{Symbol, Any}()
+    result = Dict{ASCIIString, Any}()
     for key in keys(configuration.parameters)
         if !(typeof(configuration[key]) <: StringParameter)
             perturb!(configuration[key])
@@ -28,8 +28,8 @@ perturb!(configuration::Configuration) = begin
     result
 end
 
-perturb!(configuration::Configuration, intervals::Dict{Symbol, Any}) = begin
-    result = Dict{Symbol, Any}()
+perturb!(configuration::Configuration, intervals::Dict{ASCIIString, Any}) = begin
+    result = Dict{ASCIIString, Any}()
     for key in keys(intervals)
         @inbounds perturb!(configuration[key], intervals[key])
         result[key] = configuration[key].value
