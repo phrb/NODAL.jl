@@ -15,6 +15,7 @@ facts("[Search]") do
         @fact (configuration[:i0].value != result.minimum[:i0].value)   => true
         @fact (rosenbrock(result.minimum) <= rosenbrock(configuration)) => true
         @fact (rosenbrock(result.minimum) == result.cost_minimum)       => true
+        @fact_throws ArgumentError optimize(rosenbrock, configuration, method = :bozo_optimize)
         println(result)
         println(rosenbrock(result.minimum))
     end
