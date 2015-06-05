@@ -20,12 +20,6 @@ type Configuration{T <: Parameter} <: Parameter
         end
         new(parameters, name, values)
     end
-
-    Configuration(name::Symbol) = begin
-        values = Dict{Symbol, Any}()
-        params = Dict{Symbol, T}()
-        new(params, name, values)
-    end
 end
 
 Configuration{T <: Parameter}(parameters::Array{T, 1}, name::Symbol) = begin
@@ -37,7 +31,8 @@ Configuration{T <: Parameter}(parameters::Dict{Symbol, T}, name::Symbol) = begin
 end
 
 Configuration(name::Symbol) = begin
-    Configuration{Parameter}(name)
+    params = Dict{Symbol, Parameter}()
+    Configuration{Parameter}(params, name)
 end
 
 Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
