@@ -1,9 +1,9 @@
 Base.show{T <: NumberParameter}(io::IO, n::T) = begin
     @printf io "\n    *NumberParameter: %s\n" typeof(n)
     @printf io "    (name: %s, " n.name
-    @printf io "min: %f, " n.min
-    @printf io "max: %f, " n.max
-    @printf io "value: %f)\n" n.value
+    @printf io "min: %6f, " n.min
+    @printf io "max: %6f, " n.max
+    @printf io "value: %6f)\n" n.value
     return
 end
 
@@ -47,7 +47,7 @@ end
 Base.show{T <: Result}(io::IO, n::T) = begin
     @printf io "*Result               :\n"
     @printf io "*Technique            : %s\n" n.technique
-    @printf io "*Cost                 : %f\n" n.cost_minimum
+    @printf io "*Cost                 : %6f\n" n.cost_minimum
     @printf io "*Iterations           : %d\n" n.iterations
     @printf io "*Function Calls       : %d\n" n.cost_calls
     @printf io "*Start Configuration  :"
@@ -55,4 +55,10 @@ Base.show{T <: Result}(io::IO, n::T) = begin
     @printf io "*Minimum Configuration:"
     show(io, n.minimum)
     return
+end
+
+Base.show{T <: PartialResult}(io::IO, n::T) = begin
+    @printf io "[Partial Result] Cost: %6f, " n.cost_minimum
+    @printf io "Technique: %s, " n.technique
+    @printf io "Iterations: %d.\n" n.iterations
 end

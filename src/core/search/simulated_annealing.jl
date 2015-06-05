@@ -14,7 +14,7 @@ simulated_annealing{T <: Configuration}(cost::Function,
     # Record the number of iterations we perform
     iteration = 0
 
-    # Track calls to function and gradient
+    # Track calls to function
     f_calls = 0
 
     # Store f(x) in f_x
@@ -58,11 +58,15 @@ simulated_annealing{T <: Configuration}(cost::Function,
                 f_x = f_proposal
             end
         end
+        produce(PartialResult("Simulated Annealing",
+                              best_x,
+                              best_f_x,
+                              iteration))
     end
-    return Result("Simulated Annealing",
-                  initial_x,
-                  best_x,
-                  best_f_x,
-                  iterations,
-                  f_calls)
+    produce(Result("Simulated Annealing",
+                   initial_x,
+                   best_x,
+                   best_f_x,
+                   iteration,
+                   f_calls))
 end

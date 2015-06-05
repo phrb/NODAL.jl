@@ -3,7 +3,7 @@ module StochasticSearch
     # Types
     export Parameter, NumberParameter, IntegerParameter,
            FloatParameter, EnumParameter, StringParameter,
-           Configuration, Result
+           Configuration, Result, PartialResult
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
