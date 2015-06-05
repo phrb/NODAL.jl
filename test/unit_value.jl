@@ -6,7 +6,7 @@ facts("[unit_value]") do
                            NumberParameter(1.3, 56.3, 3.3, :i1),
                            NumberParameter(1, 40, 3, :i3)],
                            :test)
-        c = p.current
+        c = p.value
         u = unit_value(p)
         v = unit_value!(p, u)
         @fact (unit_value!(p, u) == c)     => true

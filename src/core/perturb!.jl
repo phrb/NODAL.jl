@@ -12,8 +12,8 @@ perturb!(number::NumberParameter, interval::Number) = begin
 end
 
 perturb!(enum::EnumParameter) = begin
-    enum.current = rand(1:length(enum.values))
-    @inbounds enum.value   = enum.values[enum.current]
+    enum.value = rand(1:length(enum.values))
+    @inbounds enum.current   = enum.values[enum.value]
 end
 
 perturb!(configuration::Configuration) = begin

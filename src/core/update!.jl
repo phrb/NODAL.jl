@@ -22,7 +22,7 @@ update!{T <: Parameter}(configuration::Configuration, parameters::Dict{Symbol, T
     configuration
 end
 
-update!{T <: Number}(configuration::Configuration,
+update!{T <: Any}(configuration::Configuration,
                      parameters::Array{T},
                      legend::Array{Symbol}) = begin
     for i in 1:length(parameters)

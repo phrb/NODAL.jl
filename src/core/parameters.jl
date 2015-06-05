@@ -23,25 +23,25 @@ end
 
 type EnumParameter{P <: Parameter, T <: AbstractArray} <: Parameter
     values::T
-    current::Int
+    value::Int
     name::Symbol
-    value::P
+    current::P
 
-    EnumParameter(values::T, current::Int, name::Symbol) = begin
-        if current > length(values) || current < 1
-            error("current is out of bounds.")
+    EnumParameter(values::T, value::Int, name::Symbol) = begin
+        if value > length(values) || value < 1
+            error("value is out of bounds.")
         end
-        new(values, current, name, values[current])
+        new(values, value, name, values[value])
     end
 
     EnumParameter(values::T, name::Symbol) = begin
-        current = rand(1:length(values))
-        new(values, current, name, values[current])
+        value = rand(1:length(values))
+        new(values, value, name, values[value])
     end
 end
 
-EnumParameter{T <: AbstractArray}(values::T, current::Int, name::Symbol) = begin
-    EnumParameter{Parameter, T}(values, current, name)
+EnumParameter{T <: AbstractArray}(values::T, value::Int, name::Symbol) = begin
+    EnumParameter{Parameter, T}(values, value, name)
 end
 
 EnumParameter{T <: AbstractArray}(values::T, name::Symbol) = begin

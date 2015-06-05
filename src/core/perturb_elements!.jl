@@ -4,8 +4,7 @@ end
 
 perturb_elements!(enum::EnumParameter) = begin
     for parameter in enum.values
-        if typeof(parameter) <: NumberParameter ||
-                typeof(parameter) <: EnumParameter
+        if !(typeof(parameter) <: StringParameter)
             perturb!(parameter)
         end
     end

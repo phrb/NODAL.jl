@@ -3,15 +3,15 @@ unit_value{T <: NumberParameter}(parameter::T) = begin
 end
 
 unit_value{T <: EnumParameter}(parameter::T) = begin
-    (parameter.current - 1) / (length(parameter.values) - 1)
+    (parameter.value - 1) / (length(parameter.values) - 1)
 end
 
 unit_value!{T <: EnumParameter}(parameter::T, unit::Float64) = begin
     @assert 0.0 <= unit <= 1.0
-    current = round(unit * length(parameter.values))
-    parameter.current = max(1, min(current, length(parameter.values)))
-    @inbounds parameter.value = parameter.values[parameter.current]
-    parameter.current
+    value = round(unit * length(parameter.values))
+    parameter.value = max(1, min(value, length(parameter.values)))
+    @inbounds parameter.current = parameter.values[parameter.value]
+    parameter.value
 end
 
 unit_value!(parameter::IntegerParameter, unit::Float64) = begin
