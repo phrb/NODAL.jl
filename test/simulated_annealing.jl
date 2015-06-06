@@ -14,6 +14,9 @@ facts("[Search]") do
         result = None
         for i = 1:100_000
             result = consume(run_task)
+            if i == 443
+                print(result)
+            end
         end
         print(result)
         @fact (configuration["i0"].value != result.minimum["i0"].value)   => true
