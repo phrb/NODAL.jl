@@ -19,26 +19,46 @@ facts("[NumberParameter]") do
         @fact (typeof(p) == NumberParameter{Int64})   => true
         p = NumberParameter(1.2, 7.2, 2.34, "test")
         @fact (typeof(p) == NumberParameter{Float64}) => true
+        p = NumberParameter(1, "test")
+        @fact (p.min == 1)                            => true
+        @fact (p.max == 1)                            => true
+        p = NumberParameter(0, 10, "test")
+        @fact (0 <= p.value <= 10)                    => true
     end
     context("neighbor!") do
-        p = NumberParameter(1, 60, 45, "test")
+        p = NumberParameter(1, 200, 100, "test")
         n = p.value
+        neighbor!(p)
+        neighbor!(p)
         neighbor!(p)
         @fact (n != p.value)                          => true
         n = p.value
         neighbor!(p, 8)
+        neighbor!(p, 8)
+        neighbor!(p, 8)
         @fact (n != p.value)                          => true
         n = p.value
+        neighbor!(p, 8, 20)
+        neighbor!(p, 8, 20)
         neighbor!(p, 8, 20)
         @fact (n != p.value)                          => true
         p = NumberParameter(1.332, 60.2, 44.3, "test")
         n = p.value
         neighbor!(p)
+        neighbor!(p)
+        neighbor!(p)
+        neighbor!(p)
         @fact (n != p.value)                          => true
         n = p.value
         neighbor!(p, 3.2231)
+        neighbor!(p, 3.2231)
+        neighbor!(p, 3.2231)
+        neighbor!(p, 3.2231)
         @fact (n != p.value)                          => true
         n = p.value
+        neighbor!(p, 8.332, 20)
+        neighbor!(p, 8.332, 20)
+        neighbor!(p, 8.332, 20)
         neighbor!(p, 8.332, 20)
         @fact (n != p.value)                          => true
         @fact_throws MethodError neighbor!(p, 8.332, 20.2)
@@ -119,12 +139,14 @@ facts("[NumberParameter]") do
     end
     context("perturb!") do
         value    = 3.2
-        interval = 5.6
-        p = FloatParameter(0., 100., value, "rand_test")
+        interval = 50.6
+        p = FloatParameter(0., 1000., value, "rand_test")
         perturb!(p)
         @fact (typeof(p.value) <: FloatingPoint) => true
         @fact (p.value <= p.max)                 => true
         @fact (p.value >= p.min)                 => true
+        perturb!(p, interval)
+        perturb!(p, interval)
         perturb!(p, interval)
         value = p.value
         @fact (typeof(p.value) <: FloatingPoint) => true
@@ -133,6 +155,8 @@ facts("[NumberParameter]") do
         @fact (p.value >= p.min)                 => true
         @fact (p.value >= value - interval)      => true
         interval = 103.0
+        perturb!(p, interval)
+        perturb!(p, interval)
         perturb!(p, interval)
         @fact (typeof(p.value) <: FloatingPoint) => true
         @fact (p.value <= p.max)                 => true
@@ -202,13 +226,19 @@ facts("[EnumParameter]") do
                            StringParameter("b", "test"),
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         perturb_elements!(p)
+        perturb_elements!(p)
+        perturb_elements!(p)
         @fact (p.value == 2)                                => true
         p = EnumParameter([FloatParameter(1.1, 4.2, 3.221, "test"),
                            FloatParameter(2.3, 4.4, 3.1, "test")], "test")
         perturb!(p)
+        perturb!(p)
+        perturb!(p)
         @fact (p.values[1].value == 3.221)                  => true
         p = EnumParameter([StringParameter("valuea", "test"),
                            StringParameter("valueb", "test")], "test")
+        perturb!(p)
+        perturb!(p)
         perturb!(p)
         @fact (p.values[1].value == "valuea")               => true
         p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
@@ -217,6 +247,8 @@ facts("[EnumParameter]") do
                            EnumParameter([StringParameter("c", "test")], "test")],
                            "test")
         v = p.current
+        perturb_elements!(p, 3, 2)
+        perturb_elements!(p, 3, 2)
         perturb_elements!(p, 3, 2)
         @fact (p.current == v)                              => true
         v = p.values[3]
@@ -236,6 +268,8 @@ facts("[EnumParameter]") do
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         n = p.current
         neighbor!(p)
+        neighbor!(p)
+        neighbor!(p)
         @fact (n != p.value)                          => true
         @fact_throws MethodError neighbor!(p, 8, 20)
         @fact_throws MethodError neighbor!(p, 3.2231)
@@ -247,8 +281,29 @@ facts("[StringParameter]") do
     @fact (typeof(p) == StringParameter) => true
     @fact (typeof(p) <: Parameter)       => true
     @fact (p.value == "value")           => true
-    @fact (p.name  == "test")             => true
+    @fact (p.name  == "test")            => true
     @fact_throws MethodError perturb!(p)
     @fact_throws MethodError StringParameter(2, "test")
     @fact_throws MethodError StringParameter("value")
+end
+
+facts("[BoolParameter]") do
+    p = BoolParameter(false, "test")
+    @fact (typeof(p.value) == Bool)      => true
+    p = BoolParameter(0, "test")
+    @fact (p.value == false)             => true
+    p = BoolParameter(666, "test")
+    @fact (p.value == true)              => true
+    @fact_throws MethodError BoolParameter("must have start value")
+    context("perturb!") do
+        p = BoolParameter(false, "test")
+        perturb!(p)
+        @fact (p.value == true)          => true
+    end
+    context("neighbor!") do
+        p = BoolParameter(false, "test")
+        perturb!(p)
+        @fact (p.value == true)          => true
+        print(p)
+    end
 end

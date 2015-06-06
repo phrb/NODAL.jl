@@ -33,26 +33,26 @@ facts("[Configuration]") do
              t]
         c = Configuration(l, "test")
         r = perturb!(c)
-        @fact (typeof(r["test1"])) == Dict{ASCIIString, Any}     => true
-        @fact (r["test1"]["test1"] == "valuea")                  => true
-        @fact (r["test1"]["test2"] == "valueb")                  => true
-        @fact (r["i2"]        == "value")                        => true
-        @fact (typeof(r["test1"]["test3"]) <: Number)            => true
-        @fact (typeof(r["i0"])             <: Number)            => true
-        @fact (typeof(r["i1"])             <: Number)            => true
-        @fact (typeof(r["i3"])             <: Number)            => true
+        @fact (typeof(r["test1"]) <: Configuration)              => true
+        @fact (r["test1"]["test1"].value == "valuea")            => true
+        @fact (r["test1"]["test2"].value == "valueb")            => true
+        @fact (r["i2"].value             == "value")             => true
+        @fact (typeof(r["test1"]["test3"]) <: NumberParameter)   => true
+        @fact (typeof(r["i0"])             <: NumberParameter)   => true
+        @fact (typeof(r["i1"])             <: NumberParameter)   => true
+        @fact (typeof(r["i3"])             <: NumberParameter)   => true
         d = Dict{ASCIIString, Any}()
         d["i0"]             = 3
         d["i1"]             = 4
         d["i3"]             = 2.3
         d["test1"]          = Dict{ASCIIString, Any}()
         d["test1"]["test3"] = 2
-        @fact (typeof(perturb!(c, d)) == Dict{ASCIIString, Any}) => true
+        @fact (typeof(perturb!(c, d)) <: Configuration)          => true
         r = perturb!(c, d)
-        @fact (r["i0"] == c["i0"].value)                         => true
-        @fact (r["i1"] == c["i1"].value)                         => true
-        @fact (r["i3"] == c["i3"].value)                         => true
-        @fact (r["test1"]["test3"] == c["test1"]["test3"].value) => true
+        @fact (r["i0"].value == c["i0"].value)                   => true
+        @fact (r["i1"].value == c["i1"].value)                   => true
+        @fact (r["i3"].value == c["i3"].value)                   => true
+        @fact (r["test1"]["test3"] == c["test1"]["test3"])       => true
         d["test1"]["test1"] = 23
         @fact_throws MethodError perturb!(c, d)
     end

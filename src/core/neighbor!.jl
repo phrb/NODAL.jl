@@ -1,3 +1,7 @@
+neighbor!(bool::BoolParameter) = begin
+    perturb!(bool)
+end
+
 neighbor!(number::NumberParameter, interval::Number = 10, distance::Integer = 1) = begin
     for i = 1:distance
         previous = number.value

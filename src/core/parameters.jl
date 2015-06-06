@@ -1,5 +1,10 @@
 abstract Parameter
 
+type BoolParameter <: Parameter
+    value::Bool
+    name::ASCIIString
+end
+
 type NumberParameter{T <: Number} <: Parameter
     min::T
     max::T
@@ -19,6 +24,14 @@ end
 
 NumberParameter{T <: Number}(min::T, max::T, value::T, name::ASCIIString) = begin
     NumberParameter{T}(min, max, value, name)
+end
+
+NumberParameter{T <: Number}(value::T, name::ASCIIString) = begin
+    NumberParameter{T}(value, value, value, name)
+end
+
+NumberParameter{T <: Number}(min::T, max::T, name::ASCIIString) = begin
+    NumberParameter{T}(min, max, rand_in(min, max), name)
 end
 
 type EnumParameter{P <: Parameter, T <: AbstractArray} <: Parameter

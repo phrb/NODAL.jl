@@ -24,9 +24,16 @@ Base.show{T <: EnumParameter}(io::IO, n::T) = begin
 end
 
 Base.show{T <: StringParameter}(io::IO, n::T) = begin
-    @printf io "\n    *StringParameter: %s\n" typeof(n)
-    @printf io "    (name: %s, " n.name
-    @printf io "current value: %s)\n" n.value
+    @printf io "\n    *StringParameter:"
+    @printf io " (name: %s, " n.name
+    @printf io "value: %s)\n" n.value
+    return
+end
+
+Base.show{T <: BoolParameter}(io::IO, n::T) = begin
+    @printf io "\n    *BoolParameter:"
+    @printf io " (name: %s, " n.name
+    @printf io "value: %s)\n" n.value
     return
 end
 
