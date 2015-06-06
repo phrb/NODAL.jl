@@ -302,7 +302,7 @@ facts("[BoolParameter]") do
     end
     context("neighbor!") do
         p = BoolParameter(false, "test")
-        perturb!(p)
+        neighbor!(p)
         @fact (p.value == true)          => true
         print(p)
     end

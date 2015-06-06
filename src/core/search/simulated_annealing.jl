@@ -26,7 +26,7 @@ simulated_annealing{T <: Configuration}(cost::Function,
     best_f_x = f_x
 
     # We always perform a fixed number of iterations
-    while iteration < iterations
+    while iteration <= iterations
         # Increment the number of steps we've had to perform
         iteration += 1
 
@@ -58,15 +58,12 @@ simulated_annealing{T <: Configuration}(cost::Function,
                 f_x = f_proposal
             end
         end
-        produce(PartialResult("Simulated Annealing",
-                              best_x,
-                              best_f_x,
-                              iteration))
+        produce(Result("Simulated Annealing",
+                       initial_x,
+                       best_x,
+                       best_f_x,
+                       iteration,
+                       f_calls,
+                       false))
     end
-    produce(Result("Simulated Annealing",
-                   initial_x,
-                   best_x,
-                   best_f_x,
-                   iteration,
-                   f_calls))
 end

@@ -8,5 +8,15 @@ configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
                                NumberParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
 
-result = optimize(rosenbrock, configuration, iterations = 100_000, report_after = 10_000)
-println(rosenbrock(result.minimum))
+iterations   = 150_000
+report_after = 1_000
+result = @task optimize(rosenbrock,
+                        configuration,
+                        iterations = iterations)
+partial = None
+for i = 1:iterations
+    partial = consume(result)
+    if i % report_after == 0
+        print(partial)
+    end
+end

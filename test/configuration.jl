@@ -33,6 +33,9 @@ facts("[Configuration]") do
              t]
         c = Configuration(l, "test")
         r = perturb!(c)
+        r = perturb!(c)
+        r = perturb!(c)
+        r = perturb!(c)
         @fact (typeof(r["test1"]) <: Configuration)              => true
         @fact (r["test1"]["test1"].value == "valuea")            => true
         @fact (r["test1"]["test2"].value == "valueb")            => true
@@ -48,6 +51,9 @@ facts("[Configuration]") do
         d["test1"]          = Dict{ASCIIString, Any}()
         d["test1"]["test3"] = 2
         @fact (typeof(perturb!(c, d)) <: Configuration)          => true
+        r = perturb!(c, d)
+        r = perturb!(c, d)
+        r = perturb!(c, d)
         r = perturb!(c, d)
         @fact (r["i0"].value == c["i0"].value)                   => true
         @fact (r["i1"].value == c["i1"].value)                   => true
@@ -67,8 +73,12 @@ facts("[Configuration]") do
         d["i0"] = 5
         v = c["i0"].value
         neighbor!(c, d, 20)
+        neighbor!(c, d, 20)
         @fact (v != c["i0"].value)                               => true
         v = c["i0"].value
+        neighbor!(c, d, 9)
+        neighbor!(c, d, 9)
+        neighbor!(c, d, 9)
         neighbor!(c, d, 9)
         d = Dict{ASCIIString, Any}()
         d["i2"] = 5
@@ -77,6 +87,8 @@ facts("[Configuration]") do
         l = [NumberParameter(1, 38, 3, "i0")]
         c = Configuration(l, "test2")
         v = c["i0"].value
+        neighbor!(c, 20)
+        neighbor!(c, 20)
         neighbor!(c, 20)
         @fact (v != c["i0"].value)                           => true
     end

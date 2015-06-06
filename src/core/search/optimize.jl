@@ -1,32 +1,42 @@
 optimize(f::Function,
          initial_x::Configuration;
-         method::Symbol        = :simulated_annealing,
-         iterations::Integer   = 100_000,
-         report_after::Integer = 10_000,
-         verbose::Bool         = true) = begin
-    if method == :simulated_annealing
-        # TODO Implement Array of Techniques.
-        search = @task simulated_annealing(f,
-                                           initial_x,
-                                           iterations = iterations)
-        results = consume(search)::PartialResult
-        if verbose
-            print(results)
+         methods::Array{Symbol} = [:simulated_annealing],
+         instances::Array{Int}  = [1],
+         iterations::Integer    = 100_000) = begin
+    search_tasks = Task[]
+    for i = 1:length(methods)
+        #
+        # TODO Implement more search techniques.
+        #      Use resource sharing for iterations too.
+        #
+        if methods[i] == :simulated_annealing
+            for j = 1:instances[i]
+                push!(search_tasks, @task simulated_annealing(f,
+                                                              initial_x,
+                                                              iterations = iterations))
+            end
+        else
+            error("unknown method.")
         end
-        # TODO Execute all techniques in an Array.
-        while(results.iterations < iterations)
-            results = consume(search)::PartialResult
-            # TODO Share best partial results between techniques.
-            if results.iterations % report_after == 0 && verbose
-                print(results)
+    end
+    #
+    # TODO Implement tests sharing between methods.
+    #      Implement result combination strategies.
+    #      Do it 'Round Robin' for now, and
+    #
+    partial  = consume(search_tasks[rand(1:length(search_tasks))])
+    best     = deepcopy(partial)
+    produce(best)
+    while(partial.iterations <= iterations)
+        for task in search_tasks
+            partial = consume(task)
+            if partial.cost_minimum < best.cost_minimum
+                best = deepcopy(partial)
             end
         end
-        final_results = consume(search)::Result
-        if verbose
-            print(final_results)
+        if partial.iterations == iterations
+            best.is_final = true
         end
-        return final_results
-    else
-        throw(ArgumentError("Unknown method $method"))
+        produce(best)
     end
 end
