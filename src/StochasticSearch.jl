@@ -25,9 +25,9 @@ module StochasticSearch
     include("core/neighbor!.jl")
 
     # Search
-    include("core/search/simulated_annealing.jl")
     include("core/search/optimize.jl")
-    include("core/search/simplex_manipulators.jl")
+    include("core/search/techniques/simulated_annealing.jl")
+    include("core/search/tools/unit_value.jl")
 
     # Optim.jl Interface
     include("optim/optimize!.jl")

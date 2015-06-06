@@ -37,6 +37,7 @@ optimize!(f::Function,
                   initial_x,
                   result.f_minimum,
                   result.iterations,
+                  result.iterations,
                   result.f_calls,
                   true)
 end

@@ -4,47 +4,66 @@
 log_temperature(t::Real) = 1 / log(t)
 
 simulated_annealing{T <: Configuration}(cost::Function,
-                                        initial_x::T;
-                                        temperature::Function = log_temperature,
-                                        iterations::Integer   = 100_000) = begin
+                                        args::Dict{ASCIIString, Any},
+                                        initial_x::T,
+                                        initial_cost::Float64;
+                                        temperature::Function        = log_temperature,
+                                        evaluations::Int             = 3,
+                                        iterations::Int              = 100_000) = begin
     # Maintain current and proposed state
     x          = deepcopy(initial_x)
     x_proposal = deepcopy(initial_x)
-
+    name       = "Simulated Annealing"
     # Record the number of iterations we perform
     iteration = 0
-
     # Track calls to function
+    references = RemoteRef[]
+    f_xs       = Float64[]
     f_calls = 0
-
-    # Store f(x) in f_x
-    f_x = cost(x)
-    f_calls += 1
-
+    f_x = initial_cost
+    #
+    #
+    f_calls += evaluations
     # Store the best state ever visited
     best_x = deepcopy(x)
     best_f_x = f_x
-
     # We always perform a fixed number of iterations
     while iteration <= iterations
         # Increment the number of steps we've had to perform
         iteration += 1
-
         # Determine the temperature for current iteration
         t = temperature(iteration)
-
         # Randomly generate a neighbor of our current state
         neighbor!(x_proposal)
-
         # Evaluate the cost function at the proposed state
-        f_proposal = cost(x_proposal)
-        f_calls += 1
-
+        # Start evaluations in parallel.
+        empty!(references)
+        empty!(f_xs)
+        for i = 1:evaluations
+            push!(references, @spawn cost(x_proposal, args))
+        end
+        #
+        # Yields best result so far, until
+        # all evaluations have a chance to finish.
+        #
+        produce(Result(name,
+                       initial_x,
+                       best_x,
+                       best_f_x,
+                       iteration,
+                       iteration,
+                       f_calls,
+                       false))
+        # Fetch all results of evaluations.
+        for ref in references
+            push!(f_xs, fetch(ref))
+        end
+        f_proposal = mean(f_xs)
+        f_calls += evaluations
         if f_proposal <= f_x
             # If proposal is superior, we always move to it
             update!(x, x_proposal.parameters)
             f_x = f_proposal
-
             # If the new state is the best state yet, keep a record of it
             if f_proposal < best_f_x
                 best_f_x = f_proposal
@@ -58,12 +77,5 @@ simulated_annealing{T <: Configuration}(cost::Function,
                 f_x = f_proposal
             end
         end
-        produce(Result("Simulated Annealing",
-                       initial_x,
-                       best_x,
-                       best_f_x,
-                       iteration,
-                       f_calls,
-                       false))
     end
 end

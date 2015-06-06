@@ -6,6 +6,7 @@ type Result{T <: Configuration, R <: Number} <: AbstractResult
     minimum::T
     cost_minimum::R
     iterations::Int
+    current_iteration::Int
     cost_calls::Int
     is_final::Bool
 end

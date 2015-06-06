@@ -1,4 +1,4 @@
-using StochasticSearch, FactCheck
+using StochasticSearch, FactCheck, Base.Test
 
 facts("[Search]") do
     context("optimize and simulated_annealing") do
@@ -8,20 +8,21 @@ facts("[Search]") do
         configuration = Configuration([NumberParameter(-2.0,2.0,0.0,"i0"),
                                        NumberParameter(-2.0,2.0,0.0,"i1")],
                                        "rosenbrock_config")
+        iterations   = 1_000
+        report_after = 333
         run_task = @task optimize(rosenbrock,
                                   configuration,
-                                  iterations = 100_000)
+                                  iterations   = iterations,
+                                  report_after = report_after)
         result = None
-        for i = 1:100_000
+        for i = 1:iterations
             result = consume(run_task)
-            if i == 443
-                print(result)
-            end
         end
-        print(result)
+        rr = rosenbrock(result.minimum)
+        rc = result.cost_minimum
+        @test_approx_eq rc rr
         @fact (configuration["i0"].value != result.minimum["i0"].value)   => true
         @fact (rosenbrock(result.minimum) <= rosenbrock(configuration))   => true
-        @fact (rosenbrock(result.minimum) == result.cost_minimum)         => true
         @fact_throws ErrorException optimize(rosenbrock, configuration, methods = [:bozo_optimize])
         println(rosenbrock(result.minimum))
     end
