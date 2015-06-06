@@ -31,6 +31,7 @@ facts("[NumberParameter]") do
         neighbor!(p)
         neighbor!(p)
         neighbor!(p)
+        neighbor!(p)
         @fact (n != p.value)                          => true
         n = p.value
         neighbor!(p, 8)
