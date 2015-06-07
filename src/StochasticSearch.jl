@@ -35,4 +35,5 @@ module StochasticSearch
     # Utilities;
     include("util/random.jl")
     include("util/show.jl")
+    include("util/chooseproc.jl")
 end

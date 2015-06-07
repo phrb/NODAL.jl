@@ -17,8 +17,11 @@ simulated_annealing{T <: Configuration}(cost::Function,
     # Record the number of iterations we perform
     iteration = 0
     # Track calls to function
-    references = RemoteRef[]
     f_xs       = Float64[]
+    for i = 1:evaluations
+        push!(f_xs, 0.0)
+    end
+    next_proc = @task chooseproc()
     f_calls = 0
     f_x = initial_cost
     #
@@ -37,26 +40,9 @@ simulated_annealing{T <: Configuration}(cost::Function,
         neighbor!(x_proposal)
         # Evaluate the cost function at the proposed state
         # Start evaluations in parallel.
-        empty!(references)
-        empty!(f_xs)
         for i = 1:evaluations
-            push!(references, @spawn cost(x_proposal, args))
-        end
-        #
-        # Yields best result so far, until
-        # all evaluations have a chance to finish.
-        #
-        produce(Result(name,
-                       initial_x,
-                       best_x,
-                       best_f_x,
-                       iteration,
-                       iteration,
-                       f_calls,
-                       false))
-        # Fetch all results of evaluations.
-        for ref in references
-            push!(f_xs, fetch(ref))
+            f_xs[i] = remotecall_fetch(consume(next_proc), 
+                                       cost, x_proposal, args)
         end
         f_proposal = mean(f_xs)
         f_calls += evaluations
@@ -77,5 +63,17 @@ simulated_annealing{T <: Configuration}(cost::Function,
                 f_x = f_proposal
             end
         end
+        #
+        # Yields best result so far, until
+        # all evaluations have a chance to finish.
+        #
+        produce(Result(name,
+                       initial_x,
+                       best_x,
+                       best_f_x,
+                       iteration,
+                       iteration,
+                       f_calls,
+                       false))
     end
 end

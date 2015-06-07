@@ -48,7 +48,7 @@ end
 array_size   = 100_000
 cutoff       = 15
 iterations   = 2_000
-report_after = 1_0
+report_after = 4 
 
 args  = Dict{ASCIIString, Any}()
 args["array"] = rand(array_size)
