@@ -13,6 +13,7 @@ Pkg.clone("StochasticSearch")
 ```
 ===
 ### Example
+The following is a very simple example. For more interesting examples, check [Tuning cutoff for Sorting Algorithms](https://github.com/phrb/StochasticSearch.jl/wiki/Tuning-the-Cutoff-for-Sorting-Algorithms) and [Using Optim.jl methods](https://github.com/phrb/StochasticSearch.jl/wiki/Using-Optim.jl-methods).
 First, let's define a a ```Configuration``` that will represent arguments for the [Rosenbrock](http://en.wikipedia.org/wiki/Rosenbrock_function) function. The configuration will have two ```NumberParameter```, which will be ```Float64``` values constrained to an interval:
 ```jl
 @everywhere using StochasticSearch
