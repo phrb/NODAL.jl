@@ -58,15 +58,15 @@ Base.show{T <: Result}(io::IO, n::T) = begin
         @printf io "[Cost]                : %6f\n" n.cost_minimum
         @printf io "[Found in Iteration]  : %d\n" n.iterations
         @printf io "[Function Calls]      : %d\n" n.cost_calls
-        @printf io "[Start Configuration] :"
+        @printf io "[Start Configuration]"
         show(io, n.start)
         @printf io "[Minimum Configuration]"
         show(io, n.minimum)
     else
-        @printf io "[Partial Result] Cost: %6f, " n.cost_minimum
-        @printf io "[Technique] %s, " n.technique
-        @printf io "[Found in Iteration] %d, " n.iterations
-        @printf io "[Current Iteration] %d.\n" n.current_iteration
+        @printf io "[Partial Result] [Cost] %6f " n.cost_minimum
+        @printf io "[Technique] %s " n.technique
+        @printf io "[Found in Iteration] %5d " n.iterations
+        @printf io "[Current Iteration] %5d\n" n.current_iteration
     end
     return
 end
