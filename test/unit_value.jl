@@ -22,9 +22,11 @@ facts("[unit_value]") do
     end
     context("FloatParameter") do
         p = FloatParameter(1.0, 40.0, 23.0, "i0")
+        c = p.value
         u = unit_value(p)
         v = unit_value!(p, u)
         # Inexact conversion.
         @fact (p.min <= v <= p.max)        => true
+        @fact (unit_value!(p, u) == c)     => true
     end
 end

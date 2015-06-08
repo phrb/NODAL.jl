@@ -8,22 +8,19 @@ end
 
 unit_value!{T <: EnumParameter}(parameter::T, unit::Float64) = begin
     @assert 0.0 <= unit <= 1.0
-    value = round(unit * length(parameter.values))
-    parameter.value = max(1, min(value, length(parameter.values)))
+    value = round((unit * (length(parameter.values) - 1)) + 1)
     @inbounds parameter.current = parameter.values[parameter.value]
     parameter.value
 end
 
 unit_value!(parameter::IntegerParameter, unit::Float64) = begin
     @assert 0.0 <= unit <= 1.0
-    value = round(unit * parameter.max)
-    parameter.value = max(parameter.min, min(value, parameter.max))
+    value = int((unit * (parameter.max - parameter.min)) + parameter.min)
     parameter.value
 end
 
 unit_value!(parameter::FloatParameter, unit::Float64) = begin
     @assert 0.0 <= unit <= 1.0
-    value = unit * parameter.max
-    parameter.value = max(parameter.min, min(value, parameter.max))
+    value = (unit * (parameter.max - parameter.min)) + parameter.min
     parameter.value
 end
