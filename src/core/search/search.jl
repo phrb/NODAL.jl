@@ -16,14 +16,14 @@ end
 #
 # TODO Extract Methods.
 #
-optimize(f::Function,
-         initial_x::Configuration;
-         methods::Array{Symbol}       = [:simulated_annealing],
-         args::Dict{ASCIIString, Any} = Dict{ASCIIString,Any}(),
-         instances::Array{Int}        = [1],
-         iterations::Int              = 1_000,
-         report_after::Int            = 1_000,
-         evaluations::Int             = 3) = begin
+search(f::Function,
+       initial_x::Configuration;
+       methods::Array{Symbol}       = [:simulated_annealing],
+       args::Dict{ASCIIString, Any} = Dict{ASCIIString,Any}(),
+       instances::Array{Int}        = [1],
+       iterations::Int              = 1_000,
+       report_after::Int            = 1_000,
+       evaluations::Int             = 3) = begin
     #
     # Alias no-arguments functions.
     #

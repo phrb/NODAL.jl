@@ -59,13 +59,13 @@ args["array"] = rand(array_size)
 configuration = Configuration([NumberParameter(0, array_size, cutoff, "cutoff")],
                                "Sorting Cutoff")
 
-result = @task optimize(sorting_cutoff,
-                        configuration,
-                        args         = args,
-                        iterations   = iterations,
-                        report_after = report_after,
-                        evaluations  = 6,
-                        instances    = [4])
+result = @task search(sorting_cutoff,
+                      configuration,
+                      args         = args,
+                      iterations   = iterations,
+                      report_after = report_after,
+                      evaluations  = 6,
+                      instances    = [4])
 partial = None
 for i = 0:iterations
     partial = consume(result)

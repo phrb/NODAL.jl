@@ -35,19 +35,19 @@ end
 ```
 For the same reasons as before, we declare ```rosenbrock``` in every available worker.
 
-Now we are ready to use the ```optimize``` method, which could be called with just a ```Configuration``` and a function that accepts a ```Configuration``` as input. The function must also return a ```Float64```.
+Now we are ready to use the ```search``` method, which could be called with just a ```Configuration``` and a function that accepts a ```Configuration``` as input. The function must also return a ```Float64```.
 
-We will also call ```optimize``` with specified ```iterations``` and ```report_after``` arguments, which will stop the task after a certain number of iterations, and make the task report back to us after fixed intervals.
+We will also call ```search``` with specified ```iterations``` and ```report_after``` arguments, which will stop the task after a certain number of iterations, and make the task report back to us after fixed intervals.
 ```jl
 iterations   = 1_000
 report_after = 1_00
 
-result = @task optimize(rosenbrock,
-                        configuration,
-                        iterations   = iterations,
-                        report_after = report_after)
+result = @task search(rosenbrock,
+                      configuration,
+                      iterations   = iterations,
+                      report_after = report_after)
 ```
-Without further configuration, 'optimize' will use the default neighboring and perturbation methods implemented by StochasticSearch.jl, and will optimize the configuration with the Simulated Annealing method. Since we wrapped ```optimize``` within a task, we must consume values from it to obtain the optimization results. For more information on how tasks work, check the [Julia Documentation](http://julia.readthedocs.org/en/latest/manual/control-flow/#tasks-aka-coroutines). Basically, we simply call ```consume``` to get an intermediate result, that can be processed or ignored. ```optimize``` will print in the terminal at every ```report_after``` iterations. The final piece of code is this:
+Without further configuration, 'search' will use the default neighboring and perturbation methods implemented by StochasticSearch.jl, and will optimize the configuration with the Simulated Annealing method. Since we wrapped ```search``` within a task, we must consume values from it to obtain the optimization results. For more information on how tasks work, check the [Julia Documentation](http://julia.readthedocs.org/en/latest/manual/control-flow/#tasks-aka-coroutines). Basically, we simply call ```consume``` to get an intermediate result, that can be processed or ignored. ```search``` will print in the terminal at every ```report_after``` iterations. The final piece of code is this:
 ```jl
 partial = None
 for i = 0:iterations

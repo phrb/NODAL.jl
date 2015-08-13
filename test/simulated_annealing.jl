@@ -1,7 +1,7 @@
 using StochasticSearch, FactCheck, Base.Test
 
 facts("[Search]") do
-    context("optimize and simulated_annealing") do
+    context("search and simulated_annealing") do
         function rosenbrock(x::Configuration)
             return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
         end
@@ -10,10 +10,10 @@ facts("[Search]") do
                                        "rosenbrock_config")
         iterations   = 1_000
         report_after = 333
-        run_task = @task optimize(rosenbrock,
-                                  configuration,
-                                  iterations   = iterations,
-                                  report_after = report_after)
+        run_task = @task search(rosenbrock,
+                                configuration,
+                                iterations   = iterations,
+                                report_after = report_after)
         result = None
         for i = 1:iterations
             result = consume(run_task)
@@ -23,7 +23,7 @@ facts("[Search]") do
         @test_approx_eq rc rr
         @fact (configuration["i0"].value != result.minimum["i0"].value)   --> true
         @fact (rosenbrock(result.minimum) <= rosenbrock(configuration))   --> true
-        @fact_throws ErrorException optimize(rosenbrock, configuration, methods = [:bozo_optimize])
+        @fact_throws ErrorException search(rosenbrock, configuration, methods = [:bozo_search])
         println(rosenbrock(result.minimum))
     end
 end
