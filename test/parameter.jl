@@ -293,7 +293,7 @@ facts("[BoolParameter]") do
     @fact (typeof(p.value) == Bool)      --> true
     p = BoolParameter(0, "test")
     @fact (p.value == false)             --> true
-    p = BoolParameter(666, "test")
+    p = BoolParameter(1, "test")
     @fact (p.value == true)              --> true
     @fact_throws MethodError BoolParameter("must have start value")
     context("perturb!") do
