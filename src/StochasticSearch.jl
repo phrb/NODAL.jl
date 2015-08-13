@@ -11,7 +11,8 @@ module StochasticSearch
            unit_value!
 
     # New Methods for Base Functions
-    import Base.convert, Base.show
+    import Base.convert, Base.show, Base.getindex,
+           Base.setindex!
 
     # Types
     include("core/parameters.jl")
