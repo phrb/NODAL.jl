@@ -11,13 +11,13 @@ facts("[Interface] with Optim.jl") do
         r = optimize!(rosenbrock, c, iterations = 10_000)
         a = r.minimum
         println(r)
-        @fact (a["a"].value == c["a"].value)        => true
-        @fact (a["b"].value == c["b"].value)        => true
+        @fact (a["a"].value == c["a"].value)        --> true
+        @fact (a["b"].value == c["b"].value)        --> true
         r = optimize!(rosenbrock, c, method = :nelder_mead, iterations = 10_000)
         a = r.minimum
         println(r)
-        @fact (a["a"].value == c["a"].value)        => true
-        @fact (a["b"].value == c["b"].value)        => true
+        @fact (a["a"].value == c["a"].value)        --> true
+        @fact (a["b"].value == c["b"].value)        --> true
         @fact_throws ArgumentError optimize!(rosenbrock, c, method = :torczon)
     end
 end

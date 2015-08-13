@@ -21,8 +21,8 @@ facts("[Search]") do
         rr = rosenbrock(result.minimum)
         rc = result.cost_minimum
         @test_approx_eq rc rr
-        @fact (configuration["i0"].value != result.minimum["i0"].value)   => true
-        @fact (rosenbrock(result.minimum) <= rosenbrock(configuration))   => true
+        @fact (configuration["i0"].value != result.minimum["i0"].value)   --> true
+        @fact (rosenbrock(result.minimum) <= rosenbrock(configuration))   --> true
         @fact_throws ErrorException optimize(rosenbrock, configuration, methods = [:bozo_optimize])
         println(rosenbrock(result.minimum))
     end
