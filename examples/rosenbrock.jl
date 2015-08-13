@@ -11,12 +11,12 @@ configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
 iterations   = 1_000
 report_after = 1_00
 
-result = @task search(rosenbrock,
-                      configuration,
-                      iterations   = iterations,
-                      report_after = report_after,
-                      evaluations  = 1,
-                      instances    = [1])
+result = @task optimize(rosenbrock,
+                        configuration,
+                        iterations   = iterations,
+                        report_after = report_after,
+                        evaluations  = 1,
+                        instances    = [1])
 partial = None
 for i = 0:iterations
     partial = consume(result)

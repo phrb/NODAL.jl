@@ -7,7 +7,7 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, update!, search, unit_value,
+           optimize!, update!, optimize, unit_value,
            unit_value!
 
     # New Methods for Base Functions
@@ -26,7 +26,7 @@ module StochasticSearch
     include("core/unit_value.jl")
 
     # Search
-    include("core/search/search.jl")
+    include("core/search/optimize.jl")
     include("core/search/techniques/simulated_annealing.jl")
 
     # Optim.jl Interface
