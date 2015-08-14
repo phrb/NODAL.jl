@@ -10,21 +10,16 @@ simulated_annealing{T <: Configuration}(cost::Function,
                                         temperature::Function        = log_temperature,
                                         evaluations::Int             = 3,
                                         iterations::Int              = 100_000) = begin
-    # Maintain current and proposed state
     x          = deepcopy(initial_x)
     x_proposal = deepcopy(initial_x)
     name       = "Simulated Annealing"
-    # Record the number of iterations we perform
-    iteration = 0
-    # Track calls to function
+    f_calls    = 0
+    iteration  = 0
     f_xs       = Float64[]
     for i = 1:evaluations
         push!(f_xs, 0.0)
     end
-    f_calls = 0
     f_x = initial_cost
-    #
-    #
     f_calls += evaluations
     # Store the best state ever visited
     best_x = deepcopy(x)
@@ -39,11 +34,6 @@ simulated_annealing{T <: Configuration}(cost::Function,
         neighbor!(x_proposal)
         # Evaluate the cost function at the proposed state
         # Start evaluations in parallel.
-#        for i = 1:evaluations
-#            f_xs[i] = remotecall_fetch(consume(next_proc),
-#                                       cost, x_proposal, args)
-#        end
-#        f_proposal = mean(f_xs)
         f_proposal = @fetch (measure_mean!(cost,
                                            x_proposal,
                                            args,
@@ -67,10 +57,6 @@ simulated_annealing{T <: Configuration}(cost::Function,
                 f_x = f_proposal
             end
         end
-        #
-        # Yields best result so far, until
-        # all evaluations have a chance to finish.
-        #
         produce(Result(name,
                        initial_x,
                        best_x,
