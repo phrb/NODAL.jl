@@ -11,7 +11,7 @@ Currently, it's possible to optimize user-defined functions with the Simulated A
 ### Installing
 From the Julia REPL, run:
 ```jl
-Pkg.clone("StochasticSearch")
+Pkg.add("StochasticSearch")
 ```
 ===
 ### Example
