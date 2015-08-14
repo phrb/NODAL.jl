@@ -36,10 +36,16 @@ initialize_search_tasks!(f::Function,
         end
     end
 end
-
-#
-# TODO Extract Methods.
-#
+get_new_best(search_tasks::Array{Task},
+             best::Result) = begin
+    for task in search_tasks
+        partial = consume(task)
+        if partial.cost_minimum < best.cost_minimum
+            best = deepcopy(partial)
+        end
+    end
+    best
+end
 optimize(f::Function,
          initial_x::Configuration;
          methods::Array{Symbol}       = [:simulated_annealing],
@@ -67,7 +73,7 @@ optimize(f::Function,
     initialize_search_tasks!(f_aliased,
                              initial_x,
                              initial_f_x,
-                             methods, 
+                             methods,
                              args,
                              instances,
                              iterations,
@@ -83,12 +89,7 @@ optimize(f::Function,
     produce(best)
     iteration = 1
     while(iteration <= iterations)
-        for task in search_tasks
-            partial = consume(task)
-            if partial.cost_minimum < best.cost_minimum
-                best = deepcopy(partial)
-            end
-        end
+        best = get_new_best(search_tasks, best)
         iteration += 1
         best.current_iteration = iteration
         if iteration == iterations
@@ -100,14 +101,7 @@ optimize(f::Function,
         produce(best)
     end
     #
-    # TODO  Fix this.
-    #
-    #       The problem seems to be related to namespaces,
-    #       but importing 'simulated_annealing.jl' does not 
-    #       solve it.
-    #
-    #       Using this dummy line solves the problem, even if
-    #       the line is never called.
+    # TODO  Discontinue support for v0.3.
     #
     dummy = @task simulated_annealing(f_aliased,
                                       args,
