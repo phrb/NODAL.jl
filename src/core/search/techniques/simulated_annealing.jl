@@ -21,7 +21,6 @@ simulated_annealing{T <: Configuration}(cost::Function,
     for i = 1:evaluations
         push!(f_xs, 0.0)
     end
-    next_proc = @task chooseproc()
     f_calls = 0
     f_x = initial_cost
     #
@@ -40,11 +39,16 @@ simulated_annealing{T <: Configuration}(cost::Function,
         neighbor!(x_proposal)
         # Evaluate the cost function at the proposed state
         # Start evaluations in parallel.
-        for i = 1:evaluations
-            f_xs[i] = remotecall_fetch(consume(next_proc), 
-                                       cost, x_proposal, args)
-        end
-        f_proposal = mean(f_xs)
+#        for i = 1:evaluations
+#            f_xs[i] = remotecall_fetch(consume(next_proc),
+#                                       cost, x_proposal, args)
+#        end
+#        f_proposal = mean(f_xs)
+        f_proposal = @fetch (measure_mean!(cost,
+                                           x_proposal,
+                                           args,
+                                           evaluations,
+                                           f_xs))
         f_calls += evaluations
         if f_proposal <= f_x
             # If proposal is superior, we always move to it
