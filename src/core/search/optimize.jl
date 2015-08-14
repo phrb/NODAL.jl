@@ -10,8 +10,33 @@ initialize_cost(f::Function,
     for ref in references
         push!(costs, fetch(ref))
     end
-        mean(costs)
+    mean(costs)
 end
+initialize_search_tasks!(f::Function,
+                         initial_x::Configuration,
+                         initial_f_x::Float64,
+                         methods::Array{Symbol},
+                         args::Dict{ASCIIString, Any},
+                         instances::Array{Int},
+                         iterations::Int,
+                         evaluations::Int,
+                         task_list::Array{Task}) = begin
+    for i = 1:length(methods)
+        if methods[i] == :simulated_annealing
+            for j = 1:instances[i]
+                push!(task_list, @task simulated_annealing(f,
+                                                           args,
+                                                           initial_x,
+                                                           initial_f_x,
+                                                           iterations  = iterations,
+                                                           evaluations = evaluations))
+            end
+        else
+            error("Error: Unknown Method.")
+        end
+    end
+end
+
 #
 # TODO Extract Methods.
 #
@@ -39,20 +64,15 @@ optimize(f::Function,
     # Initialize Search Tasks
     #
     search_tasks = Task[]
-    for i = 1:length(methods)
-        if methods[i] == :simulated_annealing
-            for j = 1:instances[i]
-                push!(search_tasks, @task simulated_annealing(f_aliased,
-                                                              args,
-                                                              initial_x,
-                                                              initial_f_x,
-                                                              iterations  = iterations,
-                                                              evaluations = evaluations))
-            end
-        else
-            error("unknown method.")
-        end
-    end
+    initialize_search_tasks!(f_aliased,
+                             initial_x,
+                             initial_f_x,
+                             methods, 
+                             args,
+                             instances,
+                             iterations,
+                             evaluations,
+                             search_tasks)
     #
     # TODO Implement tests sharing between methods.
     #      Implement result combination strategies.
@@ -79,4 +99,20 @@ optimize(f::Function,
         end
         produce(best)
     end
+    #
+    # TODO  Fix this.
+    #
+    #       The problem seems to be related to namespaces,
+    #       but importing 'simulated_annealing.jl' does not 
+    #       solve it.
+    #
+    #       Using this dummy line solves the problem, even if
+    #       the line is never called.
+    #
+    dummy = @task simulated_annealing(f_aliased,
+                                      args,
+                                      initial_x,
+                                      initial_f_x,
+                                      iterations  = iterations,
+                                      evaluations = evaluations)
 end

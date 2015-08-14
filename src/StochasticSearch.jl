@@ -7,8 +7,8 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, update!, optimize, unit_value,
-           unit_value!
+           optimize!, optimize, simulated_annealing, 
+           update!, optimize, unit_value, unit_value!
 
     # New Methods for Base Functions
     import Base.convert, Base.show, Base.getindex,
