@@ -12,7 +12,6 @@ initialize_cost(f::Function,
     end
         mean(costs)
 end
-
 #
 # TODO Extract Methods.
 #
