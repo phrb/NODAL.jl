@@ -1,51 +1,3 @@
-initialize_cost(f::Function,
-                args::Dict{ASCIIString, Any},
-                evaluations::Int,
-                initial_x::Configuration) = begin
-    references = RemoteRef[]
-    costs      = Float64[]
-    for i = 1:evaluations
-        push!(references, @spawn f(initial_x, args))
-    end
-    for ref in references
-        push!(costs, fetch(ref))
-    end
-    mean(costs)
-end
-initialize_search_tasks!(f::Function,
-                         initial_x::Configuration,
-                         initial_f_x::Float64,
-                         methods::Array{Symbol},
-                         args::Dict{ASCIIString, Any},
-                         instances::Array{Int},
-                         iterations::Int,
-                         evaluations::Int,
-                         task_list::Array{Task}) = begin
-    for i = 1:length(methods)
-        if methods[i] == :simulated_annealing
-            for j = 1:instances[i]
-                push!(task_list, @task simulated_annealing(f,
-                                                           args,
-                                                           initial_x,
-                                                           initial_f_x,
-                                                           iterations  = iterations,
-                                                           evaluations = evaluations))
-            end
-        else
-            error("Error: Unknown Method.")
-        end
-    end
-end
-get_new_best(search_tasks::Array{Task},
-             best::Result) = begin
-    for task in search_tasks
-        partial = consume(task)
-        if partial.cost_minimum < best.cost_minimum
-            best = deepcopy(partial)
-        end
-    end
-    best
-end
 optimize(f::Function,
          initial_x::Configuration;
          methods::Array{Symbol}       = [:simulated_annealing],
@@ -62,13 +14,7 @@ optimize(f::Function,
     else
         f_aliased = f
     end
-    #
-    # Calculate Initial value for all Search Tasks.
-    #
     initial_f_x = initialize_cost(f_aliased, args, evaluations, initial_x)
-    #
-    # Initialize Search Tasks
-    #
     search_tasks = Task[]
     initialize_search_tasks!(f_aliased,
                              initial_x,
@@ -80,9 +26,7 @@ optimize(f::Function,
                              evaluations,
                              search_tasks)
     #
-    # TODO Implement tests sharing between methods.
-    #      Implement result combination strategies.
-    #      Do it 'Round Robin' for now.
+    # 'Round Robin' of all techniques.
     #
     partial  = consume(search_tasks[rand(1:length(search_tasks))])
     best     = deepcopy(partial)
