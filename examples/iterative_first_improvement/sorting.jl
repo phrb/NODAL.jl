@@ -61,12 +61,12 @@ configuration = Configuration([NumberParameter(0, array_size, cutoff, "cutoff")]
 
 result = @task optimize(sorting_cutoff,
                         configuration,
-                        [:simulated_annealing],
+                        [:iterative_first_improvement, :simulated_annealing],
                         args         = args,
                         iterations   = iterations,
                         report_after = report_after,
                         evaluations  = 6,
-                        instances    = [1])
+                        instances    = [1, 1])
 partial = None
 for i = 0:iterations
     partial = consume(result)

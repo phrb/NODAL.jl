@@ -1,7 +1,7 @@
 using StochasticSearch, FactCheck, Base.Test
 
 facts("[Search]") do
-    context("optimize and simulated_annealing") do
+    context("iterative_first_improvement") do
         function rosenbrock(x::Configuration)
             return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
         end
@@ -12,7 +12,7 @@ facts("[Search]") do
         report_after = 333
         run_task = @task optimize(rosenbrock,
                                   configuration,
-                                  [:simulated_annealing],
+                                  [:iterative_first_improvement],
                                   iterations   = iterations,
                                   report_after = report_after)
         result = None

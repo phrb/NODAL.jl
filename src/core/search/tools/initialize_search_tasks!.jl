@@ -17,6 +17,15 @@ initialize_search_tasks!(f::Function,
                                                            iterations  = iterations,
                                                            evaluations = evaluations))
             end
+        elseif methods[i] == :iterative_first_improvement
+            for j = 1:instances[i]
+                push!(task_list, @task iterative_first_improvement(f,
+                                                                   args,
+                                                                   initial_x,
+                                                                   initial_f_x,
+                                                                   iterations  = iterations,
+                                                                   evaluations = evaluations))
+            end
         else
             error("Error: Unknown Method.")
         end

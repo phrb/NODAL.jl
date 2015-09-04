@@ -9,8 +9,10 @@ module StochasticSearch
     export perturb!, perturb_elements!, neighbor!,
            optimize!, optimize, initialize_cost,
            initialize_search_tasks!, get_new_best,
-           measure_mean!, simulated_annealing, update!,
-           optimize, unit_value, unit_value!
+           measure_mean!, update!,
+           optimize, unit_value, unit_value!,
+           simulated_annealing, first_improvement,
+           iterative_first_improvement
 
     # New Methods for Base Functions
     import Base.convert, Base.show, Base.getindex,
@@ -31,11 +33,19 @@ module StochasticSearch
     include("core/measurement/measure.jl")
     include("core/measurement/results.jl")
 
-    # Search
+    # Search Blocks
+    include("core/search/blocks/first_improvement.jl")
+
+    # Techniques
+    include("core/search/techniques/iterative_first_improvement.jl")
     include("core/search/techniques/simulated_annealing.jl")
+
+    # Tools
     include("core/search/tools/initialize_cost.jl")
     include("core/search/tools/initialize_search_tasks!.jl")
     include("core/search/tools/get_new_best.jl")
+
+    # Optimize
     include("core/search/optimize.jl")
 
     # Optim.jl Interface

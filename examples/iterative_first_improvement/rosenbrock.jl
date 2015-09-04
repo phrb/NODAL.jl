@@ -13,11 +13,11 @@ report_after = 1_00
 
 result = @task optimize(rosenbrock,
                         configuration,
-                        [:simulated_annealing],
+                        [:iterative_first_improvement],
                         iterations   = iterations,
                         report_after = report_after,
                         evaluations  = 1,
-                        instances    = [2])
+                        instances    = [1])
 partial = None
 for i = 0:iterations
     partial = consume(result)

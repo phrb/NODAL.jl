@@ -1,6 +1,6 @@
 optimize(f::Function,
-         initial_x::Configuration;
-         methods::Array{Symbol}       = [:simulated_annealing],
+         initial_x::Configuration,
+         methods::Array{Symbol};
          args::Dict{ASCIIString, Any} = Dict{ASCIIString,Any}(),
          instances::Array{Int}        = [1],
          iterations::Int              = 1_000,
