@@ -10,8 +10,13 @@ module StochasticSearch
            optimize!, optimize, initialize_cost,
            initialize_search_tasks!, get_new_best,
            measure_mean!, update!,
-           optimize, unit_value, unit_value!,
-           simulated_annealing, first_improvement,
+           optimize, unit_value, unit_value!
+
+    # Search Techniques
+    export simulated_annealing, 
+           first_improvement,
+           greedy_construction,
+           iterative_gredy_construction,
            iterative_first_improvement
 
     # New Methods for Base Functions
@@ -35,9 +40,11 @@ module StochasticSearch
 
     # Search Blocks
     include("core/search/blocks/first_improvement.jl")
+    include("core/search/blocks/greedy_construction.jl")
 
     # Techniques
     include("core/search/techniques/iterative_first_improvement.jl")
+    include("core/search/techniques/iterative_greedy_construction.jl")
     include("core/search/techniques/simulated_annealing.jl")
 
     # Tools

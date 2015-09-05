@@ -43,3 +43,13 @@ neighbor!(configuration::Configuration, distance::Integer = 1) = begin
     update!(configuration)
     configuration
 end
+
+neighbor!(configuration::Configuration, target::ASCIIString,  distance::Integer = 1) = begin
+    for i = 1:distance
+        if !(typeof(configuration[target]) <: StringParameter)
+            neighbor!(configuration[target])
+        end
+    end
+    update!(configuration)
+    configuration
+end

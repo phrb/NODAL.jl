@@ -7,6 +7,7 @@ initialize_search_tasks!(f::Function,
                          iterations::Int,
                          evaluations::Int,
                          task_list::Array{Task}) = begin
+    # TODO Clean these nasty loops.
     for i = 1:length(methods)
         if methods[i] == :simulated_annealing
             for j = 1:instances[i]
@@ -26,8 +27,17 @@ initialize_search_tasks!(f::Function,
                                                                         iterations  = iterations,
                                                                         evaluations = evaluations)))
             end
+        elseif methods[i] == :iterative_greedy_construction
+            for j = 1:instances[i]
+                push!(task_list, Task(() -> iterative_greedy_construction(f,
+                                                                          args,
+                                                                          initial_x,
+                                                                          initial_f_x,
+                                                                          iterations  = iterations,
+                                                                          evaluations = evaluations)))
+            end
         else
-            error("Error: Unknown Method.")
+            error("Unknown Method.")
         end
     end
 end
