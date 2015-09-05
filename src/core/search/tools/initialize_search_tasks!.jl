@@ -37,7 +37,7 @@ initialize_search_tasks!(f::Function,
                                                                           evaluations = evaluations)))
             end
         else
-            error("Unknown Method.")
+            error("Search technique \"$(methods[i])\" not implemented.")
         end
     end
 end
