@@ -5,9 +5,9 @@
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
 
 ===
-StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing, Tabu Search, Nelder-Mead variations and Particle Swarm Optimization. It is an ongoing project, and currently implements only the Simulated Annealing algorithm. The package offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). StochasticSearch.jl will implement more optimization and local search algorithms. The API will provide tools for implementing parallel and distributed program autotuners.
+StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing and Tabu Search. The package offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). StochasticSearch.jl is an ongoing project, and will implement more optimization and local search algorithms. The API will provide tools for implementing parallel and distributed program autotuners.
 
-Currently, it's possible to optimize user-defined functions with the Simulated Annealing search technique. Evaluations of functions are made in parallel, and it's possible to instantiate multiple instances of a search technique that run on the same problem.
+Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks, also provided in the package. Evaluations of functions are made in parallel, and it's possible to instantiate multiple instances of a search technique that run on the same problem.
 ### Installing
 From the Julia REPL, run:
 ```jl
