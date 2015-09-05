@@ -7,35 +7,34 @@ initialize_search_tasks!(f::Function,
                          iterations::Int,
                          evaluations::Int,
                          task_list::Array{Task}) = begin
-    # TODO Clean these nasty loops.
     for i = 1:length(methods)
         if methods[i] == :simulated_annealing
-            for j = 1:instances[i]
-                push!(task_list, Task(() -> simulated_annealing(f,
-                                                                args,
-                                                                initial_x,
-                                                                initial_f_x,
-                                                                iterations  = iterations,
-                                                                evaluations = evaluations)))
-            end
+            add_simulated_annealing!(f,
+                                     args,
+                                     initial_x,
+                                     initial_f_x,
+                                     iterations,
+                                     evaluations,
+                                     task_list,
+                                     instances[i])
         elseif methods[i] == :iterative_first_improvement
-            for j = 1:instances[i]
-                push!(task_list, Task(() -> iterative_first_improvement(f,
-                                                                        args,
-                                                                        initial_x,
-                                                                        initial_f_x,
-                                                                        iterations  = iterations,
-                                                                        evaluations = evaluations)))
-            end
+            add_iterative_first_improvement!(f,
+                                             args,
+                                             initial_x,
+                                             initial_f_x,
+                                             iterations,
+                                             evaluations,
+                                             task_list,
+                                             instances[i])
         elseif methods[i] == :iterative_greedy_construction
-            for j = 1:instances[i]
-                push!(task_list, Task(() -> iterative_greedy_construction(f,
-                                                                          args,
-                                                                          initial_x,
-                                                                          initial_f_x,
-                                                                          iterations  = iterations,
-                                                                          evaluations = evaluations)))
-            end
+            add_iterative_greedy_construction!(f,
+                                               args,
+                                               initial_x,
+                                               initial_f_x,
+                                               iterations,
+                                               evaluations,
+                                               task_list,
+                                               instances[i])
         else
             error("Search technique \"$(methods[i])\" not implemented.")
         end
