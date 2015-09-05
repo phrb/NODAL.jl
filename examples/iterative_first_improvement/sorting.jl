@@ -1,4 +1,4 @@
-@everywhere using StochasticSearch
+using StochasticSearch
 
 @everywhere function insertionsort!(A, i, j)
     for m = i + 1:j

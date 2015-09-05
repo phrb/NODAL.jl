@@ -1,4 +1,4 @@
-@everywhere using StochasticSearch
+using StochasticSearch
 
 @everywhere function rosenbrock(x::Configuration)
     return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
