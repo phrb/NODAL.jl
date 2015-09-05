@@ -17,13 +17,16 @@ module StochasticSearch
     export simulated_annealing,
            first_improvement,
            greedy_construction,
+           random_walk,
            iterative_gredy_construction,
-           iterative_first_improvement
+           iterative_first_improvement,
+           randomized_first_improvement
 
     # Search Tools
     export initialize_cost, initialize_search_tasks!,
            get_new_best, add_simulated_annealing!,
            add_iterative_first_improvement!,
+           add_randomized_first_improvement!,
            add_iterative_greedy_construction!
 
 
@@ -49,15 +52,18 @@ module StochasticSearch
     # Search Blocks
     include("core/search/blocks/first_improvement.jl")
     include("core/search/blocks/greedy_construction.jl")
+    include("core/search/blocks/random_walk.jl")
 
     # Techniques
     include("core/search/techniques/iterative_first_improvement.jl")
+    include("core/search/techniques/randomized_first_improvement.jl")
     include("core/search/techniques/iterative_greedy_construction.jl")
     include("core/search/techniques/simulated_annealing.jl")
 
     # Technique Helpers
     include("core/search/tools/add_simulated_annealing!.jl")
     include("core/search/tools/add_iterative_first_improvement!.jl")
+    include("core/search/tools/add_randomized_first_improvement!.jl")
     include("core/search/tools/add_iterative_greedy_construction!.jl")
 
     # Tools

@@ -17,7 +17,6 @@ iterative_first_improvement(cost::Function,
     f_calls += evaluations
     while iteration <= iterations
         iteration += 1
-        neighbor!(x)
         # First Improvement never produces a worse result.
         result = first_improvement(cost,
                                    args,

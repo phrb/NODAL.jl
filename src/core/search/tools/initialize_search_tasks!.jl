@@ -26,6 +26,15 @@ initialize_search_tasks!(f::Function,
                                              evaluations,
                                              task_list,
                                              instances[i])
+        elseif methods[i] == :randomized_first_improvement
+            add_randomized_first_improvement!(f,
+                                              args,
+                                              initial_x,
+                                              initial_f_x,
+                                              iterations,
+                                              evaluations,
+                                              task_list,
+                                              instances[i])
         elseif methods[i] == :iterative_greedy_construction
             add_iterative_greedy_construction!(f,
                                                args,
