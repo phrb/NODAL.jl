@@ -44,13 +44,10 @@ optimize(f::Function,
         end
         produce(best)
     end
-    #
-    # TODO  Discontinue support for v0.3.
-    #
-    dummy = @task simulated_annealing(f_aliased,
-                                      args,
-                                      initial_x,
-                                      initial_f_x,
-                                      iterations  = iterations,
-                                      evaluations = evaluations)
+    dummy = Task(() -> simulated_annealing(f_aliased,
+                                           args,
+                                           initial_x,
+                                           initial_f_x,
+                                           iterations  = iterations,
+                                           evaluations = evaluations))
 end

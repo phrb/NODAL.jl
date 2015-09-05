@@ -10,21 +10,21 @@ initialize_search_tasks!(f::Function,
     for i = 1:length(methods)
         if methods[i] == :simulated_annealing
             for j = 1:instances[i]
-                push!(task_list, @task simulated_annealing(f,
-                                                           args,
-                                                           initial_x,
-                                                           initial_f_x,
-                                                           iterations  = iterations,
-                                                           evaluations = evaluations))
+                push!(task_list, Task(() -> simulated_annealing(f,
+                                                                args,
+                                                                initial_x,
+                                                                initial_f_x,
+                                                                iterations  = iterations,
+                                                                evaluations = evaluations)))
             end
         elseif methods[i] == :iterative_first_improvement
             for j = 1:instances[i]
-                push!(task_list, @task iterative_first_improvement(f,
-                                                                   args,
-                                                                   initial_x,
-                                                                   initial_f_x,
-                                                                   iterations  = iterations,
-                                                                   evaluations = evaluations))
+                push!(task_list, Task(() -> iterative_first_improvement(f,
+                                                                        args,
+                                                                        initial_x,
+                                                                        initial_f_x,
+                                                                        iterations  = iterations,
+                                                                        evaluations = evaluations)))
             end
         else
             error("Error: Unknown Method.")

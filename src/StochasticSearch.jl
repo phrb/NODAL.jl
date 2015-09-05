@@ -7,7 +7,7 @@ module StochasticSearch
 
     # Methods
     export perturb!, perturb_elements!, neighbor!,
-           optimize!, optimize, initialize_cost,
+           optimize, initialize_cost,
            initialize_search_tasks!, get_new_best,
            measure_mean!, update!,
            optimize, unit_value, unit_value!,
@@ -47,9 +47,6 @@ module StochasticSearch
 
     # Optimize
     include("core/search/optimize.jl")
-
-    # Optim.jl Interface
-    include("optim/optimize!.jl")
 
     # Utilities;
     include("util/random.jl")
