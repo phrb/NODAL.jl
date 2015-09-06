@@ -21,49 +21,25 @@ simulated_annealing(cost::Function,
     end
     f_x = initial_cost
     f_calls += evaluations
-    # Store the best state ever visited
     best_x = deepcopy(x)
     best_f_x = f_x
-    # We always perform a fixed number of iterations
     while iteration <= iterations
-        # Increment the number of steps we've had to perform
         iteration += 1
-        # Determine the temperature for current iteration
         t = temperature(iteration)
-        # Randomly generate a neighbor of our current state
-        neighbor!(x_proposal)
-        # Evaluate the cost function at the proposed state
-        # Start evaluations in parallel.
-        f_proposal = @fetch (measure_mean!(cost,
-                                           x_proposal,
+        result = probabilistic_improvement(cost,
                                            args,
+                                           x,
+                                           f_x,
                                            evaluations,
-                                           f_xs))
-        f_calls += evaluations
-        if f_proposal <= f_x
-            # If proposal is superior, we always move to it
-            update!(x, x_proposal.parameters)
-            f_x = f_proposal
-            # If the new state is the best state yet, keep a record of it
-            if f_proposal < best_f_x
-                best_f_x = f_proposal
-                update!(best_x, x_proposal.parameters)
-            end
-        else
-            # If proposal is inferior, we move to it with probability p
-            p = exp(-(f_proposal - f_x) / t)
-            if rand() <= p
-                update!(x, x_proposal.parameters)
-                f_x = f_proposal
-            end
-        end
-        produce(Result(name,
-                       initial_x,
-                       best_x,
-                       best_f_x,
-                       iteration,
-                       iteration,
-                       f_calls,
-                       false))
+                                           f_xs,
+                                           t)
+        f_calls                 += result.cost_calls
+        result.cost_calls        = f_calls
+        result.start             = initial_x
+        result.technique         = name
+        result.iterations        = iteration
+        result.current_iteration = iteration
+        update!(x, result.minimum.parameters)
+        produce(result)
     end
 end
