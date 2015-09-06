@@ -16,15 +16,8 @@ optimize(f::Function,
     end
     initial_f_x = initialize_cost(f_aliased, args, evaluations, initial_x)
     search_tasks = Task[]
-    initialize_search_tasks!(f_aliased,
-                             initial_x,
-                             initial_f_x,
-                             methods,
-                             args,
-                             instances,
-                             iterations,
-                             evaluations,
-                             search_tasks)
+    initialize_search_tasks!(f_aliased, initial_x, initial_f_x, methods, args,
+                             instances, iterations, evaluations, search_tasks)
     #
     # 'Round Robin' of all techniques.
     #
@@ -44,10 +37,8 @@ optimize(f::Function,
         end
         produce(best)
     end
-    dummy = Task(() -> simulated_annealing(f_aliased,
-                                           args,
-                                           initial_x,
-                                           initial_f_x,
+    dummy = Task(() -> simulated_annealing(f_aliased, args, initial_x,
+                                           initial_f_x, 
                                            iterations  = iterations,
                                            evaluations = evaluations))
 end

@@ -14,31 +14,16 @@ first_improvement(cost::Function,
     while iteration <= cutoff
         iteration += 1
         neighbor!(x_proposal)
-        f_proposal = @fetch (measure_mean!(cost,
-                                           x_proposal,
-                                           args,
-                                           evaluations,
-                                           f_xs))
+        f_proposal = @fetch (measure_mean!(cost, x_proposal, args,
+                                           evaluations, f_xs))
         f_calls += evaluations
         if f_proposal <= f_x
             update!(x, x_proposal.parameters)
             f_x = f_proposal
-            return Result(name,
-                          initial_x,
-                          x,
-                          f_x,
-                          iteration,
-                          iteration,
-                          f_calls,
-                          false)
+            return Result(name, initial_x, x, f_x, iteration,
+                          iteration, f_calls, false)
         end
     end
-    Result(name,
-           initial_x,
-           x,
-           f_x,
-           iteration,
-           iteration,
-           f_calls,
-           false)
+    Result(name, initial_x, x, f_x, iteration,
+           iteration, f_calls, false)
 end

@@ -9,50 +9,26 @@ initialize_search_tasks!(f::Function,
                          task_list::Array{Task}) = begin
     for i = 1:length(methods)
         if methods[i] == :simulated_annealing
-            add_simulated_annealing!(f,
-                                     args,
-                                     initial_x,
-                                     initial_f_x,
-                                     iterations,
-                                     evaluations,
-                                     task_list,
-                                     instances[i])
+            add_simulated_annealing!(f, args, initial_x, initial_f_x,
+                                     iterations, evaluations, 
+                                     task_list, instances[i])
         elseif methods[i] == :iterative_first_improvement
-            add_iterative_first_improvement!(f,
-                                             args,
-                                             initial_x,
-                                             initial_f_x,
-                                             iterations,
-                                             evaluations,
-                                             task_list,
-                                             instances[i])
+            add_iterative_first_improvement!(f, args, initial_x, initial_f_x,
+                                             iterations, evaluations,
+                                             task_list, instances[i])
         elseif methods[i] == :randomized_first_improvement
-            add_randomized_first_improvement!(f,
-                                              args,
-                                              initial_x,
-                                              initial_f_x,
-                                              iterations,
-                                              evaluations,
-                                              task_list,
-                                              instances[i])
+            add_randomized_first_improvement!(f, args, initial_x, initial_f_x,
+                                              iterations, evaluations,
+                                              task_list, instances[i])
         elseif methods[i] == :iterative_greedy_construction
-            add_iterative_greedy_construction!(f,
-                                               args,
-                                               initial_x,
-                                               initial_f_x,
-                                               iterations,
-                                               evaluations,
-                                               task_list,
-                                               instances[i])
+            add_iterative_greedy_construction!(f, args, initial_x, initial_f_x,
+                                               iterations, evaluations,
+                                               task_list, instances[i])
         elseif methods[i] == :iterative_probabilistic_improvement
-            add_iterative_probabilistic_improvement!(f,
-                                                     args,
-                                                     initial_x,
-                                                     initial_f_x,
-                                                     iterations,
+            add_iterative_probabilistic_improvement!(f, args, initial_x,
+                                                     initial_f_x, iterations,
                                                      evaluations,
-                                                     task_list,
-                                                     instances[i])
+                                                     task_list, instances[i])
         else
             error("Search technique \"$(methods[i])\" not implemented.")
         end

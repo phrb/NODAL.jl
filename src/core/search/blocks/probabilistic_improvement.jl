@@ -12,11 +12,8 @@ probabilistic_improvement(cost::Function,
     iteration  = 0
     f_x = initial_cost
     neighbor!(x_proposal)
-    f_proposal = @fetch (measure_mean!(cost,
-                                       x_proposal,
-                                       args,
-                                       evaluations,
-                                       f_xs))
+    f_proposal = @fetch (measure_mean!(cost, x_proposal, args,
+                                       evaluations, f_xs))
     f_calls += evaluations
     if f_proposal <= f_x
         update!(x, x_proposal.parameters)
@@ -28,12 +25,6 @@ probabilistic_improvement(cost::Function,
             f_x = f_proposal
         end
     end
-    Result(name,
-           initial_x,
-           x,
-           f_x,
-           iteration,
-           iteration,
-           f_calls,
-           false)
+    Result(name, initial_x, x, f_x, iteration,
+           iteration, f_calls, false)
 end

@@ -1,6 +1,3 @@
-#
-# Adapted from 'Optim/src/simulated_annealing.jl'.
-#
 log_temperature(t::Real) = 1 / log(t)
 
 simulated_annealing(cost::Function,
@@ -19,20 +16,15 @@ simulated_annealing(cost::Function,
     for i = 1:evaluations
         push!(f_xs, 0.0)
     end
-    f_x = initial_cost
+    f_x      = initial_cost
     f_calls += evaluations
-    best_x = deepcopy(x)
+    best_x   = deepcopy(x)
     best_f_x = f_x
     while iteration <= iterations
         iteration += 1
-        t = temperature(iteration)
-        result = probabilistic_improvement(cost,
-                                           args,
-                                           x,
-                                           f_x,
-                                           evaluations,
-                                           f_xs,
-                                           t)
+        t          = temperature(iteration)
+        result     = probabilistic_improvement(cost, args, x, f_x,
+                                               evaluations, f_xs, t)
         f_calls                 += result.cost_calls
         result.cost_calls        = f_calls
         result.start             = initial_x

@@ -7,18 +7,9 @@ random_walk(cost::Function,
     name       = "Random Walk"
     f_calls    = 0
     neighbor!(x)
-    f_x = @fetch (measure_mean!(cost,
-                                x,
-                                args,
-                                evaluations,
-                                f_xs))
+    f_x = @fetch (measure_mean!(cost, x, args,
+                                evaluations, f_xs))
     f_calls += evaluations
-    return Result(name,
-                  initial_x,
-                  x,
-                  f_x,
-                  1,
-                  1,
-                  f_calls,
-                  false)
+    return Result(name, initial_x, x, f_x, 1,
+                  1, f_calls, false)
 end
