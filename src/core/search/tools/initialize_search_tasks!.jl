@@ -44,6 +44,15 @@ initialize_search_tasks!(f::Function,
                                                evaluations,
                                                task_list,
                                                instances[i])
+        elseif methods[i] == :iterative_probabilistic_improvement
+            add_iterative_probabilistic_improvement!(f,
+                                                     args,
+                                                     initial_x,
+                                                     initial_f_x,
+                                                     iterations,
+                                                     evaluations,
+                                                     task_list,
+                                                     instances[i])
         else
             error("Search technique \"$(methods[i])\" not implemented.")
         end
