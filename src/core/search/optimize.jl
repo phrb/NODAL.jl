@@ -26,8 +26,8 @@ optimize(f::Function,
     produce(best)
     iteration = 1
     while(iteration <= iterations)
-        best = get_new_best(search_tasks, best)
-        iteration += 1
+        best                   = get_new_best(search_tasks, best)
+        iteration             += 1
         best.current_iteration = iteration
         if iteration == iterations
             best.is_final = true

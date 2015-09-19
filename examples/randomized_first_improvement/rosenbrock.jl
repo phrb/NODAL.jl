@@ -1,7 +1,9 @@
-@everywhere using StochasticSearch
+@everywhere begin
+    using StochasticSearch
 
-@everywhere function rosenbrock(x::Configuration)
-    return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
+    function rosenbrock(x::Configuration)
+        return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
+    end
 end
 
 configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
