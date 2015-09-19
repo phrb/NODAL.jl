@@ -4,8 +4,7 @@ os:
 julia:
     - release
     - nightly
-    - 0.4.0-rc1
-    - 0.3.2
+    - 0.3.11
 notifications:
     email: false
 after_success:
