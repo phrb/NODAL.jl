@@ -7,7 +7,8 @@
 ===
 StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing and Tabu Search. The package offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). StochasticSearch.jl is an ongoing project, and will implement more optimization and local search algorithms. The API provides tools for implementing parallel and distributed program autotuners.
 
-Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions are made in parallel, using `remotecall_fetch` and tasks, and it's possible to instantiate multiple instances of a search technique that run on the same problem.
+Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions are made in parallel, using `remotecall_fetch`, the `@sync` and `@async` macros and `Tasks`. It's possible to instantiate multiple instances of a search technique, or different techniques, that run on the same problem.
+
 ### Installing
 From the Julia REPL, run:
 ```jl
