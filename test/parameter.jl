@@ -29,39 +29,23 @@ facts("[NumberParameter]") do
         p = NumberParameter(1, 200, 100, "test")
         n = p.value
         neighbor!(p)
-        neighbor!(p)
-        neighbor!(p)
-        neighbor!(p)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         n = p.value
         neighbor!(p, 8)
-        neighbor!(p, 8)
-        neighbor!(p, 8)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         n = p.value
         neighbor!(p, 8, 20)
-        neighbor!(p, 8, 20)
-        neighbor!(p, 8, 20)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         p = NumberParameter(1.332, 60.2, 44.3, "test")
         n = p.value
         neighbor!(p)
-        neighbor!(p)
-        neighbor!(p)
-        neighbor!(p)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         n = p.value
         neighbor!(p, 3.2231)
-        neighbor!(p, 3.2231)
-        neighbor!(p, 3.2231)
-        neighbor!(p, 3.2231)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         n = p.value
         neighbor!(p, 8.332, 20)
-        neighbor!(p, 8.332, 20)
-        neighbor!(p, 8.332, 20)
-        neighbor!(p, 8.332, 20)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         @fact_throws MethodError neighbor!(p, 8.332, 20.2)
     end
     context("constructor") do
@@ -268,8 +252,6 @@ facts("[EnumParameter]") do
                            StringParameter("b", "test"),
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         n = p.current
-        neighbor!(p)
-        neighbor!(p)
         neighbor!(p)
         @fact (n != p.value)                          --> true
         @fact_throws MethodError neighbor!(p, 8, 20)

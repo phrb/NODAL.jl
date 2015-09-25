@@ -38,7 +38,7 @@ optimize(f::Function,
         produce(best)
     end
     dummy = Task(() -> simulated_annealing(f_aliased, args, initial_x,
-                                           initial_f_x, 
+                                           initial_f_x,
                                            iterations  = iterations,
                                            evaluations = evaluations))
 end

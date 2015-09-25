@@ -8,16 +8,25 @@ end
 configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
                                NumberParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
-iterations   = 1_000
+iterations   = 10_000
 report_after = 1_00
+
+methods     = [:simulated_annealing,
+               :iterative_first_improvement,
+               :randomized_first_improvement,
+               :iterative_greedy_construction,
+               :iterative_probabilistic_improvement]
+
+instances   = [1, 1, 1, 1, 1]
+evaluations = 1
 
 result = @task optimize(rosenbrock,
                         configuration,
-                        [:simulated_annealing],
+                        methods,
                         iterations   = iterations,
                         report_after = report_after,
-                        evaluations  = 1,
-                        instances    = [5])
+                        evaluations  = evaluations,
+                        instances    = instances)
 partial = None
 for i = 0:iterations
     partial = consume(result)
