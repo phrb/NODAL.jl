@@ -34,7 +34,7 @@ facts("[NumberParameter]") do
         neighbor!(p, 8)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 8, 20)
+        neighbor!(p, 8, 1)
         @fact n                                       --> not(exactly(p.value))
         p = NumberParameter(1.332, 60.2, 44.3, "test")
         n = p.value
@@ -44,7 +44,7 @@ facts("[NumberParameter]") do
         neighbor!(p, 3.2231)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 8.332, 20)
+        neighbor!(p, 8.332, 1)
         @fact n                                       --> not(exactly(p.value))
         @fact_throws MethodError neighbor!(p, 8.332, 20.2)
     end
