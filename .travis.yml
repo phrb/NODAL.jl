@@ -2,9 +2,8 @@ language: julia
 os:
     - linux
 julia:
-    - release
     - nightly
-    - 0.3.11
+    - 0.4.0-rc2
 notifications:
     email: false
 after_success:
