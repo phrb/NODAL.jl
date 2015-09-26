@@ -1,7 +1,6 @@
 Base.show{T <: NumberParameter}(io::IO, n::T) = begin
     @printf io "    ["
-    print_with_color(:blue, io, "NumberParameter ")
-    print_with_color(:bold, io, "$(typeof(n))")
+    print_with_color(:blue, io, "NumberParameter")
     @printf io "]\n"
 
     print_with_color(:blue, io, "    name")

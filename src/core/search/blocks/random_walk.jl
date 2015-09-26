@@ -1,15 +1,17 @@
-random_walk(cost::Function,
-            args::Dict{ASCIIString, Any},
-            initial_x::Configuration,
-            evaluations::Int,
-            f_xs::Array{Float64}) = begin
-    x          = deepcopy(initial_x)
-    name       = "Random Walk"
-    f_calls    = 0
+function random_walk(parameters::Dict{Symbol, Any})
+    cost         = parameters[:cost]
+    args         = parameters[:cost_args]
+    initial_x    = parameters[:initial_config]
+    initial_cost = parameters[:initial_cost]
+    evaluations  = parameters[:evaluations]
+    cost_calls   = parameters[:evaluations]
+    costs        = parameters[:costs]
+    x            = deepcopy(initial_x)
+    name         = "Random Walk"
     neighbor!(x)
     f_x = @fetch (measure_mean!(cost, x, args,
-                                evaluations, f_xs))
-    f_calls += evaluations
+                                evaluations, costs))
+    cost_calls += evaluations
     return Result(name, initial_x, x, f_x, 1,
-                  1, f_calls, false)
+                  1, cost_calls, false)
 end

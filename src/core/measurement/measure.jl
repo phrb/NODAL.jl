@@ -1,6 +1,6 @@
 measure_mean!(f::Function,
               x::Configuration,
-              args::Dict{ASCIIString, Any},
+              args::Dict{Symbol, Any},
               evaluations::Int,
               results::Array{Float64}) = begin
     @sync begin

@@ -1,29 +1,29 @@
-first_improvement(cost::Function,
-                  args::Dict{ASCIIString, Any},
-                  initial_x::Configuration,
-                  initial_cost::Float64,
-                  evaluations::Int,
-                  f_xs::Array{Float64},
-                  cutoff::Int) = begin
-    x          = deepcopy(initial_x)
-    x_proposal = deepcopy(initial_x)
-    name       = "First Improvement"
-    f_calls    = 0
-    iteration  = 0
-    f_x = initial_cost
+function first_improvement(parameters::Dict{Symbol, Any})
+    cost         = parameters[:cost]
+    args         = parameters[:cost_args]
+    initial_x    = parameters[:initial_config]
+    initial_cost = parameters[:initial_cost]
+    cost_calls   = parameters[:evaluations]
+    evaluations  = parameters[:evaluations]
+    costs        = parameters[:costs]
+    cutoff       = parameters[:cutoff]
+    x            = deepcopy(initial_x)
+    x_proposal   = deepcopy(initial_x)
+    name         = "First Improvement"
+    iteration    = 0
     while iteration <= cutoff
         iteration += 1
         neighbor!(x_proposal)
-        f_proposal = @fetch (measure_mean!(cost, x_proposal, args,
-                                           evaluations, f_xs))
-        f_calls += evaluations
-        if f_proposal <= f_x
+        proposal    = @fetch (measure_mean!(cost, x_proposal, args,
+                                           evaluations, costs))
+        cost_calls += evaluations
+        if proposal <= initial_cost
             update!(x, x_proposal.parameters)
-            f_x = f_proposal
-            return Result(name, initial_x, x, f_x, iteration,
-                          iteration, f_calls, false)
+            initial_cost = proposal
+            return Result(name, initial_x, x, initial_cost, iteration,
+                          iteration, cost_calls, false)
         end
     end
-    Result(name, initial_x, x, f_x, iteration,
-           iteration, f_calls, false)
+    Result(name, initial_x, x, initial_cost, iteration,
+           iteration, cost_calls, false)
 end

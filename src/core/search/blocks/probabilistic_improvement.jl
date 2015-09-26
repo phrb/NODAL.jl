@@ -1,30 +1,30 @@
-probabilistic_improvement(cost::Function,
-                          args::Dict{ASCIIString, Any},
-                          initial_x::Configuration,
-                          initial_cost::Float64,
-                          evaluations::Int,
-                          f_xs::Array{Float64},
-                          t::Float64) = begin
-    x          = deepcopy(initial_x)
-    x_proposal = deepcopy(initial_x)
-    name       = "Probabilistic Improvement"
-    f_calls    = 0
-    iteration  = 0
-    f_x = initial_cost
+function probabilistic_improvement(parameters::Dict{Symbol, Any})
+    cost         = parameters[:cost]
+    args         = parameters[:cost_args]
+    initial_x    = parameters[:initial_config]
+    initial_cost = parameters[:initial_cost]
+    evaluations  = parameters[:evaluations]
+    costs        = parameters[:costs]
+    t            = parameters[:t]
+    x            = deepcopy(initial_x)
+    x_proposal   = deepcopy(initial_x)
+    name         = "Probabilistic Improvement"
+    cost_calls   = 0
+    iteration    = 0
     neighbor!(x_proposal)
-    f_proposal = @fetch (measure_mean!(cost, x_proposal, args,
-                                       evaluations, f_xs))
-    f_calls += evaluations
-    if f_proposal <= f_x
+    proposal   = @fetch (measure_mean!(cost, x_proposal, args,
+                                          evaluations, costs))
+    cost_calls      += evaluations
+    if proposal <= initial_cost
         update!(x, x_proposal.parameters)
-        f_x = f_proposal
+        initial_cost = proposal
     else
-        p = exp(-(f_proposal - f_x) / t)
+        p = exp(-(proposal - initial_cost) / t)
         if rand() <= p
             update!(x, x_proposal.parameters)
-            f_x = f_proposal
+            initial_cost = proposal
         end
     end
-    Result(name, initial_x, x, f_x, iteration,
-           iteration, f_calls, false)
+    Result(name, initial_x, x, initial_cost, iteration,
+           iteration, cost_calls, false)
 end
