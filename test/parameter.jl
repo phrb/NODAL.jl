@@ -7,7 +7,7 @@ facts("[NumberParameter]") do
         @fact (typeof(p.min)   == Int8)               --> true
         @fact (typeof(p.max)   == Int8)               --> true
         @fact (typeof(p.value) == Int8)               --> true
-        @fact (p.name          == "test")              --> true
+        @fact (p.name          == "test")             --> true
         @fact (typeof(p) <: NumberParameter{Int8})    --> true
         p = NumberParameter{Float32}(convert(Float32, 0), convert(Float32, 2),
                                      convert(Float32, 1), "test")
@@ -104,7 +104,7 @@ facts("[NumberParameter]") do
         @fact (p.min   == 0.223 ) --> true
         @fact (p.max   == 10.122) --> true
         @fact (p.value == 3.12  ) --> true
-        @fact (p.name  == "test")  --> true
+        @fact (p.name  == "test") --> true
         @fact_throws ErrorException FloatParameter(3.3, 1.223, 2.4, "test")
         @fact_throws ErrorException FloatParameter(1.443, 3.2332, 1.442, "test")
         @fact_throws ErrorException FloatParameter(1.23, 3.2, 3.23, "test")
@@ -187,8 +187,8 @@ facts("[EnumParameter]") do
         @fact (typeof(p.values)  == Array{IntegerParameter, 1}) --> true
         @fact (p.values[1].value == 3)                          --> true
         @fact (p.values[2].value == 3)                          --> true
-        @fact (p.values[1].name  == "test")                         --> true
-        @fact (p.values[2].name  == "test")                         --> true
+        @fact (p.values[1].name  == "test")                     --> true
+        @fact (p.values[2].name  == "test")                     --> true
         @fact (p.name            == "test")                      --> true
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            IntegerParameter(1, 6, 2, "test")], 1, "test")
@@ -253,7 +253,7 @@ facts("[EnumParameter]") do
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         n = p.current
         neighbor!(p)
-        @fact (n != p.value)                          --> true
+        @fact n                                       --> not(exactly(p.value))
         @fact_throws MethodError neighbor!(p, 8, 20)
         @fact_throws MethodError neighbor!(p, 3.2231)
     end
