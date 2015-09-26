@@ -1,72 +1,134 @@
 Base.show{T <: NumberParameter}(io::IO, n::T) = begin
-    @printf io "\n    [NumberParameter] %s\n" typeof(n)
-    @printf io "    (name: %s, " n.name
-    @printf io "min: %6f, " n.min
-    @printf io "max: %6f, " n.max
-    @printf io "value: %6f)\n" n.value
+    @printf io "    ["
+    print_with_color(:blue, io, "NumberParameter ")
+    print_with_color(:bold, io, "$(typeof(n))")
+    @printf io "]\n"
+
+    print_with_color(:blue, io, "    name")
+    @printf io " : "
+    print_with_color(:bold, io, "$(n.name)\n")
+
+    print_with_color(:green, io, "    min")
+    @printf io "  : %6f\n" n.min
+
+    print_with_color(:red, io, "    max")
+    @printf io "  : %6f\n" n.max
+
+    print_with_color(:yellow, io, "    value")
+    @printf io ": %6f\n" n.value
     return
 end
 
 Base.show{T <: EnumParameter}(io::IO, n::T) = begin
-    @printf io "\n    [EnumParameter]: %s\n" typeof(n)
-    @printf io "    (name: %s, " n.name
-    @printf io "current:\n"
-    show(io, n.current)
-    @printf "    )\n"
-    @printf io "          [Values]\n"
-    @printf io "           ======"
-    for v in n.values
-        show(io, v)
+    @printf io "    ["
+    print_with_color(:blue, io, "EnumParameter")
+    @printf io "]\n"
+    print_with_color(:blue, io, "    name")
+    @printf io "   : "
+    print_with_color(:bold, io, "$(n.name)\n")
+    print_with_color(:yellow, io, "    current")
+    @printf io ": "
+    print_with_color(:bold, io, "$(n.current.name)\n")
+    print_with_color(:green, io, "    values")
+    @printf io " : \n"
+    for i = 1:length(n.values)
+        show(io, n.values[i])
+        if i < length(n.values) && length(n.values) > 1
+            print_with_color(:blue, io, "    ***\n")
+        end
     end
-    @printf io "           ======\n"
-    @printf io "    )\n"
     return
 end
 
 Base.show{T <: StringParameter}(io::IO, n::T) = begin
-    @printf io "\n    [StringParameter]"
-    @printf io " (name: %s, " n.name
-    @printf io "value: %s)\n" n.value
+    @printf io "    ["
+    print_with_color(:blue, io, "StringParameter")
+    @printf io "]\n"
+    print_with_color(:blue, io, "    name")
+    @printf io " : "
+    print_with_color(:bold, io, "$(n.name)\n")
+    print_with_color(:yellow, io, "    value")
+    @printf io ": \"%s\"\n" n.value
     return
 end
 
 Base.show{T <: BoolParameter}(io::IO, n::T) = begin
-    @printf io "\n    [BoolParameter]"
-    @printf io " (name: %s, " n.name
-    @printf io "value: %s)\n" n.value
+    @printf io "    ["
+    print_with_color(:blue, io, "BoolParameter")
+    @printf io "]\n"
+    print_with_color(:blue, io, "    name")
+    @printf io " : "
+    print_with_color(:bold, io, "$(n.name)\n")
+    print_with_color(:yellow, io, "    value")
+    @printf io ": %s\n" n.value
     return
 end
 
 Base.show{T <: Configuration}(io::IO, n::T) = begin
-    @printf io "\n  [Configuration] %s\n" typeof(n)
-    @printf io "  (name: %s,\n" n.name
-    @printf io "    [Parameters]\n"
-    @printf io "     ==========\n    "
-    for p in n.parameters
-        show(io, p)
-        @printf io "\n    "
+    @printf io "  ["
+    print_with_color(:blue, io, "Configuration")
+    @printf io "]\n"
+    print_with_color(:blue, io, "  name")
+    @printf io "      : "
+    print_with_color(:bold, io, "$(n.name)\n")
+    print_with_color(:blue, io, "  parameters")
+    @printf io ":\n"
+    p = collect(keys(n.parameters))
+    for i = 1:length(p)
+        show(io, n[p[i]])
+        if i < length(p) && length(p) > 1
+            print_with_color(:blue, io, "    ***\n")
+        end
     end
-    @printf io " =========\n"
-    @printf io "  )\n"
     return
 end
 
 Base.show{T <: Result}(io::IO, n::T) = begin
     if n.is_final
-        @printf io "[Final Result]        :\n"
-        @printf io "[Technique]           : %s\n" n.technique
-        @printf io "[Cost]                : %6f\n" n.cost_minimum
-        @printf io "[Found in Iteration]  : %d\n" n.iterations
-        @printf io "[Function Calls]      : %d\n" n.cost_calls
-        @printf io "[Start Configuration]"
+        @printf io "["
+        print_with_color(:blue, io, "Final Result")
+        @printf io "]\n"
+        print_with_color(:yellow, io, "Cost")
+        @printf io "                  : "
+        print_with_color(:bold, io, "$(n.cost_minimum)\n")
+        print_with_color(:yellow, io, "Found in Iteration")
+        @printf io "    : "
+        print_with_color(:bold, io, "$(n.iterations)\n")
+        print_with_color(:blue, io, "Current Iteration")
+        @printf io "     : "
+        print_with_color(:bold, io, "$(n.current_iteration)\n")
+        print_with_color(:blue, io, "Technique")
+        @printf io "             : "
+        print_with_color(:bold, io, "$(n.technique)\n")
+        print_with_color(:blue, io, "Function Calls")
+        @printf io "        : "
+        print_with_color(:bold, io, "$(n.cost_calls)\n")
+        print_with_color(:blue, io, "Starting Configuration")
+        @printf io ":\n"
         show(io, n.start)
-        @printf io "[Minimum Configuration]"
+        print_with_color(:blue, io, "Minimum Configuration")
+        @printf io " :\n"
         show(io, n.minimum)
     else
-        @printf io "[Partial Result] [Cost] %6f " n.cost_minimum
-        @printf io "[Technique] %s " n.technique
-        @printf io "[Found in Iteration] %5d " n.iterations
-        @printf io "[Current Iteration] %5d\n" n.current_iteration
+        @printf io "["
+        print_with_color(:blue, io, "Result")
+        @printf io "]\n"
+        print_with_color(:yellow, io, "Cost")
+        @printf io "              : "
+        print_with_color(:bold, io, "$(n.cost_minimum)\n")
+        print_with_color(:yellow, io, "Found in Iteration")
+        @printf io ": "
+        print_with_color(:bold, io, "$(n.iterations)\n")
+        print_with_color(:blue, io, "Current Iteration")
+        @printf io " : "
+        print_with_color(:bold, io, "$(n.current_iteration)\n")
+        print_with_color(:blue, io, "Technique")
+        @printf io "         : "
+        print_with_color(:bold, io, "$(n.technique)\n")
+        print_with_color(:blue, io, "Function Calls")
+        @printf io "    : "
+        print_with_color(:bold, io, "$(n.cost_calls)\n")
+        print_with_color(:blue, io, "  ***\n")
     end
     return
 end
