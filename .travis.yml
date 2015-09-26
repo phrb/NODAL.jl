@@ -3,7 +3,7 @@ os:
     - linux
 julia:
     - nightly
-    - v0.4.0-rc2
+    - 0.4.0
 notifications:
     email: false
 after_success:
