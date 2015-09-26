@@ -2,14 +2,25 @@ VERSION >= v"0.4" && __precompile__()
 module StochasticSearch
     using Optim
     # Types
-    export Parameter, NumberParameter, IntegerParameter,
-           FloatParameter, EnumParameter, StringParameter,
-           Configuration, Result, BoolParameter
+    export Parameter, 
+           NumberParameter, 
+           IntegerParameter,
+           FloatParameter, 
+           EnumParameter, 
+           StringParameter,
+           Configuration, 
+           Result, 
+           BoolParameter
 
     # Methods
-    export perturb!, perturb_elements!, neighbor!,
-           optimize!, optimize, update!,
-           unit_value, unit_value!
+    export perturb!, 
+           perturb_elements!, 
+           neighbor!,
+           optimize!, 
+           optimize, 
+           update!,
+           unit_value, 
+           unit_value!
 
     # Measurement Tools
     export measure_mean!
@@ -28,16 +39,14 @@ module StochasticSearch
            iterative_probabilistic_improvement
 
     # Search Tools
-    export initialize_cost, initialize_search_tasks!,
-           get_new_best, add_simulated_annealing!,
-           add_iterative_first_improvement!,
-           add_randomized_first_improvement!,
-           add_iterative_greedy_construction!,
-           add_iterative_probabilistic_improvement!
+    export initialize_search_tasks!,
+           get_new_best
 
 
     # New Methods for Base Functions
-    import Base.convert, Base.show, Base.getindex,
+    import Base.convert, 
+           Base.show, 
+           Base.getindex,
            Base.setindex!
 
     # Types
@@ -68,15 +77,7 @@ module StochasticSearch
     include("core/search/techniques/iterative_greedy_construction.jl")
     include("core/search/techniques/simulated_annealing.jl")
 
-    # Technique Helpers
-    include("core/search/tools/add_simulated_annealing!.jl")
-    include("core/search/tools/add_iterative_first_improvement!.jl")
-    include("core/search/tools/add_iterative_probabilistic_improvement!.jl")
-    include("core/search/tools/add_randomized_first_improvement!.jl")
-    include("core/search/tools/add_iterative_greedy_construction!.jl")
-
     # Tools
-    include("core/search/tools/initialize_cost.jl")
     include("core/search/tools/initialize_search_tasks!.jl")
     include("core/search/tools/get_new_best.jl")
 
