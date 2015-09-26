@@ -189,7 +189,7 @@ facts("[EnumParameter]") do
         @fact (p.values[2].value == 3)                          --> true
         @fact (p.values[1].name  == "test")                     --> true
         @fact (p.values[2].name  == "test")                     --> true
-        @fact (p.name            == "test")                      --> true
+        @fact (p.name            == "test")                     --> true
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            IntegerParameter(1, 6, 2, "test")], 1, "test")
         @fact (p.value           == 1)                          --> true
