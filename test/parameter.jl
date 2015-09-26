@@ -56,7 +56,7 @@ facts("[NumberParameter]") do
         @fact (p.min   == 0 )                         --> true
         @fact (p.max   == 10)                         --> true
         @fact (p.value == 3 )                         --> true
-        @fact (p.name  == "test")                      --> true
+        @fact (p.name  == "test")                     --> true
         @fact_throws ErrorException IntegerParameter(3, 1, 2, "test")
         @fact_throws ErrorException IntegerParameter(1, 3, 0, "test")
         @fact_throws ErrorException IntegerParameter(1, 3, 4, "test")
