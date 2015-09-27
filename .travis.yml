@@ -3,6 +3,7 @@ os:
     - linux
 julia:
     - nightly
+    - 0.4
 notifications:
     email: false
 after_success:
