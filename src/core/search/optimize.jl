@@ -19,13 +19,12 @@ function optimize(parameters::Dict{Symbol, Any})
     instances                 = parameters[:instances]
     report_after              = parameters[:report_after]
     methods                   = parameters[:methods]
-    costs                     = Float64[]
-    for i = 1:evaluations
-        push!(costs, 0.0)
-    end
+    costs                     = zeros(evaluations)
     parameters[:costs]        = costs
     parameters[:initial_cost] = measure_mean!(cost, initial_x,
                                               args, evaluations, costs)
+
+    parameters[:results]      = SharedArray(Float64, nprocs())
     search_tasks              = initialize_search_tasks!(parameters)
     #
     # 'Round Robin' of all techniques.

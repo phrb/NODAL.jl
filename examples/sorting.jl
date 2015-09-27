@@ -40,20 +40,22 @@
         return A
     end
 
-    function sorting_cutoff(config::Configuration, args::Dict{ASCIIString, Any})
-        A      = copy(args["array"])
+    function sorting_cutoff(config::Configuration, args::Dict{Symbol, Any})
+        A      = copy(args[:array])
         cutoff = config.value["cutoff"]
         @elapsed quicksort!(A, cutoff)
     end
 end
 
+# Defining the array properties
+# and algorithm cutoff.
 array_size   = 100_000
 cutoff       = 15
-iterations   = 2_00
-report_after = 4
 
-args  = Dict{ASCIIString, Any}()
-args["array"] = rand(array_size)
+# Adding extra function arguments
+# for the array.
+args  = Dict{Symbol, Any}()
+args[:array] = rand(array_size)
 
 # Making sure code is already compiled.
 @elapsed quicksort!(rand(10), 5)
@@ -61,15 +63,27 @@ args["array"] = rand(array_size)
 configuration = Configuration([NumberParameter(0, array_size, cutoff, "cutoff")],
                                "Sorting Cutoff")
 
-result = @task optimize(sorting_cutoff,
-                        configuration,
-                        [:simulated_annealing],
-                        args         = args,
-                        iterations   = iterations,
-                        report_after = report_after,
-                        evaluations  = 6,
-                        instances    = [1])
-partial = None
-for i = 0:iterations
+methods     = [:simulated_annealing,
+               :iterative_first_improvement,
+               :randomized_first_improvement,
+               :iterative_greedy_construction,
+               :iterative_probabilistic_improvement]
+
+instances   = [1, 0, 0, 0, 0]
+iterations  = 1_00
+
+parameters = Dict(:cost           => sorting_cutoff,
+                  :cost_args      => args,
+                  :initial_config => configuration,
+                  :iterations     => iterations,
+                  :report_after   => 4,
+                  :methods        => methods,
+                  :instances      => instances,
+                  :evaluations    => 6)
+
+result = @task optimize(parameters)
+
+partial = consume(result)
+for i = 1:iterations
     partial = consume(result)
 end
