@@ -1,5 +1,4 @@
 # StochasticSearch
-[![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.3.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.3)
 [![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.4.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.4)
 [![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
@@ -10,7 +9,7 @@ StochasticSearch.jl is a julia package that provides tools and optimization algo
 Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions are made in parallel, using `remotecall_fetch`, the `@sync` and `@async` macros and `Tasks`. It's possible to instantiate multiple instances of a search technique, or different techniques, that run on the same problem.
 
 ### Installing
-StochasticSearch.jl supports Julia **v0.3.x**, **v0.4.0-rc1** and **v0.5.0**. From the Julia REPL, run:
+StochasticSearch.jl supports Julia **v0.4.0-rc2** and **v0.5.0**. From the Julia REPL, run:
 ```jl
 Pkg.add("StochasticSearch")
 ```
