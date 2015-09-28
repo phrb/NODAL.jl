@@ -24,17 +24,18 @@ function optimize(parameters::Dict{Symbol, Any})
     parameters[:initial_cost] = measure_mean!(cost, initial_x,
                                               args, evaluations, costs)
 
-    parameters[:results]      = SharedArray(Float64, nprocs())
-    search_tasks              = initialize_search_tasks!(parameters)
-    #
-    # 'Round Robin' of all techniques.
-    #
-    partial   = consume(search_tasks[rand(1:length(search_tasks))])
+    results                   = RemoteRef[]
+    for i = 1:sum(instances)
+        push!(results, RemoteRef())
+    end
+    initialize_search_tasks!(parameters, results)
+
+    partial   = take!(results[1])
     best      = deepcopy(partial)
     iteration = 1
     produce(best)
     while(iteration <= iterations)
-        best                   = get_new_best(search_tasks, best)
+        best                   = get_new_best(results, best)
         iteration             += 1
         best.current_iteration = iteration
         if iteration == iterations

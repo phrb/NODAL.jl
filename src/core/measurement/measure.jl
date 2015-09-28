@@ -3,8 +3,8 @@ measure_mean!(f::Function,
               args::Dict{Symbol, Any},
               evaluations::Int,
               results::Array{Float64}) = begin
+    next_proc = @task chooseproc()
     @sync begin
-        next_proc = @task chooseproc()
         for i = 1:evaluations
             @async begin
                 results[i] = remotecall_fetch(consume(next_proc), f, x, args)

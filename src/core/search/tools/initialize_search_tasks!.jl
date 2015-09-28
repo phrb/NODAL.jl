@@ -1,12 +1,15 @@
-function initialize_search_tasks!(parameters::Dict{Symbol, Any})
-    instances = parameters[:instances]
-    methods   = parameters[:methods]
-    task_list = Task[]
+function initialize_search_tasks!(parameters::Dict{Symbol, Any},
+                                  results::Array{RemoteRef})
+    instances   = parameters[:instances]
+    methods     = parameters[:methods]
+    next_proc   = @task chooseproc()
+    instance_id = 1
     for i = 1:length(methods)
         for j = 1:instances[i]
-            method = Expr(:call, methods[i], deepcopy(parameters))
-            push!(task_list, @task (eval(method)))
+            reference    = results[instance_id]
+            remotecall(consume(next_proc), eval(methods[i]),
+                       deepcopy(parameters), reference)
+            instance_id += 1
         end
     end
-    task_list
 end

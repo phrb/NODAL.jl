@@ -1,4 +1,5 @@
-function iterative_greedy_construction(parameters::Dict{Symbol, Any})
+function iterative_greedy_construction(parameters::Dict{Symbol, Any},
+                                       reference::RemoteRef)
     if !haskey(parameters, :cutoff)
         parameters[:cutoff] = 10
     end
@@ -21,7 +22,7 @@ function iterative_greedy_construction(parameters::Dict{Symbol, Any})
             result.iterations         = iteration
             result.current_iteration  = iteration
             update!(x, result.minimum.parameters)
-            produce(result)
+            put!(reference, result)
         end
         shuffle!(key_set)
     end

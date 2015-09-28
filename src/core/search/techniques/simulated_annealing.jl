@@ -1,6 +1,7 @@
 log_temperature(t::Real) = 1 / log(t)
 
-function simulated_annealing(parameters::Dict{Symbol, Any})
+function simulated_annealing(parameters::Dict{Symbol, Any},
+                             reference::RemoteRef)
     if !haskey(parameters, :temperature)
         parameters[:temperature] = log_temperature
     end
@@ -23,6 +24,6 @@ function simulated_annealing(parameters::Dict{Symbol, Any})
         result.iterations         = iteration
         result.current_iteration  = iteration
         update!(x, result.minimum.parameters)
-        produce(result)
+        put!(reference, result)
     end
 end

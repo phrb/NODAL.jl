@@ -72,13 +72,9 @@ facts("[Configuration]") do
         println(c)
         d["i0"] = 5
         v = c["i0"].value
-        neighbor!(c, d, 20)
-        neighbor!(c, d, 20)
-        @fact (v != c["i0"].value)                               --> true
+        neighbor!(c, d)
+        @fact v                                              --> not(exactly(c["i0"].value))
         v = c["i0"].value
-        neighbor!(c, d, 9)
-        neighbor!(c, d, 9)
-        neighbor!(c, d, 9)
         neighbor!(c, d, 9)
         d = Dict{ASCIIString, Any}()
         d["i2"] = 5
@@ -87,10 +83,8 @@ facts("[Configuration]") do
         l = [NumberParameter(1, 38, 3, "i0")]
         c = Configuration(l, "test2")
         v = c["i0"].value
-        neighbor!(c, 20)
-        neighbor!(c, 20)
-        neighbor!(c, 20)
-        @fact (v != c["i0"].value)                           --> true
+        neighbor!(c)
+        @fact v                                              --> not(exactly(c["i0"].value))
     end
     context("update! and convert!") do
         c     = Configuration("test")

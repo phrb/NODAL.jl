@@ -1,4 +1,5 @@
-function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any})
+function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any},
+                                             reference::RemoteRef)
     if !haskey(parameters, :t)
         parameters[:t] = 2.0
     end
@@ -18,6 +19,6 @@ function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any})
         result.iterations         = iteration
         result.current_iteration  = iteration
         update!(x, result.minimum.parameters)
-        produce(result)
+        put!(reference, result)
     end
 end

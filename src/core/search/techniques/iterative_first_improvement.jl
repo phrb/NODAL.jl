@@ -1,4 +1,5 @@
-function iterative_first_improvement(parameters::Dict{Symbol, Any})
+function iterative_first_improvement(parameters::Dict{Symbol, Any},
+                                     reference::RemoteRef)
     if !haskey(parameters, :cutoff)
         parameters[:cutoff] = 10
     end
@@ -16,6 +17,6 @@ function iterative_first_improvement(parameters::Dict{Symbol, Any})
         result.technique          = name
         result.iterations         = iteration
         result.current_iteration  = iteration
-        produce(result)
+        put!(reference, result)
     end
 end
