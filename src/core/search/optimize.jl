@@ -1,4 +1,7 @@
 function optimize(parameters::Dict{Symbol, Any})
+    if !haskey(parameters, :measurement_method)
+        parameters[:measurement_method] = measure_mean!
+    end
     if !haskey(parameters, :evaluations)
         parameters[:evaluations] = 1
     end

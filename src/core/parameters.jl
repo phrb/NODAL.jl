@@ -67,4 +67,4 @@ type StringParameter <: Parameter
 end
 
 typealias IntegerParameter NumberParameter{Integer}
-typealias FloatParameter   NumberParameter{FloatingPoint}
+typealias FloatParameter   NumberParameter{AbstractFloat}

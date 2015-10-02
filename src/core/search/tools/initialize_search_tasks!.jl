@@ -5,6 +5,7 @@ function initialize_search_tasks!(parameters::Dict{Symbol, Any})
     methods     = parameters[:methods]
     initial_x   = parameters[:initial_config]
     evaluations = parameters[:evaluations]
+    measurement = parameters[:measurement_method]
     next_proc   = @task chooseproc()
 
     instance_id = 1
@@ -18,8 +19,7 @@ function initialize_search_tasks!(parameters::Dict{Symbol, Any})
             parameters[:costs]          = costs
             initial_x                   = neighbor!(initial_x, j)
             parameters[:initial_config] = initial_x
-            parameters[:initial_cost]   = measure_mean!(cost, initial_x,
-                                                        args, evaluations, costs)
+            parameters[:initial_cost]   = measurement(parameters, initial_x)
             remotecall(consume(next_proc), eval(methods[i]),
                        deepcopy(parameters), reference)
             instance_id += 1

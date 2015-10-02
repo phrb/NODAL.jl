@@ -10,10 +10,11 @@ facts("[Search]") do
                                        "rosenbrock_config")
         methods       = [:simulated_annealing]
         instances     = [1]
-        parameters    = Dict(:cost           => rosenbrock,
-                             :initial_config => configuration,
-                             :methods        => methods,
-                             :instances      => instances)
+        parameters    = Dict(:cost               => rosenbrock,
+                             :initial_config     => configuration,
+                             :methods            => methods,
+                             :measurement_method => sequential_measure_mean!,
+                             :instances          => instances)
 
         search_task = @task optimize(parameters)
         result = consume(search_task)

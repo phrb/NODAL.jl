@@ -17,14 +17,15 @@ methods     = [:simulated_annealing,
 instances   = [2, 4, 3, 2, 4]
 iterations  = 1_000
 
-parameters = Dict(:cost           => rosenbrock,
-                  :cost_args      => Dict{Symbol, Any}(),
-                  :initial_config => configuration,
-                  :iterations     => iterations,
-                  :report_after   => 50,
-                  :methods        => methods,
-                  :instances      => instances,
-                  :evaluations    => 1)
+parameters = Dict(:cost               => rosenbrock,
+                  :cost_args          => Dict{Symbol, Any}(),
+                  :initial_config     => configuration,
+                  :iterations         => iterations,
+                  :report_after       => 50,
+                  :measurement_method => sequential_measure_mean!,
+                  :methods            => methods,
+                  :instances          => instances,
+                  :evaluations        => 1)
 
 search_task = @task optimize(parameters)
 

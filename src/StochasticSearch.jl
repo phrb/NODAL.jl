@@ -2,28 +2,29 @@ VERSION >= v"0.4" && __precompile__()
 module StochasticSearch
     using Optim
     # Types
-    export Parameter, 
-           NumberParameter, 
+    export Parameter,
+           NumberParameter,
            IntegerParameter,
-           FloatParameter, 
-           EnumParameter, 
+           FloatParameter,
+           EnumParameter,
            StringParameter,
-           Configuration, 
-           Result, 
+           Configuration,
+           Result,
            BoolParameter
 
     # Methods
-    export perturb!, 
-           perturb_elements!, 
+    export perturb!,
+           perturb_elements!,
            neighbor!,
-           optimize!, 
-           optimize, 
+           optimize!,
+           optimize,
            update!,
-           unit_value, 
+           unit_value,
            unit_value!
 
     # Measurement Tools
-    export measure_mean!
+    export measure_mean!,
+           sequential_measure_mean!
 
     # Search Building Blocks
     export first_improvement,
@@ -44,8 +45,8 @@ module StochasticSearch
 
 
     # New Methods for Base Functions
-    import Base.convert, 
-           Base.show, 
+    import Base.convert,
+           Base.show,
            Base.getindex,
            Base.setindex!
 

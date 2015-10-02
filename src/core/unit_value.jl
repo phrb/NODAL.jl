@@ -15,7 +15,7 @@ end
 
 function unit_value!(parameter::IntegerParameter, unit::Float64)
     @assert 0.0 <= unit <= 1.0
-    value = int((unit * (parameter.max - parameter.min)) + parameter.min)
+    value = round(Int, (unit * (parameter.max - parameter.min)) + parameter.min)
     parameter.value
 end
 

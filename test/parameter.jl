@@ -116,7 +116,7 @@ facts("[NumberParameter]") do
         @fact (typeof(p.min)   == Float32)                  --> true
         @fact (typeof(p.max)   == Float32)                  --> true
         @fact (typeof(p.value) == Float32)                  --> true
-        @fact (typeof(p) == NumberParameter{FloatingPoint}) --> true
+        @fact (typeof(p) == NumberParameter{AbstractFloat}) --> true
         @fact (typeof(p) <: FloatParameter)                 --> true
         @fact (p.min   == 0)                                --> true
         @fact (p.max   == 2)                                --> true
@@ -127,14 +127,14 @@ facts("[NumberParameter]") do
         interval = 50.6
         p = FloatParameter(0., 1000., value, "rand_test")
         perturb!(p)
-        @fact (typeof(p.value) <: FloatingPoint) --> true
+        @fact (typeof(p.value) <: AbstractFloat) --> true
         @fact (p.value <= p.max)                 --> true
         @fact (p.value >= p.min)                 --> true
         perturb!(p, interval)
         perturb!(p, interval)
         perturb!(p, interval)
         value = p.value
-        @fact (typeof(p.value) <: FloatingPoint) --> true
+        @fact (typeof(p.value) <: AbstractFloat) --> true
         @fact (p.value <= value + interval)      --> true
         @fact (p.value <= p.max)                 --> true
         @fact (p.value >= p.min)                 --> true
@@ -143,7 +143,7 @@ facts("[NumberParameter]") do
         perturb!(p, interval)
         perturb!(p, interval)
         perturb!(p, interval)
-        @fact (typeof(p.value) <: FloatingPoint) --> true
+        @fact (typeof(p.value) <: AbstractFloat) --> true
         @fact (p.value <= p.max)                 --> true
         @fact (p.value >= p.min)                 --> true
         interval = -1.2

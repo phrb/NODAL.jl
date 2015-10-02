@@ -70,16 +70,17 @@ methods     = [:simulated_annealing,
                :iterative_probabilistic_improvement]
 
 instances   = [1, 1, 1, 1, 1]
-iterations  = 10_000
+iterations  = 1_00
 
-parameters = Dict(:cost           => sorting_cutoff,
-                  :cost_args      => args,
-                  :initial_config => configuration,
-                  :iterations     => iterations,
-                  :report_after   => 100,
-                  :methods        => methods,
-                  :instances      => instances,
-                  :evaluations    => 4)
+parameters = Dict(:cost               => sorting_cutoff,
+                  :cost_args          => args,
+                  :initial_config     => configuration,
+                  :iterations         => iterations,
+                  :report_after       => 4,
+                  :measurement_method => sequential_measure_mean!,
+                  :methods            => methods,
+                  :instances          => instances,
+                  :evaluations        => 4)
 
 search_task = @task optimize(parameters)
 
