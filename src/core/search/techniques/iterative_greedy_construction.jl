@@ -10,7 +10,7 @@ function iterative_greedy_construction(parameters::Dict{Symbol, Any},
     name       = "Iterative Greedy Construction"
     iteration  = 0
     key_set    = collect(keys(x.parameters))
-    while iteration <= iterations
+    while true
         iteration += 1
         for key in key_set
             parameters[:target]       = key

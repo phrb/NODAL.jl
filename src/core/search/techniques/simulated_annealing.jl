@@ -13,7 +13,7 @@ function simulated_annealing(parameters::Dict{Symbol, Any},
     cost_calls  = parameters[:evaluations]
     iterations  = parameters[:iterations]
     temperature = parameters[:temperature]
-    while iteration <= iterations
+    while true
         iteration                += 1
         parameters[:t]            = temperature(iteration)
         result                    = probabilistic_improvement(parameters)

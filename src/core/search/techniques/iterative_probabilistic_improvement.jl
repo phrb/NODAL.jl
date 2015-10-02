@@ -9,7 +9,7 @@ function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any},
     x          = deepcopy(initial_x)
     name       = "Iterative Probabilistic Improvement"
     iteration  = 0
-    while iteration <= iterations
+    while true
         iteration                += 1
         result                    = probabilistic_improvement(parameters)
         cost_calls               += result.cost_calls

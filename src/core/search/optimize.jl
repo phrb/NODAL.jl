@@ -1,4 +1,7 @@
 function optimize(parameters::Dict{Symbol, Any})
+    if !haskey(parameters, :stopping_criterion)
+        parameters[:stopping_criterion] = iterations_criterion
+    end
     if !haskey(parameters, :measurement_method)
         parameters[:measurement_method] = measure_mean!
     end
@@ -14,19 +17,28 @@ function optimize(parameters::Dict{Symbol, Any})
     if !haskey(parameters, :cost_args)
         parameters[:cost_args] = Dict{Symbol, Any}()
     end
-    iterations   = parameters[:iterations]
+
+    criterion_function = parameters[:stopping_criterion]
+    if criterion_function == iterations_criterion
+        duration = parameters[:iterations]
+    elseif criterion_function == elapsed_time_criterion
+        duration = parameters[:seconds]
+    end
+    stopping_criterion = @task criterion_function(duration)
     report_after = parameters[:report_after]
 
     results      = initialize_search_tasks!(parameters)
 
     best         = get_new_best(results)
     iteration    = 1
+    stop         = !consume(stopping_criterion)
     produce(best)
-    while(iteration <= iterations)
+    while !stop
         best       = get_new_best(results, best)
         iteration += 1
         best.current_iteration = iteration
-        if iteration == iterations
+        stop = !consume(stopping_criterion)
+        if stop
             best.is_final = true
             produce(best)
         elseif iteration % report_after == 0

@@ -12,7 +12,7 @@ function randomized_first_improvement(parameters::Dict{Symbol, Any},
     walk       = parameters[:walk]
     name       = "Randomized First Improvement"
     iteration  = 0
-    while iteration <= iterations
+    while true
         iteration += 1
         if rand() <= walk
             result = random_walk(parameters)

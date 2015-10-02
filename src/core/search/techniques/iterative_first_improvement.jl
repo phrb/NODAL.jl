@@ -8,7 +8,7 @@ function iterative_first_improvement(parameters::Dict{Symbol, Any},
     iterations = parameters[:iterations]
     name       = "Iterative First Improvement"
     iteration  = 0
-    while iteration <= iterations
+    while true
         iteration                += 1
         result                    = first_improvement(parameters)
         cost_calls               += result.cost_calls

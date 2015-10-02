@@ -13,6 +13,8 @@ facts("[Search]") do
         parameters    = Dict(:cost               => rosenbrock,
                              :initial_config     => configuration,
                              :methods            => methods,
+                             :stopping_criterion => elapsed_time_criterion,
+                             :seconds            => 1,
                              :measurement_method => sequential_measure_mean!,
                              :instances          => instances)
 
