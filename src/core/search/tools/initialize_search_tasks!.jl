@@ -1,15 +1,29 @@
-function initialize_search_tasks!(parameters::Dict{Symbol, Any},
-                                  results::Array{RemoteRef})
+function initialize_search_tasks!(parameters::Dict{Symbol, Any})
+    cost        = parameters[:cost]
+    args        = parameters[:cost_args]
     instances   = parameters[:instances]
     methods     = parameters[:methods]
+    initial_x   = parameters[:initial_config]
+    evaluations = parameters[:evaluations]
     next_proc   = @task chooseproc()
+
     instance_id = 1
+    results     = RemoteRef[]
+
     for i = 1:length(methods)
         for j = 1:instances[i]
-            reference    = results[instance_id]
+            push!(results, RemoteRef())
+            reference                   = results[instance_id]
+            costs                       = zeros(evaluations)
+            parameters[:costs]          = costs
+            initial_x                   = neighbor!(initial_x, j)
+            parameters[:initial_config] = initial_x
+            parameters[:initial_cost]   = measure_mean!(cost, initial_x,
+                                                        args, evaluations, costs)
             remotecall(consume(next_proc), eval(methods[i]),
                        deepcopy(parameters), reference)
             instance_id += 1
         end
     end
+    results
 end

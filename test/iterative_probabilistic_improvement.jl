@@ -15,10 +15,12 @@ facts("[Search]") do
                              :methods        => methods,
                              :instances      => instances)
 
-        run_task = @task optimize(parameters)
-        result   = None
-        for i = 1:1_000
-            result = consume(run_task)
+        search_task = @task optimize(parameters)
+        result = consume(search_task)
+        print(result)
+        while result.is_final == false
+            result = consume(search_task)
+            print(result)
         end
         rr = rosenbrock(result.minimum)
         rc = result.cost_minimum

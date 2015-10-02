@@ -1,8 +1,8 @@
-perturb_elements!(enum::EnumParameter, element::Int) = begin
+function perturb_elements!(enum::EnumParameter, element::Int)
     perturb!(enum.values[element])
 end
 
-perturb_elements!(enum::EnumParameter) = begin
+function perturb_elements!(enum::EnumParameter)
     for parameter in enum.values
         if !(typeof(parameter) <: StringParameter)
             perturb!(parameter)
@@ -10,7 +10,7 @@ perturb_elements!(enum::EnumParameter) = begin
     end
 end
 
-perturb_elements!(enum::EnumParameter, interval::Array) = begin
+function perturb_elements!(enum::EnumParameter, interval::Array)
     if length(interval) > length(enum.values)
         error("too many intervals.")
     end
@@ -23,6 +23,6 @@ perturb_elements!(enum::EnumParameter, interval::Array) = begin
     end
 end
 
-perturb_elements!(enum::EnumParameter, element::Int, interval::Number) = begin
+function perturb_elements!(enum::EnumParameter, element::Int, interval::Number)
     perturb!(enum.values[element], interval)
 end

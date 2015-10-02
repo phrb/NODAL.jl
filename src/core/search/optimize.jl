@@ -11,39 +11,23 @@ function optimize(parameters::Dict{Symbol, Any})
     if !haskey(parameters, :cost_args)
         parameters[:cost_args] = Dict{Symbol, Any}()
     end
-    cost                      = parameters[:cost]
-    args                      = parameters[:cost_args]
-    initial_x                 = parameters[:initial_config]
-    evaluations               = parameters[:evaluations]
-    iterations                = parameters[:iterations]
-    instances                 = parameters[:instances]
-    report_after              = parameters[:report_after]
-    methods                   = parameters[:methods]
-    costs                     = zeros(evaluations)
-    parameters[:costs]        = costs
-    parameters[:initial_cost] = measure_mean!(cost, initial_x,
-                                              args, evaluations, costs)
+    iterations   = parameters[:iterations]
+    report_after = parameters[:report_after]
 
-    results                   = RemoteRef[]
-    for i = 1:sum(instances)
-        push!(results, RemoteRef())
-    end
-    initialize_search_tasks!(parameters, results)
+    results      = initialize_search_tasks!(parameters)
 
-    partial   = take!(results[1])
-    best      = deepcopy(partial)
-    iteration = 1
+    best         = get_new_best(results)
+    iteration    = 1
     produce(best)
     while(iteration <= iterations)
-        best                   = get_new_best(results, best)
-        iteration             += 1
+        best       = get_new_best(results, best)
+        iteration += 1
         best.current_iteration = iteration
         if iteration == iterations
             best.is_final = true
-            print(best)
+            produce(best)
         elseif iteration % report_after == 0
-            print(best)
+            produce(best)
         end
-        produce(best)
     end
 end

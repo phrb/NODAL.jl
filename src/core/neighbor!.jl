@@ -1,8 +1,8 @@
-neighbor!(bool::BoolParameter) = begin
+function neighbor!(bool::BoolParameter)
     perturb!(bool)
 end
 
-neighbor!(number::NumberParameter, interval::Number = 10, distance::Integer = 1) = begin
+function neighbor!(number::NumberParameter, interval::Number = 10, distance::Integer = 1)
     for i = 1:distance
         previous = number.value
         while number.value == previous
@@ -12,7 +12,7 @@ neighbor!(number::NumberParameter, interval::Number = 10, distance::Integer = 1)
     number
 end
 
-neighbor!(enum::EnumParameter, distance::Integer = 1) = begin
+function neighbor!(enum::EnumParameter, distance::Integer = 1)
     for i = 1:distance
         previous = enum.value
         while enum.value == previous
@@ -22,7 +22,7 @@ neighbor!(enum::EnumParameter, distance::Integer = 1) = begin
     enum
 end
 
-neighbor!(configuration::Configuration, intervals::Dict{ASCIIString, Any}, distance::Integer = 1) = begin
+function neighbor!(configuration::Configuration, intervals::Dict{ASCIIString, Any}, distance::Integer = 1)
     key_set = collect(keys(intervals))
     target  = key_set[rand(1:length(key_set))]
     for i = 1:distance
@@ -32,7 +32,7 @@ neighbor!(configuration::Configuration, intervals::Dict{ASCIIString, Any}, dista
     configuration
 end
 
-neighbor!(configuration::Configuration, distance::Integer = 1) = begin
+function neighbor!(configuration::Configuration, distance::Integer = 1)
     key_set = collect(keys(configuration.parameters))
     target  = key_set[rand(1:length(key_set))]
     for i = 1:distance
@@ -44,7 +44,7 @@ neighbor!(configuration::Configuration, distance::Integer = 1) = begin
     configuration
 end
 
-neighbor!(configuration::Configuration, target::ASCIIString,  distance::Integer = 1) = begin
+function neighbor!(configuration::Configuration, target::ASCIIString,  distance::Integer = 1)
     for i = 1:distance
         if !(typeof(configuration[target]) <: StringParameter)
             neighbor!(configuration[target])

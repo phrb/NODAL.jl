@@ -69,21 +69,23 @@ methods     = [:simulated_annealing,
                :iterative_greedy_construction,
                :iterative_probabilistic_improvement]
 
-instances   = [1, 2, 3, 1, 3]
-iterations  = 1_0
+instances   = [1, 1, 1, 1, 1]
+iterations  = 10_000
 
 parameters = Dict(:cost           => sorting_cutoff,
                   :cost_args      => args,
                   :initial_config => configuration,
                   :iterations     => iterations,
-                  :report_after   => 10,
+                  :report_after   => 100,
                   :methods        => methods,
                   :instances      => instances,
-                  :evaluations    => 6)
+                  :evaluations    => 4)
 
-result = @task optimize(parameters)
+search_task = @task optimize(parameters)
 
-partial = consume(result)
-for i = 1:iterations
-    partial = consume(result)
+result = consume(search_task)
+print(result)
+while result.is_final == false
+    result = consume(search_task)
+    print(result)
 end

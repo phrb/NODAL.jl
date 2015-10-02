@@ -1,14 +1,14 @@
-perturb!(bool::BoolParameter) = begin
+function perturb!(bool::BoolParameter)
     bool.value = !(bool.value)
     bool
 end
 
-perturb!(number::NumberParameter) = begin
+function perturb!(number::NumberParameter)
     number.value = rand_in(number.min, number.max)
     number
 end
 
-perturb!(number::NumberParameter, interval::Number) = begin
+function perturb!(number::NumberParameter, interval::Number)
     if interval <= 0
         error("interval must be greater than zero.")
     end
@@ -18,13 +18,13 @@ perturb!(number::NumberParameter, interval::Number) = begin
     number
 end
 
-perturb!(enum::EnumParameter) = begin
+function perturb!(enum::EnumParameter)
     enum.value = rand(1:length(enum.values))
     @inbounds enum.current   = enum.values[enum.value]
     enum
 end
 
-perturb!(configuration::Configuration) = begin
+function perturb!(configuration::Configuration)
     for key in keys(configuration.parameters)
         if !(typeof(configuration[key]) <: StringParameter)
             perturb!(configuration[key])
@@ -34,7 +34,7 @@ perturb!(configuration::Configuration) = begin
     configuration
 end
 
-perturb!(configuration::Configuration, intervals::Dict{ASCIIString, Any}) = begin
+function perturb!(configuration::Configuration, intervals::Dict{ASCIIString, Any})
     for key in keys(intervals)
         @inbounds perturb!(configuration[key], intervals[key])
     end

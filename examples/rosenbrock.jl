@@ -26,9 +26,11 @@ parameters = Dict(:cost           => rosenbrock,
                   :instances      => instances,
                   :evaluations    => 1)
 
-result = @task optimize(parameters)
+search_task = @task optimize(parameters)
 
-partial = None
-for i = 0:iterations
-    partial = consume(result)
+result = consume(search_task)
+print(result)
+while result.is_final == false
+    result = consume(search_task)
+    print(result)
 end
