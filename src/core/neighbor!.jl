@@ -22,11 +22,16 @@ function neighbor!(enum::EnumParameter, distance::Int = 1)
     enum
 end
 
-function neighbor!(permutation::PermutationParameter, distance::Int = 1)
+function neighbor!(permutation::PermutationParameter; distance::Int = 1)
     perturb!(permutation, distance)
 end
 
-function neighbor!(configuration::Configuration, 
+function neighbor!(permutation::PermutationParameter)
+    distance = round(Int, 0.10 * permutation.size)
+    perturb!(permutation, distance)
+end
+
+function neighbor!(configuration::Configuration,
                    intervals::Dict{ASCIIString, Any}, distance::Int = 1)
     key_set = collect(keys(intervals))
     target  = key_set[rand(1:length(key_set))]
