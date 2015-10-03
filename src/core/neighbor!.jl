@@ -27,7 +27,7 @@ function neighbor!(permutation::PermutationParameter; distance::Int = 1)
 end
 
 function neighbor!(permutation::PermutationParameter)
-    distance = round(Int, 0.10 * permutation.size)
+    distance = rand(1:permutation.size)
     perturb!(permutation, distance)
 end
 
