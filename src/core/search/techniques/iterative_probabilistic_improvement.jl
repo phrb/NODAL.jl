@@ -21,16 +21,18 @@ function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any},
     stop               = !consume(stopping_criterion)
 
     while !stop
-        iteration                += 1
-        result                    = probabilistic_improvement(parameters)
-        cost_calls               += result.cost_calls
-        result.cost_calls         = cost_calls
-        result.start              = initial_x
-        result.technique          = name
-        result.iterations         = iteration
-        result.current_iteration  = iteration
+        iteration                   += 1
+        result                       = probabilistic_improvement(parameters)
+        cost_calls                  += result.cost_calls
+        result.cost_calls            = cost_calls
+        result.start                 = initial_x
+        result.technique             = name
+        result.iterations            = iteration
+        result.current_iteration     = iteration
+        parameters[:initial_config]  = result.minimum
+        parameters[:initial_cost]    = result.cost_minimum
         update!(x, result.minimum.parameters)
-        stop                      = !consume(stopping_criterion)
+        stop                         = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

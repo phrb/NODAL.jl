@@ -1,7 +1,7 @@
 function randomized_first_improvement(parameters::Dict{Symbol, Any},
                                       reference::RemoteRef)
     if !haskey(parameters, :cutoff)
-        parameters[:cutoff] = 10
+        parameters[:cutoff] = 1000
     end
     if !haskey(parameters, :walk)
         parameters[:walk] = 0.6
@@ -30,13 +30,15 @@ function randomized_first_improvement(parameters::Dict{Symbol, Any},
         else
             result = first_improvement(parameters)
         end
-        cost_calls              += result.cost_calls
-        result.cost_calls        = cost_calls
-        result.start             = initial_x
-        result.technique         = name
-        result.iterations        = iteration
-        result.current_iteration = iteration
-        stop                     = !consume(stopping_criterion)
+        cost_calls                  += result.cost_calls
+        result.cost_calls            = cost_calls
+        result.start                 = initial_x
+        result.technique             = name
+        result.iterations            = iteration
+        result.current_iteration     = iteration
+        parameters[:initial_config]  = result.minimum
+        parameters[:initial_cost]    = result.cost_minimum
+        stop                         = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

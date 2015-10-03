@@ -34,6 +34,7 @@ function optimize(parameters::Dict{Symbol, Any})
     iteration          = 1
     stop               = !consume(stopping_criterion)
     report             = false
+    start_time         = time()
     produce(best)
     while !stop
         best                    = get_new_best(results, best)
@@ -42,10 +43,12 @@ function optimize(parameters::Dict{Symbol, Any})
         stop                    = !consume(stopping_criterion)
         delta_t                 = round(Int, time()) % report_after
         if stop
-            best.is_final = true
+            best.is_final     = true
+            best.current_time = time() - start_time
             produce(best)
         elseif delta_t == 0 && report
-            report = false
+            report            = false
+            best.current_time = time() - start_time
             produce(best)
         end
         if !report && delta_t > 0

@@ -1,7 +1,7 @@
 function iterative_greedy_construction(parameters::Dict{Symbol, Any},
                                        reference::RemoteRef)
     if !haskey(parameters, :cutoff)
-        parameters[:cutoff] = 10
+        parameters[:cutoff] = 1000
     end
     initial_x  = parameters[:initial_config]
     cost_calls = parameters[:evaluations]
@@ -24,14 +24,16 @@ function iterative_greedy_construction(parameters::Dict{Symbol, Any},
     while !stop
         iteration += 1
         for key in key_set
-            parameters[:target]       = key
-            result                    = greedy_construction(parameters)
-            cost_calls               += result.cost_calls
-            result.cost_calls         = cost_calls
-            result.start              = initial_x
-            result.technique          = name
-            result.iterations         = iteration
-            result.current_iteration  = iteration
+            parameters[:target]          = key
+            result                       = greedy_construction(parameters)
+            cost_calls                  += result.cost_calls
+            result.cost_calls            = cost_calls
+            result.start                 = initial_x
+            result.technique             = name
+            result.iterations            = iteration
+            result.current_iteration     = iteration
+            parameters[:initial_config]  = result.minimum
+            parameters[:initial_cost]    = result.cost_minimum
             update!(x, result.minimum.parameters)
             put!(reference, result)
         end
