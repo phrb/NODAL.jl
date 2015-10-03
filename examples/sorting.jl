@@ -49,7 +49,7 @@ end
 
 # Defining the array properties
 # and algorithm cutoff.
-array_size   = 100_000
+array_size   = 1_000
 cutoff       = 15
 
 # Adding extra function arguments
@@ -70,13 +70,13 @@ methods     = [:simulated_annealing,
                :iterative_probabilistic_improvement]
 
 instances   = [1, 1, 1, 1, 1]
-iterations  = 1_00
+iterations  = 1_000
 
 parameters = Dict(:cost               => sorting_cutoff,
                   :cost_args          => args,
                   :initial_config     => configuration,
                   :iterations         => iterations,
-                  :report_after       => 4,
+                  :report_after       => 100,
                   :stopping_criterion => elapsed_time_criterion,
                   :seconds            => 120,
                   :measurement_method => sequential_measure_mean!,

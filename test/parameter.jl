@@ -259,6 +259,38 @@ facts("[EnumParameter]") do
     end
 end
 
+facts("[PermutationParameter]") do
+    context("constructor") do
+        a = [1, 2, 3, 4, 5, 6]
+        p = PermutationParameter(a, "test")
+        @fact (typeof(p) <: PermutationParameter) --> true
+        @fact (p.value == a)                      --> true
+        @fact (p.size == length(a))               --> true
+    end
+    context("neighbor!") do
+        a = [1, 2, 3, 4, 5, 6]
+        b = [1, 2, 3, 4, 5, 6]
+        p = PermutationParameter(a, "test")
+        @fact p.value == b                        --> true
+        print(p)
+        neighbor!(p)
+        print(p)
+        @fact p.value != b                        --> true
+        @fact p.size == length(b)                 --> true
+    end
+    context("perturb!") do
+        a = [1, 2, 3, 4, 5, 6]
+        b = [1, 2, 3, 4, 5, 6]
+        p = PermutationParameter(a, "test")
+        @fact p.value == b                        --> true
+        print(p)
+        perturb!(p)
+        print(p)
+        @fact p.value != b                        --> true
+        @fact p.size == length(b)                 --> true
+    end
+end
+
 facts("[StringParameter]") do
     p = StringParameter("value", "test")
     @fact (typeof(p) == StringParameter) --> true

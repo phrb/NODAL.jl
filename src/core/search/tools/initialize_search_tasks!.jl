@@ -17,7 +17,7 @@ function initialize_search_tasks!(parameters::Dict{Symbol, Any})
             reference                   = results[instance_id]
             costs                       = zeros(evaluations)
             parameters[:costs]          = costs
-            initial_x                   = neighbor!(initial_x, j)
+            initial_x                   = perturb!(initial_x)
             parameters[:initial_config] = initial_x
             parameters[:initial_cost]   = measurement(parameters, initial_x)
             remotecall(consume(next_proc), eval(methods[i]),

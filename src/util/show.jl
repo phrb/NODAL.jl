@@ -39,6 +39,27 @@ Base.show{T <: EnumParameter}(io::IO, n::T) = begin
     return
 end
 
+Base.show{T <: PermutationParameter}(io::IO, n::T) = begin
+    @printf io "    ["
+    print_with_color(:blue, io, "PermutationParameter")
+    @printf io "]\n"
+
+    print_with_color(:blue, io, "    name")
+    @printf io " : "
+    print_with_color(:bold, io, "$(n.name)\n")
+
+    if n.size < 40
+        print_with_color(:yellow, io, "    value")
+        @printf io ": "
+        show(io, n.value)
+        @printf io "\n"
+    end
+
+    print_with_color(:green, io, "    size")
+    @printf io " : %d\n" n.size
+    return
+end
+
 Base.show{T <: StringParameter}(io::IO, n::T) = begin
     @printf io "    ["
     print_with_color(:blue, io, "StringParameter")

@@ -6,6 +6,7 @@ module StochasticSearch
            NumberParameter,
            IntegerParameter,
            FloatParameter,
+           PermutationParameter,
            EnumParameter,
            StringParameter,
            Configuration,

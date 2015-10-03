@@ -20,8 +20,25 @@ end
 
 function perturb!(enum::EnumParameter)
     enum.value = rand(1:length(enum.values))
-    @inbounds enum.current   = enum.values[enum.value]
+    @inbounds enum.current = enum.values[enum.value]
     enum
+end
+
+function perturb!(permutation::PermutationParameter)
+    shuffle!(permutation.value)
+end
+
+function perturb!(permutation::PermutationParameter, interval::Int)
+    for i = 1:interval
+        a = rand(1:permutation.size)
+        b = rand(1:permutation.size)
+        while b == a
+            b = rand(1:permutation.size)
+        end
+        permutation.value[a], permutation.value[b] = permutation.value[b],
+                                                     permutation.value[a]
+    end
+    permutation
 end
 
 function perturb!(configuration::Configuration)
