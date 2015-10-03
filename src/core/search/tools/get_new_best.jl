@@ -11,5 +11,5 @@ function get_new_best(results::Array{RemoteRef}, best::Result)
 end
 
 function get_new_best(results::Array{RemoteRef})
-    best = take!(results[rand(1:length(results))])
+    take!(results[rand(1:length(results))])
 end

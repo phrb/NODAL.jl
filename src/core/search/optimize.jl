@@ -24,25 +24,32 @@ function optimize(parameters::Dict{Symbol, Any})
     elseif criterion_function == elapsed_time_criterion
         duration = parameters[:seconds]
     end
+
     stopping_criterion = @task criterion_function(duration)
-    report_after = parameters[:report_after]
+    report_after       = parameters[:report_after]
 
-    results      = initialize_search_tasks!(parameters)
+    results            = initialize_search_tasks!(parameters)
 
-    best         = get_new_best(results)
-    iteration    = 1
-    stop         = !consume(stopping_criterion)
+    best               = get_new_best(results)
+    iteration          = 1
+    stop               = !consume(stopping_criterion)
+    report             = false
     produce(best)
     while !stop
-        best       = get_new_best(results, best)
-        iteration += 1
-        best.current_iteration = iteration
-        stop = !consume(stopping_criterion)
+        best                    = get_new_best(results, best)
+        iteration              += 1
+        best.current_iteration  = iteration
+        stop                    = !consume(stopping_criterion)
+        delta_t                 = round(Int, time()) % report_after
         if stop
             best.is_final = true
             produce(best)
-        elseif iteration % report_after == 0
+        elseif delta_t == 0 && report
+            report = false
             produce(best)
+        end
+        if !report && delta_t > 0
+            report = true
         end
     end
 end

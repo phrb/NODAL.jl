@@ -10,7 +10,18 @@ function iterative_greedy_construction(parameters::Dict{Symbol, Any},
     name       = "Iterative Greedy Construction"
     iteration  = 0
     key_set    = collect(keys(x.parameters))
-    while true
+
+    criterion_function = parameters[:stopping_criterion]
+    if criterion_function == iterations_criterion
+        duration = parameters[:iterations]
+    elseif criterion_function == elapsed_time_criterion
+        duration = parameters[:seconds]
+    end
+
+    stopping_criterion = @task criterion_function(duration)
+    stop               = !consume(stopping_criterion)
+
+    while !stop
         iteration += 1
         for key in key_set
             parameters[:target]       = key
@@ -24,6 +35,7 @@ function iterative_greedy_construction(parameters::Dict{Symbol, Any},
             update!(x, result.minimum.parameters)
             put!(reference, result)
         end
+        stop = !consume(stopping_criterion)
         shuffle!(key_set)
     end
 end

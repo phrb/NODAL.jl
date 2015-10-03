@@ -69,16 +69,14 @@ methods     = [:simulated_annealing,
                :iterative_greedy_construction,
                :iterative_probabilistic_improvement]
 
-instances   = [1, 1, 1, 1, 1]
-iterations  = 1_000
+instances   = [10, 10, 10, 10, 10]
 
 parameters = Dict(:cost               => sorting_cutoff,
                   :cost_args          => args,
                   :initial_config     => configuration,
-                  :iterations         => iterations,
-                  :report_after       => 100,
+                  :report_after       => 4,
                   :stopping_criterion => elapsed_time_criterion,
-                  :seconds            => 120,
+                  :seconds            => 30,
                   :measurement_method => sequential_measure_mean!,
                   :methods            => methods,
                   :instances          => instances,

@@ -13,7 +13,18 @@ function simulated_annealing(parameters::Dict{Symbol, Any},
     cost_calls  = parameters[:evaluations]
     iterations  = parameters[:iterations]
     temperature = parameters[:temperature]
-    while true
+
+    criterion_function = parameters[:stopping_criterion]
+    if criterion_function == iterations_criterion
+        duration = parameters[:iterations]
+    elseif criterion_function == elapsed_time_criterion
+        duration = parameters[:seconds]
+    end
+
+    stopping_criterion = @task criterion_function(duration)
+    stop               = !consume(stopping_criterion)
+
+    while !stop
         iteration                += 1
         parameters[:t]            = temperature(iteration)
         result                    = probabilistic_improvement(parameters)
@@ -24,6 +35,7 @@ function simulated_annealing(parameters::Dict{Symbol, Any},
         result.iterations         = iteration
         result.current_iteration  = iteration
         update!(x, result.minimum.parameters)
+        stop                      = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

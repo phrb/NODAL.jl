@@ -9,7 +9,18 @@ function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any},
     x          = deepcopy(initial_x)
     name       = "Iterative Probabilistic Improvement"
     iteration  = 0
-    while true
+
+    criterion_function = parameters[:stopping_criterion]
+    if criterion_function == iterations_criterion
+        duration = parameters[:iterations]
+    elseif criterion_function == elapsed_time_criterion
+        duration = parameters[:seconds]
+    end
+
+    stopping_criterion = @task criterion_function(duration)
+    stop               = !consume(stopping_criterion)
+
+    while !stop
         iteration                += 1
         result                    = probabilistic_improvement(parameters)
         cost_calls               += result.cost_calls
@@ -19,6 +30,7 @@ function iterative_probabilistic_improvement(parameters::Dict{Symbol, Any},
         result.iterations         = iteration
         result.current_iteration  = iteration
         update!(x, result.minimum.parameters)
+        stop                      = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

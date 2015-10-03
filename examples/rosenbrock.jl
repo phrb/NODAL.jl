@@ -14,7 +14,7 @@ methods     = [:simulated_annealing,
                :iterative_greedy_construction,
                :iterative_probabilistic_improvement]
 
-instances   = [2, 4, 3, 2, 4]
+instances   = [1, 1, 1, 1, 1]
 iterations  = 1_000
 
 parameters = Dict(:cost               => rosenbrock,
