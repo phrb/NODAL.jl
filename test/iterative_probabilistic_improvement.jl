@@ -5,8 +5,8 @@ facts("[Search]") do
         function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any} = Dict{Symbol, Any}())
             return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
         end
-        configuration = Configuration([NumberParameter(-2.0,2.0,0.0,"i0"),
-                                       NumberParameter(-2.0,2.0,0.0,"i1")],
+        configuration = Configuration([FloatParameter(-2.0,2.0,0.0,"i0"),
+                                       FloatParameter(-2.0,2.0,0.0,"i1")],
                                        "rosenbrock_config")
         methods       = [:iterative_probabilistic_improvement]
         instances     = [1]

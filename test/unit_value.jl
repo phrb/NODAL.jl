@@ -3,8 +3,8 @@ using StochasticSearch, FactCheck
 facts("[unit_value]") do
     context("EnumParameter") do
         p = EnumParameter([StringParameter("value", "i0"),
-                           NumberParameter(1.3, 56.3, 3.3, "i1"),
-                           NumberParameter(1, 40, 3, "i3")],
+                           FloatParameter(1.3, 56.3, 3.3, "i1"),
+                           IntegerParameter(1, 40, 3, "i3")],
                            "test")
         c = p.value
         u = unit_value(p)

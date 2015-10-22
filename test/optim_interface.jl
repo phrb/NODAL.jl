@@ -5,8 +5,8 @@ facts("[Interface] with Optim.jl") do
         function rosenbrock(x::Array)
             return (1.0 - x[1])^2 + 100.0 * (x[2] - x[1]^2)^2
         end
-        c = Configuration([NumberParameter(-10.0,10.0,-2.0,"a"),
-                           NumberParameter(-10.0,10.0,9.0,"b")],
+        c = Configuration([FloatParameter(-10.0,10.0,-2.0,"a"),
+                           FloatParameter(-10.0,10.0,9.0,"b")],
                            "c")
         r = optimize!(rosenbrock, c, iterations = 10_000)
         a = r.minimum
