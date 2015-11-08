@@ -11,27 +11,25 @@ type NumberParameter{T <: Number} <: Parameter
     value::T
     name::ASCIIString
 
-    function NumberParameter(min::T, max::T, value::T, name::ASCIIString)
+    function call{T <: Number}(::Type{NumberParameter{T}}, min::T, max::T, value::T, name::ASCIIString)
         if min > max
             error("invalid bounds: min > max")
         elseif value < min || value > max
             error("value out of bounds.")
-        else
-            new(min, max, value, name)
         end
+        new{T}(min, max, value, name)
     end
-end
-
-function NumberParameter{T <: Number}(min::T, max::T, value::T, name::ASCIIString)
-    NumberParameter{T}(min, max, value, name)
-end
-
-function NumberParameter{T <: Number}(value::T, name::ASCIIString)
-    NumberParameter{T}(value, value, value, name)
-end
-
-function NumberParameter{T <: Number}(min::T, max::T, name::ASCIIString)
-    NumberParameter{T}(min, max, rand_in(min, max), name)
+    
+    function call{T <: Number}(::Type{NumberParameter{T}}, value::T, name::ASCIIString)
+        new{T}(value, value, value, name)
+    end
+    
+    function call{T <: Number}(::Type{NumberParameter{T}}, min::T, max::T, name::ASCIIString)
+        if min > max
+            error("invalid bounds: min > max")
+        end
+        new{T}(min, max, rand_in(min, max), name)
+    end
 end
 
 type EnumParameter{P <: Parameter, T <: AbstractArray} <: Parameter

@@ -15,18 +15,18 @@ facts("[NumberParameter]") do
         @fact (typeof(p.max)   == Float32)            --> true
         @fact (typeof(p.value) == Float32)            --> true
         @fact (typeof(p) <: NumberParameter{Float32}) --> true
-        p = NumberParameter(1, 7, 2, "test")
+        p = NumberParameter{Int64}(1, 7, 2, "test")
         @fact (typeof(p) == NumberParameter{Int64})   --> true
-        p = NumberParameter(1.2, 7.2, 2.34, "test")
+        p = NumberParameter{Float64}(1.2, 7.2, 2.34, "test")
         @fact (typeof(p) == NumberParameter{Float64}) --> true
-        p = NumberParameter(1, "test")
+        p = NumberParameter{Int64}(1, "test")
         @fact (p.min == 1)                            --> true
         @fact (p.max == 1)                            --> true
-        p = NumberParameter(0, 10, "test")
+        p = NumberParameter{Int64}(0, 10, "test")
         @fact (0 <= p.value <= 10)                    --> true
     end
     context("neighbor!") do
-        p = NumberParameter(1, 200, 100, "test")
+        p = NumberParameter{Int64}(1, 200, 100, "test")
         n = p.value
         neighbor!(p)
         @fact n                                       --> not(exactly(p.value))
@@ -36,7 +36,7 @@ facts("[NumberParameter]") do
         n = p.value
         neighbor!(p, 8, 1)
         @fact n                                       --> not(exactly(p.value))
-        p = NumberParameter(1.332, 60.2, 44.3, "test")
+        p = NumberParameter{Float64}(1.332, 60.2, 44.3, "test")
         n = p.value
         neighbor!(p)
         @fact n                                       --> not(exactly(p.value))
