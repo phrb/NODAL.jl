@@ -3,36 +3,29 @@ type Configuration{T <: Parameter} <: Parameter
     name::ASCIIString
     value::Dict{ASCIIString, Any}
 
-    Configuration(parameters::Array{T, 1}, name::ASCIIString) = begin
+    function call{T <: Parameter}(::Type{Configuration}, parameters::Dict{ASCIIString, T}, name::ASCIIString)
+        values = Dict{ASCIIString, Any}()
+        for key in keys(parameters)
+            @inbounds values[key] = parameters[key].value
+        end
+        new{T}(parameters, name, values)
+
+    end
+
+    function call{T <: Parameter}(::Type{Configuration}, parameters::Array{T, 1}, name::ASCIIString)
         params = Dict{ASCIIString, T}()
         values = Dict{ASCIIString, Any}()
         for parameter in parameters
             @inbounds params[parameter.name] = parameter
             @inbounds values[parameter.name] = parameter.value
         end
-        new(params, name, values)
+        new{T}(params, name, values)
     end
 
-    Configuration(parameters::Dict{ASCIIString, T}, name::ASCIIString) = begin
-        values = Dict{ASCIIString, Any}()
-        for key in keys(parameters)
-            @inbounds values[key] = parameters[key].value
-        end
-        new(parameters, name, values)
+    function call(::Type{Configuration}, name::ASCIIString)
+        params = Dict{ASCIIString, Parameter}()
+        new{Parameter}(params, name, params)
     end
-end
-
-Configuration{T <: Parameter}(parameters::Array{T, 1}, name::ASCIIString) = begin
-    Configuration{T}(parameters, name)
-end
-
-Configuration{T <: Parameter}(parameters::Dict{ASCIIString, T}, name::ASCIIString) = begin
-    Configuration{T}(parameters, name)
-end
-
-Configuration(name::ASCIIString) = begin
-    params = Dict{ASCIIString, Parameter}()
-    Configuration{Parameter}(params, name)
 end
 
 Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin

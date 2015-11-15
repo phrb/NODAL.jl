@@ -86,7 +86,7 @@ facts("[Configuration]") do
         neighbor!(c)
         @fact v                                              --> not(exactly(c["i0"].value))
     end
-    context("update! and convert!") do
+    context("update! and convert") do
         c     = Configuration("test")
         c["test"] = IntegerParameter(1, 2323, 2, "i0")
         a     = convert(Array{Parameter}, c)
