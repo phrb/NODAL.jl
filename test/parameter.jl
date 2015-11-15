@@ -276,7 +276,7 @@ facts("[PermutationParameter]") do
         neighbor!(p)
         print(p)
         print(p)
-        neighbor!(p, 2)
+        neighbor!(p, distance = 2)
         print(p)
         @fact p.value != b                        --> true
         @fact p.size == length(b)                 --> true
