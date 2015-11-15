@@ -28,7 +28,7 @@ type Configuration{T <: Parameter} <: Parameter
     end
 end
 
-Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = begin
+function Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration)
     parameter_array = T[]
     for key in collect(keys(configuration.parameters))
         push!(parameter_array, configuration[key])
@@ -36,7 +36,7 @@ Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration) = b
     parameter_array
 end
 
-Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{ASCIIString}) = begin
+function Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{ASCIIString})
     parameter_array = T[]
     for key in collect(keys(configuration.value))
         parameter = configuration[key]
@@ -46,10 +46,10 @@ Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::A
     parameter_array
 end
 
-getindex(configuration::Configuration, index::ASCIIString) = begin
+function getindex(configuration::Configuration, index::ASCIIString)
     configuration.parameters[index]
 end
 
-setindex!{T <: Parameter}(configuration::Configuration, value::T, index::ASCIIString) = begin
+function setindex!{T <: Parameter}(configuration::Configuration, value::T, index::ASCIIString)
     configuration.parameters[index] = value
 end
