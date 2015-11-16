@@ -60,7 +60,7 @@ args[:array] = rand(array_size)
 # Making sure code is already compiled.
 @elapsed quicksort!(rand(10), 5)
 
-configuration = Configuration([NumberParameter(0, array_size, cutoff, "cutoff")],
+configuration = Configuration([IntegerParameter(0, array_size, cutoff, "cutoff")],
                                "Sorting Cutoff")
 
 methods     = [:simulated_annealing,

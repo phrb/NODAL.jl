@@ -5,8 +5,8 @@
     end
 end
 
-configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
-                               NumberParameter(-2.0, 2.0, 0.0,"i1")],
+configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0,"i0"),
+                               FloatParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
 methods     = [:simulated_annealing,
                :iterative_first_improvement,
