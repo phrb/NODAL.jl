@@ -1,10 +1,8 @@
 function get_new_best(results::Array{RemoteRef}, best::Result)
     for reference in results
-        if isready(reference)
-            partial = take!(reference)
-            if partial.cost_minimum < best.cost_minimum
-                best = deepcopy(partial)
-            end
+        partial = take!(reference)
+        if partial.cost_minimum < best.cost_minimum
+            best = deepcopy(partial)
         end
     end
     best

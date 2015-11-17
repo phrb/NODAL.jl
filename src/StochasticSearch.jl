@@ -9,9 +9,10 @@ module StochasticSearch
            PermutationParameter,
            EnumParameter,
            StringParameter,
+           BoolParameter,
            Configuration,
            Result,
-           BoolParameter
+           ResultChannel
 
     # Methods
     export perturb!,
@@ -48,10 +49,14 @@ module StochasticSearch
 
 
     # New Methods for Base Functions
-    import Base.convert,
-           Base.show,
-           Base.getindex,
-           Base.setindex!
+    import Base: convert,
+                 show,
+                 getindex,
+                 setindex!,
+                 put!,
+                 take!,
+                 fetch,
+                 isready
 
     # Types
     include("core/parameters.jl")
@@ -96,4 +101,5 @@ module StochasticSearch
     include("util/random.jl")
     include("util/show.jl")
     include("util/chooseproc.jl")
+    include("util/resultchannel.jl")
 end
