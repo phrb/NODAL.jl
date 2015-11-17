@@ -1,19 +1,20 @@
 function initialize_search_tasks!(parameters::Dict{Symbol, Any})
-    cost        = parameters[:cost]
-    args        = parameters[:cost_args]
-    instances   = parameters[:instances]
-    methods     = parameters[:methods]
-    initial_x   = parameters[:initial_config]
-    evaluations = parameters[:evaluations]
-    measurement = parameters[:measurement_method]
-    next_proc   = @task chooseproc()
+    cost         = parameters[:cost]
+    args         = parameters[:cost_args]
+    instances    = parameters[:instances]
+    methods      = parameters[:methods]
+    initial_x    = parameters[:initial_config]
+    evaluations  = parameters[:evaluations]
+    measurement  = parameters[:measurement_method]
+    channel_size = parameters[:channel_size]
+    next_proc    = @task chooseproc()
 
-    instance_id = 1
-    results     = RemoteRef[]
+    instance_id  = 1
+    results      = RemoteRef[]
 
     for i = 1:length(methods)
         for j = 1:instances[i]
-            push!(results, RemoteRef())
+            push!(results, RemoteRef(() -> Channel{Result}(channel_size)))
             reference                   = results[instance_id]
             costs                       = zeros(evaluations)
             parameters[:costs]          = costs

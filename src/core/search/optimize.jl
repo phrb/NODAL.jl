@@ -17,6 +17,9 @@ function optimize(parameters::Dict{Symbol, Any})
     if !haskey(parameters, :cost_args)
         parameters[:cost_args] = Dict{Symbol, Any}()
     end
+    if !haskey(parameters, :channel_size)
+        parameters[:channel_size] = 4096
+    end
 
     criterion_function = parameters[:stopping_criterion]
     if criterion_function == iterations_criterion
