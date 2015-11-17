@@ -26,10 +26,11 @@ function initialize_search_tasks!(parameters::Dict{Symbol, Any})
                                                  initial_x, initial_cost, 
                                                  1, 1, 1, false)
 
-            push!(results, RemoteRef(() -> ResultChannel(initial_result)))
+            worker                      = consume(next_proc)
+            push!(results, RemoteRef(() -> ResultChannel(initial_result), worker))
 
             reference                   = results[instance_id]
-            remotecall(consume(next_proc), eval(methods[i]),
+            remotecall(worker, eval(methods[i]),
                        deepcopy(parameters), reference)
             instance_id += 1
         end
