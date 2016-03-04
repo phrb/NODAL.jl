@@ -12,7 +12,8 @@ module StochasticSearch
            BoolParameter,
            Configuration,
            Result,
-           ResultChannel
+           ResultChannel,
+           Run
 
     # Methods
     export perturb!,
@@ -61,6 +62,7 @@ module StochasticSearch
     # Types
     include("core/parameters.jl")
     include("core/configuration.jl")
+    include("core/run.jl")
 
     # Methods
     include("core/perturb!.jl")
