@@ -1,41 +1,9 @@
-function optimize(parameters::Dict{Symbol, Any})
-    if !haskey(parameters, :stopping_criterion)
-        parameters[:stopping_criterion] = iterations_criterion
-    end
-    if !haskey(parameters, :measurement_method)
-        parameters[:measurement_method] = measure_mean!
-    end
-    if !haskey(parameters, :evaluations)
-        parameters[:evaluations] = 1
-    end
-    if !haskey(parameters, :iterations)
-        parameters[:iterations] = 1_000
-    end
-    if !haskey(parameters, :report_after)
-        parameters[:report_after] = 333
-    end
-    if !haskey(parameters, :cost_args)
-        parameters[:cost_args] = Dict{Symbol, Any}()
-    end
-    if !haskey(parameters, :channel_size)
-        parameters[:channel_size] = 4096
-    end
-
-    criterion_function = parameters[:stopping_criterion]
-    if criterion_function == iterations_criterion
-        duration = parameters[:iterations]
-    elseif criterion_function == elapsed_time_criterion
-        duration = parameters[:seconds]
-    end
-
-    stopping_criterion = @task criterion_function(duration)
-    report_after       = parameters[:report_after]
-
-    results            = initialize_search_tasks!(parameters)
-
+function optimize(tuning_run::Run)
+    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
+    stop               = !consume(stopping_criterion)
+    results            = initialize_search_tasks!(tuning_run)
     best               = get_new_best(results)
     iteration          = 1
-    stop               = !consume(stopping_criterion)
     report             = false
     start_time         = time()
     produce(best)
@@ -44,7 +12,7 @@ function optimize(parameters::Dict{Symbol, Any})
         iteration              += 1
         best.current_iteration  = iteration
         stop                    = !consume(stopping_criterion)
-        delta_t                 = round(Int, time()) % report_after
+        delta_t                 = round(Int, time()) % tuning_run.report_after
         if stop
             best.is_final     = true
             best.current_time = time() - start_time

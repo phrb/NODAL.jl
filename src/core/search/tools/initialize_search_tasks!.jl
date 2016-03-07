@@ -1,37 +1,29 @@
-function initialize_search_tasks!(parameters::Dict{Symbol, Any})
-    cost         = parameters[:cost]
-    args         = parameters[:cost_args]
-    instances    = parameters[:instances]
-    methods      = parameters[:methods]
-    initial_x    = parameters[:initial_config]
-    evaluations  = parameters[:evaluations]
-    measurement  = parameters[:measurement_method]
-    next_proc    = @task chooseproc()
+function initialize_search_tasks!(tuning_run::Run)
+    next_proc      = @task chooseproc()
 
-    instance_id  = 1
-    results      = RemoteRef[]
+    instance_id    = 1
+    results        = RemoteRef[]
 
-    for i = 1:length(methods)
-        for j = 1:instances[i]
-            costs                       = zeros(evaluations)
-            parameters[:costs]          = costs
+    for i = 1:size(tuning_run.methods, 1)
+        for j = 1:tuning_run.methods[i, 2]
+            tuning_run.cost_values    = zeros(tuning_run.cost_evaluations)
 
-            initial_x                   = perturb!(initial_x)
-            parameters[:initial_config] = initial_x
+            tuning_run.starting_point = perturb!(tuning_run.starting_point)
+            tuning_run.starting_cost  = tuning_run.measurement_method(tuning_run,
+                                                                      tuning_run.starting_point)
 
-            initial_cost                = measurement(parameters, initial_x)
-            parameters[:initial_cost]   = initial_cost
+            initial_result            = Result("Initialize",
+                                               tuning_run.starting_point,
+                                               tuning_run.starting_point,
+                                               tuning_run.starting_cost,
+                                               1, 1, 1, false)
 
-            initial_result              = Result("Initialize", initial_x, 
-                                                 initial_x, initial_cost, 
-                                                 1, 1, 1, false)
-
-            worker                      = consume(next_proc)
+            worker                    = consume(next_proc)
             push!(results, RemoteRef(() -> ResultChannel(initial_result), worker))
 
-            reference                   = results[instance_id]
-            remotecall(worker, eval(methods[i]),
-                       deepcopy(parameters), reference)
+            reference                 = results[instance_id]
+            remotecall(worker, eval(tuning_run.methods[i, 1]),
+                       deepcopy(tuning_run), reference)
             instance_id += 1
         end
     end

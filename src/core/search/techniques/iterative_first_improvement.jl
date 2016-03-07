@@ -1,36 +1,25 @@
-function iterative_first_improvement(parameters::Dict{Symbol, Any},
-                                     reference::RemoteRef)
-    if !haskey(parameters, :cutoff)
-        parameters[:cutoff] = 1000
-    end
-    initial_x  = parameters[:initial_config]
-    cost_calls = parameters[:evaluations]
-    iterations = parameters[:iterations]
-    name       = "Iterative First Improvement"
-    iteration  = 0
-
-    criterion_function = parameters[:stopping_criterion]
-    if criterion_function == iterations_criterion
-        duration = parameters[:iterations]
-    elseif criterion_function == elapsed_time_criterion
-        duration = parameters[:seconds]
-    end
-
-    stopping_criterion = @task criterion_function(duration)
+function iterative_first_improvement(tuning_run::Run,
+                                     reference::RemoteRef;
+                                     cutoff::Integer = 10_000)
+    initial_x          = tuning_run.starting_point
+    name               = "Iterative First Improvement"
+    iteration          = 1
+    cost_calls         = tuning_run.cost_evaluations
+    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
     stop               = !consume(stopping_criterion)
 
     while !stop
-        iteration                   += 1
-        result                       = first_improvement(parameters)
-        cost_calls                  += result.cost_calls
-        result.cost_calls            = cost_calls
-        result.start                 = initial_x
-        result.technique             = name
-        result.iterations            = iteration
-        result.current_iteration     = iteration
-        parameters[:initial_config]  = result.minimum
-        parameters[:initial_cost]    = result.cost_minimum
-        stop                         = !consume(stopping_criterion)
+        iteration                 += 1
+        result                     = first_improvement(tuning_run, cutoff = cutoff)
+        cost_calls                += result.cost_calls
+        result.cost_calls          = cost_calls
+        result.start               = initial_x
+        result.technique           = name
+        result.iterations          = iteration
+        result.current_iteration   = iteration
+        tuning_run.starting_point  = result.minimum
+        tuning_run.starting_cost   = result.cost_minimum
+        stop                       = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

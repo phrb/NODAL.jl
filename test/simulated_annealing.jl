@@ -8,17 +8,15 @@ facts("[Search]") do
         configuration = Configuration([FloatParameter(-2.0,2.0,0.0,"i0"),
                                        FloatParameter(-2.0,2.0,0.0,"i1")],
                                        "rosenbrock_config")
-        methods       = [:simulated_annealing]
-        instances     = [1]
-        parameters    = Dict(:cost               => rosenbrock,
-                             :initial_config     => configuration,
-                             :methods            => methods,
-                             :stopping_criterion => elapsed_time_criterion,
-                             :seconds            => 1,
-                             :measurement_method => sequential_measure_mean!,
-                             :instances          => instances)
 
-        search_task = @task optimize(parameters)
+        tuning_run = Run(cost               = rosenbrock,
+                         starting_point     = configuration,
+                         methods            = [[:simulated_annealing 2];],
+                         stopping_criterion = elapsed_time_criterion,
+                         duration           = 2,
+                         measurement_method = sequential_measure_mean!)
+
+        search_task = @task optimize(tuning_run)
         result = consume(search_task)
         print(result)
         while result.is_final == false

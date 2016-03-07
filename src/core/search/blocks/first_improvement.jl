@@ -1,19 +1,17 @@
-function first_improvement(parameters::Dict{Symbol, Any})
-    initial_x    = parameters[:initial_config]
-    initial_cost = parameters[:initial_cost]
-    cost_calls   = parameters[:evaluations]
-    evaluations  = parameters[:evaluations]
-    cutoff       = parameters[:cutoff]
+function first_improvement(tuning_run::Run;
+                           cutoff::Integer = 10_000)
+    initial_x    = tuning_run.starting_point
+    initial_cost = tuning_run.starting_cost
     x            = deepcopy(initial_x)
     x_proposal   = deepcopy(initial_x)
-    measurement  = parameters[:measurement_method]
     name         = "First Improvement"
-    iteration    = 0
+    cost_calls   = 0
+    iteration    = 1
     while iteration <= cutoff
-        iteration += 1
+        iteration  += 1
         neighbor!(x_proposal)
-        proposal    = @fetch (measurement(parameters, x_proposal))
-        cost_calls += evaluations
+        proposal    = @fetch (tuning_run.measurement_method(tuning_run, x_proposal))
+        cost_calls += tuning_run.cost_evaluations
         if proposal <= initial_cost
             update!(x, x_proposal.parameters)
             initial_cost = proposal

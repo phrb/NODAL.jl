@@ -1,26 +1,21 @@
-function measure_mean!(parameters::Dict{Symbol, Any}, x::Configuration)
-    f           = parameters[:cost]
-    args        = parameters[:cost_args]
-    evaluations = parameters[:evaluations]
-    results     = parameters[:costs]
+function measure_mean!(tuning_run::Run, x::Configuration)
     next_proc   = @task chooseproc()
     @sync begin
-        for i = 1:evaluations
+        for i = 1:tuning_run.cost_evaluations
             @async begin
-                results[i] = remotecall_fetch(consume(next_proc), f, x, args)
+                tuning_run.cost_values[i] = remotecall_fetch(consume(next_proc),
+                                                             tuning_run.cost,
+                                                             x,
+                                                             tuning_run.cost_arguments)
             end
         end
     end
-    mean(results)
+    mean(tuning_run.cost_values)
 end
 
-function sequential_measure_mean!(parameters::Dict{Symbol, Any}, x::Configuration)
-    f           = parameters[:cost]
-    args        = parameters[:cost_args]
-    evaluations = parameters[:evaluations]
-    results     = parameters[:costs]
-    for i = 1:evaluations
-        results[i] = f(x, args)
+function sequential_measure_mean!(tuning_run::Run, x::Configuration)
+   for i = 1:tuning_run.cost_evaluations
+        tuning_run.cost_values[i] = tuning_run.cost(x, tuning_run.cost_arguments)
     end
-    mean(results)
+    mean(tuning_run.cost_values)
 end

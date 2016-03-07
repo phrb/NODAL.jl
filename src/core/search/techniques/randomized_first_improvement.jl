@@ -1,44 +1,30 @@
-function randomized_first_improvement(parameters::Dict{Symbol, Any},
-                                      reference::RemoteRef)
-    if !haskey(parameters, :cutoff)
-        parameters[:cutoff] = 1000
-    end
-    if !haskey(parameters, :walk)
-        parameters[:walk] = 0.6
-    end
-    initial_x  = parameters[:initial_config]
-    cost_calls = parameters[:evaluations]
-    iterations = parameters[:iterations]
-    walk       = parameters[:walk]
-    name       = "Randomized First Improvement"
-    iteration  = 0
-
-    criterion_function = parameters[:stopping_criterion]
-    if criterion_function == iterations_criterion
-        duration = parameters[:iterations]
-    elseif criterion_function == elapsed_time_criterion
-        duration = parameters[:seconds]
-    end
-
-    stopping_criterion = @task criterion_function(duration)
+function randomized_first_improvement(tuning_run::Run,
+                                      reference::RemoteRef;
+                                      cutoff::Integer          = 10_000,
+                                      threshold::AbstractFloat = 0.6)
+    initial_x          = tuning_run.starting_point
+    cost_calls         = tuning_run.cost_evaluations
+    name               = "Randomized First Improvement"
+    iteration          = 1
+    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
     stop               = !consume(stopping_criterion)
 
     while !stop
         iteration += 1
-        if rand() <= walk
-            result = random_walk(parameters)
+        if rand() <= threshold
+            result = random_walk(tuning_run)
         else
-            result = first_improvement(parameters)
+            result = first_improvement(tuning_run, cutoff = cutoff)
         end
-        cost_calls                  += result.cost_calls
-        result.cost_calls            = cost_calls
-        result.start                 = initial_x
-        result.technique             = name
-        result.iterations            = iteration
-        result.current_iteration     = iteration
-        parameters[:initial_config]  = result.minimum
-        parameters[:initial_cost]    = result.cost_minimum
-        stop                         = !consume(stopping_criterion)
+        cost_calls                += result.cost_calls
+        result.cost_calls          = cost_calls
+        result.start               = initial_x
+        result.technique           = name
+        result.iterations          = iteration
+        result.current_iteration   = iteration
+        tuning_run.starting_point  = result.minimum
+        tuning_run.starting_cost   = result.cost_minimum
+        stop                       = !consume(stopping_criterion)
         put!(reference, result)
     end
 end

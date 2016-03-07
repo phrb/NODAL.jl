@@ -8,14 +8,12 @@ facts("[Search]") do
         configuration = Configuration([FloatParameter(-2.0,2.0,0.0,"i0"),
                                        FloatParameter(-2.0,2.0,0.0,"i1")],
                                        "rosenbrock_config")
-        methods       = [:iterative_greedy_construction]
-        instances     = [1]
-        parameters    = Dict(:cost           => rosenbrock,
-                             :initial_config => configuration,
-                             :methods        => methods,
-                             :instances      => instances)
 
-        search_task = @task optimize(parameters)
+        tuning_run    = Run(cost           = rosenbrock,
+                            starting_point = configuration,
+                            methods        = [[:iterative_greedy_construction 1];])
+
+        search_task = @task optimize(tuning_run)
         result = consume(search_task)
         print(result)
         while result.is_final == false
