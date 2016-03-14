@@ -1,9 +1,8 @@
 function first_improvement(tuning_run::Run;
                            cutoff::Integer = 10_000)
-    initial_x    = tuning_run.starting_point
     initial_cost = tuning_run.starting_cost
-    x            = deepcopy(initial_x)
-    x_proposal   = deepcopy(initial_x)
+    x            = deepcopy(tuning_run.starting_point)
+    x_proposal   = deepcopy(tuning_run.starting_point)
     name         = "First Improvement"
     cost_calls   = 0
     iteration    = 1
@@ -15,10 +14,10 @@ function first_improvement(tuning_run::Run;
         if proposal <= initial_cost
             update!(x, x_proposal.parameters)
             initial_cost = proposal
-            return Result(name, initial_x, x, initial_cost, iteration,
+            return Result(name, tuning_run.starting_point, x, initial_cost, iteration,
                           iteration, cost_calls, false)
         end
     end
-    Result(name, initial_x, x, initial_cost, iteration,
+    Result(name, tuning_run.starting_point, x, initial_cost, iteration,
            iteration, cost_calls, false)
 end
