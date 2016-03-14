@@ -21,12 +21,3 @@ function update!{T <: Parameter}(configuration::Configuration, parameters::Dict{
     update!(configuration)
     configuration
 end
-
-function update!{T <: Any}(configuration::Configuration, parameters::Array{T}, legend::Array{ASCIIString})
-    for i in 1:length(parameters)
-        @inbounds symbol = legend[i]
-        configuration[symbol].value = parameters[i]
-    end
-    update!(configuration)
-    configuration
-end

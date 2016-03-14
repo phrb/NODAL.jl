@@ -36,16 +36,6 @@ function Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configura
     parameter_array
 end
 
-function Base.convert{T <: Any}(::Type{Array{T}}, configuration::Configuration, legend::Array{ASCIIString})
-    parameter_array = T[]
-    for key in collect(keys(configuration.value))
-        parameter = configuration[key]
-        push!(parameter_array, parameter.value)
-        push!(legend, key)
-    end
-    parameter_array
-end
-
 function getindex(configuration::Configuration, index::ASCIIString)
     configuration.parameters[index]
 end
