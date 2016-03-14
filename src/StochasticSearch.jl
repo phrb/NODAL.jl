@@ -1,6 +1,5 @@
 VERSION >= v"0.4" && __precompile__()
 module StochasticSearch
-    using Optim
     # Types
     export Parameter,
            NumberParameter,
@@ -19,7 +18,6 @@ module StochasticSearch
     export perturb!,
            perturb_elements!,
            neighbor!,
-           optimize!,
            optimize,
            update!,
            unit_value,
@@ -95,9 +93,6 @@ module StochasticSearch
 
     # Optimize
     include("core/search/optimize.jl")
-
-    # Optim.jl interface
-    include("optim/optimize!.jl")
 
     # Utilities
     include("util/random.jl")
