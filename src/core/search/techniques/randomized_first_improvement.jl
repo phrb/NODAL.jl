@@ -2,7 +2,6 @@ function randomized_first_improvement(tuning_run::Run,
                                       reference::RemoteRef;
                                       cutoff::Integer          = 10_000,
                                       threshold::AbstractFloat = 0.6)
-    initial_x          = tuning_run.starting_point
     cost_calls         = tuning_run.cost_evaluations
     name               = "Randomized First Improvement"
     iteration          = 1
@@ -18,7 +17,7 @@ function randomized_first_improvement(tuning_run::Run,
         end
         cost_calls                += result.cost_calls
         result.cost_calls          = cost_calls
-        result.start               = initial_x
+        result.start               = tuning_run.starting_point
         result.technique           = name
         result.iterations          = iteration
         result.current_iteration   = iteration

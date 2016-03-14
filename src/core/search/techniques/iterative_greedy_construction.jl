@@ -1,8 +1,7 @@
 function iterative_greedy_construction(tuning_run::Run,
                                        reference::RemoteRef;
                                        cutoff::Integer = 10_000)
-    initial_x          = tuning_run.starting_point
-    key_set            = collect(keys(initial_x.parameters))
+    key_set            = collect(keys(tuning_run.starting_point.parameters))
     name               = "Iterative Greedy Construction"
     iteration          = 1
     cost_calls         = tuning_run.cost_evaluations
@@ -17,7 +16,7 @@ function iterative_greedy_construction(tuning_run::Run,
                                                              cutoff = cutoff)
             cost_calls                += result.cost_calls
             result.cost_calls          = cost_calls
-            result.start               = initial_x
+            result.start               = tuning_run.starting_point
             result.technique           = name
             result.iterations          = iteration
             result.current_iteration   = iteration

@@ -1,7 +1,6 @@
 function iterative_probabilistic_improvement(tuning_run::Run,
                                              reference::RemoteRef;
                                              threshold::AbstractFloat = 0.5)
-    initial_x          = tuning_run.starting_point
     cost_calls         = tuning_run.cost_evaluations
     iteration          = 1
     name               = "Iterative Probabilistic Improvement"
@@ -14,7 +13,7 @@ function iterative_probabilistic_improvement(tuning_run::Run,
                                                                threshold = threshold)
         cost_calls                += result.cost_calls
         result.cost_calls          = cost_calls
-        result.start               = initial_x
+        result.start               = tuning_run.starting_point
         result.technique           = name
         result.iterations          = iteration
         result.current_iteration   = iteration
