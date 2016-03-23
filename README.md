@@ -15,12 +15,12 @@ Pkg.add("StochasticSearch")
 ===
 ### Example
 The following is a very simple example. For more interesting examples, check [Tuning cutoff for Sorting Algorithms](https://github.com/phrb/StochasticSearch.jl/wiki/Tuning-the-Cutoff-for-Sorting-Algorithms) and [Using Optim.jl methods](https://github.com/phrb/StochasticSearch.jl/wiki/Using-Optim.jl-methods).
-First, let's define a a ```Configuration``` that will represent arguments for the [Rosenbrock](http://en.wikipedia.org/wiki/Rosenbrock_function) function. The configuration will have two ```NumberParameter```, which will be ```Float64``` values constrained to an interval:
+First, let's define a a ```Configuration``` that will represent arguments for the [Rosenbrock](http://en.wikipedia.org/wiki/Rosenbrock_function) function. The configuration will have two ```FloatParameter```s, which will be ```Float64``` values constrained to an interval:
 ```jl
 @everywhere using StochasticSearch
 
-configuration = Configuration([NumberParameter(-2.0, 2.0, 0.0,"i0"),
-                               NumberParameter(-2.0, 2.0, 0.0,"i1")],
+configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0,"i0"),
+                               FloatParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
 ```
 Here, the intervas are ```[-2.0, 2.0]``` for both parameters, and the parameters start at value ```0.0```. Now we define the Rosenbrock function. Our definition accepts a configuration as input and uses its parameters values, encoded as ```"i0"``` and ```"i1"```, to produce an output.
