@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
 
-StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing and Tabu Search. The package offers a limited interface to [Optim.jl](https://github.com/JuliaOpt/Optim.jl). StochasticSearch.jl is an ongoing project, and will implement more optimization and local search algorithms. The API provides tools for implementing parallel and distributed program autotuners.
+StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing and Tabu Search. StochasticSearch.jl is an ongoing project, and will implement more optimization and local search algorithms. The API provides tools for implementing parallel and distributed program autotuners.
 
 Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions and technique executions are distributed between `Julia` workers using `remotecall`s. It's possible to instantiate multiple instances of a search technique, or different techniques, that run on the same problem.
 
@@ -12,93 +12,103 @@ StochasticSearch.jl runs on Julia **v0.4.0**. From the Julia REPL, run:
 ```jl
 Pkg.add("StochasticSearch")
 ```
-===
-### Example
-The following is a very simple example. For more interesting examples, check [Tuning cutoff for Sorting Algorithms](https://github.com/phrb/StochasticSearch.jl/wiki/Tuning-the-Cutoff-for-Sorting-Algorithms) and [Using Optim.jl methods](https://github.com/phrb/StochasticSearch.jl/wiki/Using-Optim.jl-methods).
-First, let's define a a ```Configuration``` that will represent arguments for the [Rosenbrock](http://en.wikipedia.org/wiki/Rosenbrock_function) function. The configuration will have two ```FloatParameter```s, which will be ```Float64``` values constrained to an interval:
+If you want the latest version, which may be unstable, run instead:
 ```jl
-@everywhere using StochasticSearch
+Pkg.clone("StochasticSearch")
+```
+===
+### Example: The Rosenbrock Function
+The following is a very simple example, and you can find its source code [here](https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl). 
 
+We will optimize the [Rosenbrock](http://en.wikipedia.org/wiki/Rosenbrock_function) cost function. For this we must define a ```Configuration``` that represents the arguments to be tuned. We also have to create and configure a tuning run. First, let's import StochasticSearch and define the cost function:
+```jl
+@everywhere begin
+    using StochasticSearch
+    function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
+        return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
+    end
+end
+```
+We use the `@everywhere` macro to define the function in all Julia workers available.
+
+Cost functions must accept a `Configuration` and a `Dict{Symbol, Any}` as input. Our cost function simply ignores the parameter dictionary, and uses the `"i0"` and `"i1"` parameters of the received configuration to calculate a value. There is no restriction on `Configuration` parameter naming.
+
+Our configuration will have two ```FloatParameter```s, which will be ```Float64``` values constrained to an interval. The intervals are ```[-2.0, 2.0]``` for both parameters, and their values start at ```0.0```. Since we already used the names `"i0"` and `"i1"`, we name the parameters the same way:
+```jl
 configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0,"i0"),
                                FloatParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
 ```
-Here, the intervas are ```[-2.0, 2.0]``` for both parameters, and the parameters start at value ```0.0```. Now we define the Rosenbrock function. Our definition accepts a configuration as input and uses its parameters values, encoded as ```"i0"``` and ```"i1"```, to produce an output.
-
-Note that the package is imported with ```@everywhere```, because we want to load it in every worker that is available.
-
-Now, we write the Rosebrock function:
+Now we must configure a new tuning run using the `Run` type. There are many parameters to configure, but they all have default values. Since we won't be using them all, please see [Run](https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl)'s source code for further details.
 ```jl
-@everywhere function rosenbrock(x::Configuration)
-    return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
+tuning_run = Run(cost               = rosenbrock,
+                 starting_point     = configuration,
+                 methods            = [[:simulated_annealing 1];
+                                       [:iterative_first_improvement 1];
+                                       [:randomized_first_improvement 1];
+                                       [:iterative_greedy_construction 1];
+                                       [:iterative_probabilistic_improvement 1];])
+```
+The `methods` array defines the search methods, and their respective number of instances, that will be used in this tuning run. This example uses one instance of every implemented search technique. The search will start at the point defined by `starting_point`.
+
+We are ready to create a search task using the `@task` macro. For more information on how tasks work, please check the [Julia Documentation](http://docs.julialang.org/en/latest/manual/control-flow/#man-tasks). This new task will run the `optimize` method, which receives a tuning run configuration and runs the search techniques in background. The task will produce `optimize`'s current best result whenever we call `consume` on it:
+```jl
+search_task = @task optimize(tuning_run)
+result = consume(search_task)
+```
+The tuning run will use the default neighboring and perturbation methods implemented by StochasticSearch.jl to find new results. Now we can process the current result, in this case we just `print` it, and loop until `optimize` is done:
+```jl
+print(result)
+while result.is_final == false
+    result = consume(search_task)
+    print(result)
 end
 ```
-For the same reasons as before, we declare ```rosenbrock``` in every available worker.
-
-Now we are ready to use the ```search``` method, which could be called with just a ```Configuration``` and a function that accepts a ```Configuration``` as input. The function must also return a ```Float64```.
-
-We will also call ```search``` with specified ```iterations``` and ```report_after``` arguments, which will stop the task after a certain number of iterations, and make the task report back to us after fixed intervals.
+Running the complete example, we get:
 ```jl
-iterations   = 1_000
-report_after = 1_00
-
-result = @task search(rosenbrock,
-                      configuration,
-                      iterations   = iterations,
-                      report_after = report_after)
-```
-Without further configuration, 'search' will use the default neighboring and perturbation methods implemented by StochasticSearch.jl, and will optimize the configuration with the Simulated Annealing method. Since we wrapped ```search``` within a task, we must consume values from it to obtain the optimization results. For more information on how tasks work, check the [Julia Documentation](http://julia.readthedocs.org/en/latest/manual/control-flow/#tasks-aka-coroutines). Basically, we simply call ```consume``` to get an intermediate result, that can be processed or ignored. ```search``` will print in the terminal at every ```report_after``` iterations. The final piece of code is this:
-```jl
-partial = None
-for i = 0:iterations
-    partial = consume(result)
-end
-```
-Running the complete example program, we get:
-```jl
-% julia examples/rosenbrock.jl
----
-(other partial results)
----
-[Partial Result] [Cost] 0.156211 
-[Technique] Simulated Annealing [Found in Iteration]   342 
-[Current Iteration]   900
-
-[Final Result]        :
-[Technique]           : Simulated Annealing
-[Cost]                : 0.156211
-[Found in Iteration]  : 342
-[Function Calls]      : 342
-[Start Configuration]
-  [Configuration] Configuration{NumberParameter{Float64}}
-  (name: rosenbrock_config,
-    [Parameters]
-     ==========
-    ("i0",
-    [NumberParameter] NumberParameter{Float64}
-    (name: i0, min: -2.000000, max: 2.000000, value: 0.000000)
-)
-    ("i1",
-    [NumberParameter] NumberParameter{Float64}
-    (name: i1, min: -2.000000, max: 2.000000, value: 0.000000)
-)
-     =========
-  )
-[Minimum Configuration]
-  [Configuration] Configuration{NumberParameter{Float64}}
-  (name: rosenbrock_config,
-    [Parameters]
-     ==========
-    ("i0",
-    [NumberParameter] NumberParameter{Float64}
-    (name: i0, min: -2.000000, max: 2.000000, value: 1.371554)
-)
-    ("i1",
-    [NumberParameter] NumberParameter{Float64}
-    (name: i1, min: -2.000000, max: 2.000000, value: 1.867684)
-)
-     =========
-  )
-
+% julia --color=yes examples/rosenbrock/rosenbrock.jl
+[Result]
+Cost              : 40.122073057715546
+Found in Iteration: 1
+Current Iteration : 1
+Technique         : Initialize
+Function Calls    : 1
+  ***
+[Final Result]
+Cost                  : 0.03839419856300206
+Found in Iteration    : 237
+Current Iteration     : 1001
+Technique             : Simulated Annealing
+Function Calls        : 237
+Starting Configuration:
+  [Configuration]
+  name      : rosenbrock_config
+  parameters:
+    [NumberParameter]
+    name : i0
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.787244
+    ***
+    [NumberParameter]
+    name : i1
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.656131
+Minimum Configuration :
+  [Configuration]
+  name      : rosenbrock_config
+  parameters:
+    [NumberParameter]
+    name : i0
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.813772
+    ***
+    [NumberParameter]
+    name : i1
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.656131
 ```
 ===
