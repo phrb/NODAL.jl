@@ -8,27 +8,20 @@ end
 configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0,"i0"),
                                FloatParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
-methods     = [:simulated_annealing,
-               :iterative_first_improvement,
-               :randomized_first_improvement,
-               :iterative_greedy_construction,
-               :iterative_probabilistic_improvement]
 
-instances   = [1, 1, 1, 1, 1]
-iterations  = 1_000
+tuning_run = Run(cost               = rosenbrock,
+                 starting_point     = configuration,
+                 methods            = [[:simulated_annealing 1];
+                                       [:iterative_first_improvement 1];
+                                       [:randomized_first_improvement 1];
+                                       [:iterative_greedy_construction 1];
+                                       [:iterative_probabilistic_improvement 1];],
+                 stopping_criterion = elapsed_time_criterion,
+                 report_after       = 4,
+                 duration           = 30,
+                 measurement_method = sequential_measure_mean!)
 
-parameters = Dict(:cost               => rosenbrock,
-                  :cost_args          => Dict{Symbol, Any}(),
-                  :initial_config     => configuration,
-                  :iterations         => iterations,
-                  :report_after       => 50,
-                  :measurement_method => sequential_measure_mean!,
-                  :methods            => methods,
-                  :instances          => instances,
-                  :evaluations        => 1)
-
-search_task = @task optimize(parameters)
-
+search_task = @task optimize(tuning_run)
 result = consume(search_task)
 print(result)
 while result.is_final == false
