@@ -15,11 +15,7 @@ tuning_run = Run(cost               = rosenbrock,
                                        [:iterative_first_improvement 1];
                                        [:randomized_first_improvement 1];
                                        [:iterative_greedy_construction 1];
-                                       [:iterative_probabilistic_improvement 1];],
-                 stopping_criterion = elapsed_time_criterion,
-                 report_after       = 4,
-                 duration           = 30,
-                 measurement_method = sequential_measure_mean!)
+                                       [:iterative_probabilistic_improvement 1];])
 
 search_task = @task optimize(tuning_run)
 result = consume(search_task)
