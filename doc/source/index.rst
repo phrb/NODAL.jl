@@ -21,12 +21,14 @@ Contents:
 
     getting_started.rst
     examples.rst
+    types.rst
+    search_module.rst
+    measurement.rst
+
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
-
