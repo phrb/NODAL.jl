@@ -127,6 +127,11 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+else:
+    import juliadoc
+    extensions = ['juliadoc.julia', 'juliadoc.jlhelp']
+    html_theme_path = [juliadoc.get_theme_dir()]
+    html_sidebars = juliadoc.default_sidebars()
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
