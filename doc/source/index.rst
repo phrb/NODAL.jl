@@ -1,16 +1,26 @@
-.. StochasticSearch.jl documentation master file, created by
-   sphinx-quickstart on Thu Mar 24 16:26:38 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+StochasticSearch.jl
+=====================
 
-Welcome to StochasticSearch.jl's documentation!
-===============================================
+This Julia package provides tools and optimization algorithms for implementing
+different Stochastic Local Search methods, such as Simulated Annealing and Tabu
+Search. StochasticSearch.jl is an ongoing project, and will implement more
+optimization and local search algorithms. The API provides tools for
+implementing parallel and distributed program autotuners.
+
+You can use StochasticSearch.jl to optimize user-defined functions with a few
+Stochastic Local Search basic methods, that are composed by building blocks
+also provided in the package. The package distributes evaluations of functions
+and technique executions between Julia workers using ``remotecall``\s in
+different ``Tasks``\s. It is possible to have multiple instances of
+search techniques running on the same problem.
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
+    getting_started.rst
+    examples.rst
 
 
 Indices and tables
