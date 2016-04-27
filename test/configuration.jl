@@ -75,7 +75,7 @@ facts("[Configuration]") do
         neighbor!(c, d)
         @fact v                                              --> not(exactly(c["i0"].value))
         v = c["i0"].value
-        neighbor!(c, d, 9)
+        neighbor!(c, d, distance = 9)
         d = Dict{ASCIIString, Any}()
         d["i2"] = 5
         @fact_throws MethodError neighbor!(c, d)

@@ -4,8 +4,8 @@ function perturb!(bool::BoolParameter)
 end
 
 function perturb!(number::NumberParameter)
-    number.value = rand_in(number.min, number.max)
-    number
+    typeof(number.value) <: Integer ?
+    perturb!(number, 1) : perturb!(number, 1.)
 end
 
 function perturb!(number::NumberParameter, interval::Number)
@@ -26,6 +26,7 @@ end
 
 function perturb!(permutation::PermutationParameter)
     shuffle!(permutation.value)
+    permutation
 end
 
 function perturb!(permutation::PermutationParameter, interval::Int)

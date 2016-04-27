@@ -31,20 +31,20 @@ facts("[NumberParameter]") do
         neighbor!(p)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 8)
+        neighbor!(p, interval = 8)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 8, 1)
+        neighbor!(p, interval = 8, distance = 1)
         @fact n                                       --> not(exactly(p.value))
         p = NumberParameter{Float64}(1.332, 60.2, 44.3, "test")
         n = p.value
         neighbor!(p)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 3.2231)
+        neighbor!(p, interval = 3.2231)
         @fact n                                       --> not(exactly(p.value))
         n = p.value
-        neighbor!(p, 8.332, 1)
+        neighbor!(p, interval = 8.332, distance = 1)
         @fact n                                       --> not(exactly(p.value))
         @fact_throws MethodError neighbor!(p, 8.332, 20.2)
     end
@@ -78,7 +78,7 @@ facts("[NumberParameter]") do
         value    = 3
         interval = 10
         p = IntegerParameter(0, 100, value, "rand_test")
-        perturb!(p)
+        perturb!(p, 10)
         @fact (typeof(p.value) <: Integer)  --> true
         @fact (p.value <= p.max)            --> true
         @fact (p.value >= p.min)            --> true
@@ -126,7 +126,7 @@ facts("[NumberParameter]") do
         value    = 3.2
         interval = 50.6
         p = FloatParameter(0., 1000., value, "rand_test")
-        perturb!(p)
+        perturb!(p, 10.)
         @fact (typeof(p.value) <: AbstractFloat) --> true
         @fact (p.value <= p.max)                 --> true
         @fact (p.value >= p.min)                 --> true
@@ -276,7 +276,7 @@ facts("[PermutationParameter]") do
         neighbor!(p)
         print(p)
         print(p)
-        neighbor!(p, distance = 2)
+        neighbor!(p, interval = 2)
         print(p)
         @fact p.value != b                        --> true
         @fact p.size == length(b)                 --> true
