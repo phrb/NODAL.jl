@@ -66,18 +66,19 @@ args[:array] = rand(array_size)
 configuration = Configuration([IntegerParameter(0, array_size, cutoff, "cutoff")],
                                "Sorting Cutoff")
 
-tuning_run = Run(cost               = sorting_cutoff,
-                 cost_arguments     = args,
-                 cost_evaluations   = 4,
-                 starting_point     = configuration,
-                 methods            = [[:iterative_first_improvement 2];
-                                       [:iterative_greedy_construction 2];
-                                       [:iterative_probabilistic_improvement 2];
-                                       [:randomized_first_improvement 2];
-                                       [:simulated_annealing 2];],
-                 stopping_criterion = elapsed_time_criterion,
-                 duration           = 30,
-                 report_after       = 1)
+tuning_run = Run(cost                = sorting_cutoff,
+                 cost_arguments      = args,
+                 cost_evaluations    = 4,
+                 starting_point      = configuration,
+                 methods             = [[:iterative_first_improvement 2];
+                                        [:iterative_greedy_construction 2];
+                                        [:iterative_probabilistic_improvement 2];
+                                        [:randomized_first_improvement 2];
+                                        [:simulated_annealing 2];],
+                 stopping_criterion  = elapsed_time_criterion,
+                 duration            = 30,
+                 reporting_criterion = elapsed_time_reporting_criterion,
+                 report_after        = 6)
 
 search_task = @task optimize(tuning_run)
 

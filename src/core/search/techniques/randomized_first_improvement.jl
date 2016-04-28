@@ -6,7 +6,7 @@ function randomized_first_improvement(tuning_run::Run,
     name               = "Randomized First Improvement"
     iteration          = 1
     stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = !consume(stopping_criterion)
+    stop               = consume(stopping_criterion)
 
     while !stop
         iteration += 1
@@ -23,7 +23,7 @@ function randomized_first_improvement(tuning_run::Run,
         result.current_iteration   = iteration
         tuning_run.starting_point  = result.minimum
         tuning_run.starting_cost   = result.cost_minimum
-        stop                       = !consume(stopping_criterion)
+        stop                       = consume(stopping_criterion)
         put!(reference, result)
     end
 end

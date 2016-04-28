@@ -6,7 +6,7 @@ function iterative_greedy_construction(tuning_run::Run,
     iteration          = 1
     cost_calls         = tuning_run.cost_evaluations
     stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = !consume(stopping_criterion)
+    stop               = consume(stopping_criterion)
 
     while !stop
         iteration += 1
@@ -24,7 +24,7 @@ function iterative_greedy_construction(tuning_run::Run,
             tuning_run.starting_cost   = result.cost_minimum
             put!(reference, result)
         end
-        stop = !consume(stopping_criterion)
+        stop = consume(stopping_criterion)
         shuffle!(key_set)
     end
 end

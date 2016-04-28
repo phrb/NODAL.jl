@@ -6,6 +6,7 @@ type Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
     starting_point::C
     starting_cost::F
     report_after::I
+    reporting_criterion::Function
     measurement_method::Function
     stopping_criterion::Function
     duration::I
@@ -19,7 +20,8 @@ type Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
             cost_values::Array{F, 1}          = [0.0],
             starting_point::C                 = Configuration("empty"),
             starting_cost::F                  = 0.0,
-            report_after::I                   = 333,
+            report_after::I                   = 100,
+            reporting_criterion::Function     = iterations_reporting_criterion,
             measurement_method::Function      = measure_mean!,
             stopping_criterion::Function      = iterations_criterion,
             duration::I                       = 1_000,
@@ -33,6 +35,7 @@ type Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
                      starting_point,
                      starting_cost,
                      report_after,
+                     reporting_criterion,
                      measurement_method,
                      stopping_criterion,
                      duration,
