@@ -17,5 +17,3 @@ end
 function fetch(channel::ResultChannel)
     channel.current_result
 end
-
-isready(channel::ResultChannel) = true

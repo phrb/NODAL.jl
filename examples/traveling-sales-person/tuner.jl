@@ -1,7 +1,7 @@
 # Uncomment the following
 # line to run this example
 # with more julia workers:
-# addprocs(8)
+ addprocs(8)
 
 @everywhere begin
     using StochasticSearch
@@ -22,15 +22,16 @@ configuration = Configuration([PermutationParameter(tour ,"Tour")],
 
 tuning_run = Run(cost                = tour_cost,
                  starting_point      = configuration,
-                 methods             = [[:iterative_first_improvement 8];
-                                       [:iterative_greedy_construction 8];
-                                       [:iterative_probabilistic_improvement 8];
-                                       [:randomized_first_improvement 8];
-                                       [:simulated_annealing 8];],
+                 methods             = [[:iterative_first_improvement 4];
+                                       [:iterative_greedy_construction 4];
+                                       [:iterative_probabilistic_improvement 4];
+                                       [:randomized_first_improvement 4];
+                                       [:simulated_annealing 4];
+                                       [:iterated_local_search 4]],
                  stopping_criterion  = elapsed_time_criterion,
-                 duration            = 300,
+                 duration            = 600,
                  reporting_criterion = elapsed_time_reporting_criterion,
-                 report_after        = 10)
+                 report_after        = 30)
 
 search_task = @task optimize(tuning_run)
 

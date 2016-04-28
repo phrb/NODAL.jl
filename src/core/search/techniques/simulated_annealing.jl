@@ -20,7 +20,7 @@ function simulated_annealing(tuning_run::Run,
         result.iterations          = iteration
         result.current_iteration   = iteration
         tuning_run.starting_point  = result.minimum
-        tuning_run.starting_cost    = result.cost_minimum
+        tuning_run.starting_cost   = result.cost_minimum
         stop                       = consume(stopping_criterion)
         put!(reference, result)
     end

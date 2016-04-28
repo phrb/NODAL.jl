@@ -39,7 +39,8 @@ module StochasticSearch
            iterative_gredy_construction,
            iterative_first_improvement,
            randomized_first_improvement,
-           iterative_probabilistic_improvement
+           iterative_probabilistic_improvement,
+           iterated_local_search
 
     # Search Tools
     export initialize_search_tasks!,
@@ -87,6 +88,7 @@ module StochasticSearch
     include("core/search/techniques/randomized_first_improvement.jl")
     include("core/search/techniques/iterative_greedy_construction.jl")
     include("core/search/techniques/simulated_annealing.jl")
+    include("core/search/techniques/iterated_local_search.jl")
 
     # Tools
     include("core/search/tools/initialize_search_tasks!.jl")
