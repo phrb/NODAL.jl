@@ -1,3 +1,5 @@
+addprocs(4)
+
 @everywhere begin
     using StochasticSearch
 
@@ -41,9 +43,10 @@
     end
 
     function sorting_cutoff(config::Configuration, args::Dict{Symbol, Any})
-        A      = copy(args[:array])
         cutoff = config.value["cutoff"]
-        @elapsed quicksort!(A, cutoff)
+        time   = @elapsed quicksort!(args[:array], cutoff)
+        shuffle!(args[:array])
+        time
     end
 end
 
@@ -63,26 +66,20 @@ args[:array] = rand(array_size)
 configuration = Configuration([IntegerParameter(0, array_size, cutoff, "cutoff")],
                                "Sorting Cutoff")
 
-methods     = [:simulated_annealing,
-               :iterative_first_improvement,
-               :randomized_first_improvement,
-               :iterative_greedy_construction,
-               :iterative_probabilistic_improvement]
+tuning_run = Run(cost               = sorting_cutoff,
+                 cost_arguments     = args,
+                 cost_evaluations   = 4,
+                 starting_point     = configuration,
+                 methods            = [[:iterative_first_improvement 2];
+                                       [:iterative_greedy_construction 2];
+                                       [:iterative_probabilistic_improvement 2];
+                                       [:randomized_first_improvement 2];
+                                       [:simulated_annealing 2];],
+                 stopping_criterion = elapsed_time_criterion,
+                 duration           = 30,
+                 report_after       = 1)
 
-instances   = [10, 10, 10, 10, 10]
-
-parameters = Dict(:cost               => sorting_cutoff,
-                  :cost_args          => args,
-                  :initial_config     => configuration,
-                  :report_after       => 4,
-                  :stopping_criterion => elapsed_time_criterion,
-                  :seconds            => 30,
-                  :measurement_method => sequential_measure_mean!,
-                  :methods            => methods,
-                  :instances          => instances,
-                  :evaluations        => 4)
-
-search_task = @task optimize(parameters)
+search_task = @task optimize(tuning_run)
 
 result = consume(search_task)
 print(result)

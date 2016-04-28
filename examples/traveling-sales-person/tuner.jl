@@ -1,4 +1,7 @@
-#addprocs(15)
+# Uncomment the following
+# line to run this example
+# with more julia workers:
+# addprocs(4)
 
 @everywhere begin
     using StochasticSearch
@@ -25,7 +28,7 @@ tuning_run = Run(cost               = tour_cost,
                                        [:randomized_first_improvement 2];
                                        [:simulated_annealing 2];],
                  stopping_criterion = elapsed_time_criterion,
-                 duration           = 900,
+                 duration           = 300,
                  report_after       = 10)
 
 search_task = @task optimize(tuning_run)
