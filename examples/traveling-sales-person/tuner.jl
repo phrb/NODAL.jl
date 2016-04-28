@@ -1,3 +1,5 @@
+#addprocs(15)
+
 @everywhere begin
     using StochasticSearch
     function tour_cost(x::Configuration, parameters::Dict{Symbol, Any})
@@ -15,26 +17,18 @@ shuffle!(tour)
 configuration = Configuration([PermutationParameter(tour ,"Tour")],
                                "TSP Solution")
 
-methods     = [:iterative_first_improvement,
-               :iterative_greedy_construction,
-               :iterative_probabilistic_improvement,
-               :randomized_first_improvement,
-               :simulated_annealing]
+tuning_run = Run(cost               = tour_cost,
+                 starting_point     = configuration,
+                 methods            = [[:iterative_first_improvement 2];
+                                       [:iterative_greedy_construction 2];
+                                       [:iterative_probabilistic_improvement 2];
+                                       [:randomized_first_improvement 2];
+                                       [:simulated_annealing 2];],
+                 stopping_criterion = elapsed_time_criterion,
+                 duration           = 900,
+                 report_after       = 10)
 
-instances   = [2, 2, 2, 2, 2]
-
-parameters = Dict(:cost               => tour_cost,
-                  :cost_args          => Dict{Symbol, Any}(),
-                  :initial_config     => configuration,
-                  :report_after       => 4,
-                  :measurement_method => sequential_measure_mean!,
-                  :stopping_criterion => elapsed_time_criterion,
-                  :seconds            => 300,
-                  :methods            => methods,
-                  :instances          => instances,
-                  :evaluations        => 1)
-
-search_task = @task optimize(parameters)
+search_task = @task optimize(tuning_run)
 
 result = consume(search_task)
 print("$(result.current_time) ")
