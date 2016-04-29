@@ -1,14 +1,16 @@
 # Uncomment the following
 # line to run this example
 # with more julia workers:
- addprocs(8)
+addprocs(4)
 
 @everywhere begin
     using StochasticSearch
+
     function tour_cost(x::Configuration, parameters::Dict{Symbol, Any})
         result = float(readall(`./tour_cost $(x["Tour"].value)`))
         result
     end
+
 end
 
 tour = ["1"]
@@ -22,12 +24,7 @@ configuration = Configuration([PermutationParameter(tour ,"Tour")],
 
 tuning_run = Run(cost                = tour_cost,
                  starting_point      = configuration,
-                 methods             = [[:iterative_first_improvement 4];
-                                       [:iterative_greedy_construction 4];
-                                       [:iterative_probabilistic_improvement 4];
-                                       [:randomized_first_improvement 4];
-                                       [:simulated_annealing 4];
-                                       [:iterated_local_search 4]],
+                 methods             = [[iterated_local_search 4];],
                  stopping_criterion  = elapsed_time_criterion,
                  duration            = 600,
                  reporting_criterion = elapsed_time_reporting_criterion,

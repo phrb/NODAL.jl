@@ -1,9 +1,11 @@
+log_temperature(t::Real) = 1 / log(t)
+
 function iterated_local_search(tuning_run::Run,
                                reference::RemoteRef;
                                acceptance_criterion::Function = metropolis,
-                               subsidiary_search::Function    = simulated_annealing,
-                               subsidiary_iterations::Int     = 400,
-                               threshold::AbstractFloat       = 3.)
+                               temperature::Function          = log_temperature,
+                               subsidiary_iterations::Int     = 30,
+                               threshold::AbstractFloat       = 2.)
     name               = "Iterated Local Search"
     iteration          = 1
     cost_calls         = tuning_run.cost_evaluations
@@ -12,32 +14,33 @@ function iterated_local_search(tuning_run::Run,
 
     subsidiary_tuning_run                    = deepcopy(tuning_run)
     subsidiary_tuning_run.stopping_criterion = iterations_criterion
-    subsidiary_tuning_run.duration           = 500
+    subsidiary_tuning_run.duration           = subsidiary_iterations
+
+    result = probabilistic_improvement(subsidiary_tuning_run,
+                                       threshold = threshold)
 
     while !stop
-        iteration                += 1
-        subsidiary_initial_result = Result("Iterated Local Search",
-                                           subsidiary_tuning_run.starting_point,
-                                           subsidiary_tuning_run.starting_point,
-                                           subsidiary_tuning_run.starting_cost,
-                                           1, 1, 1, false)
-        channel = RemoteRef(() -> ResultChannel(subsidiary_initial_result), myid())
+        iteration += 1
 
-        subsidiary_search(subsidiary_tuning_run, channel)
+        for i = 1:subsidiary_tuning_run.duration
+            p                         = temperature(iteration)
+            result                    = probabilistic_improvement(subsidiary_tuning_run,
+                                                                  threshold = p)
+            cost_calls               += result.cost_calls
+            result.cost_calls         = cost_calls
+            result.start              = subsidiary_tuning_run.starting_point
+            result.technique          = name
+            result.iterations         = iteration
+            result.current_iteration  = iteration
 
-        result                                = take!(channel)
-        cost_calls                           += result.cost_calls
-        result.cost_calls                     = cost_calls
-        result.start                          = subsidiary_tuning_run.starting_point
-        result.technique                      = name
-        result.iterations                     = iteration
-        result.current_iteration              = iteration
-        subsidiary_tuning_run.starting_point  = result.minimum
-        subsidiary_tuning_run.starting_cost   = result.cost_minimum
-        put!(reference, result)
+            subsidiary_tuning_run.starting_point = result.minimum
+            subsidiary_tuning_run.starting_cost  = result.cost_minimum
 
-        result                     = probabilistic_improvement(subsidiary_tuning_run,
-                                                               threshold = threshold)
+            put!(reference, result)
+        end
+
+        result = probabilistic_improvement(subsidiary_tuning_run,
+                                           threshold = threshold)
 
         cost_calls                           += result.cost_calls
         result.cost_calls                     = cost_calls
@@ -48,6 +51,7 @@ function iterated_local_search(tuning_run::Run,
 
         subsidiary_tuning_run.starting_point  = result.minimum
         subsidiary_tuning_run.starting_cost   = result.cost_minimum
+
         stop                                  = consume(stopping_criterion)
         put!(reference, result)
     end
