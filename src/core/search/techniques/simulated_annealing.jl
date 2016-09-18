@@ -1,7 +1,7 @@
 log_temperature(t::Real) = 1 / log(t)
 
 function simulated_annealing(tuning_run::Run,
-                             reference::RemoteRef;
+                             reference::RemoteChannel;
                              temperature::Function = log_temperature)
     name               = "Simulated Annealing"
     iteration          = 1

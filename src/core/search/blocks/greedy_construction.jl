@@ -1,5 +1,5 @@
 function greedy_construction(tuning_run::Run,
-                             target::ASCIIString;
+                             target::String;
                              cutoff::Integer = 10_000)
     initial_cost = tuning_run.starting_cost
     x            = deepcopy(tuning_run.starting_point)

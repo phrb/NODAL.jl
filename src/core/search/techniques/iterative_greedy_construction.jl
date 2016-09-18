@@ -1,5 +1,5 @@
 function iterative_greedy_construction(tuning_run::Run,
-                                       reference::RemoteRef;
+                                       reference::RemoteChannel;
                                        cutoff::Integer = 10_000)
     key_set            = collect(keys(tuning_run.starting_point.parameters))
     name               = "Iterative Greedy Construction"

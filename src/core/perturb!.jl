@@ -52,7 +52,7 @@ function perturb!(configuration::Configuration)
     configuration
 end
 
-function perturb!(configuration::Configuration, intervals::Dict{ASCIIString, Any})
+function perturb!(configuration::Configuration, intervals::Dict{String, Any})
     for key in keys(intervals)
         @inbounds perturb!(configuration[key], intervals[key])
     end

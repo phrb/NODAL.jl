@@ -1,31 +1,31 @@
 type Configuration{T <: Parameter} <: Parameter
-    parameters::Dict{ASCIIString, T}
-    name::ASCIIString
-    value::Dict{ASCIIString, Any}
+    parameters::Dict{String, T}
+    name::String
+    value::Dict{String, Any}
 
-    function call{T <: Parameter}(::Type{Configuration}, parameters::Dict{ASCIIString, T}, name::ASCIIString)
-        values = Dict{ASCIIString, Any}()
+    function Configuration(parameters::Dict{String, T}, name::String, values::Dict{String, Any})
         for key in keys(parameters)
             @inbounds values[key] = parameters[key].value
         end
-        new{T}(parameters, name, values)
-
+        new(parameters, name, values)
     end
+end
 
-    function call{T <: Parameter}(::Type{Configuration}, parameters::Array{T, 1}, name::ASCIIString)
-        params = Dict{ASCIIString, T}()
-        values = Dict{ASCIIString, Any}()
-        for parameter in parameters
-            @inbounds params[parameter.name] = parameter
-            @inbounds values[parameter.name] = parameter.value
-        end
-        new{T}(params, name, values)
-    end
+function Configuration{T <: Parameter}(parameters::Dict{String, T}, name::String)
+    Configuration{T}(parameters, name, Dict{String, Any}())
+end
 
-    function call(::Type{Configuration}, name::ASCIIString)
-        params = Dict{ASCIIString, Parameter}()
-        new{Parameter}(params, name, params)
+function Configuration{T <: Parameter}(parameters::Array{T, 1}, name::String)
+    params = Dict{String, T}()
+    for parameter in parameters
+        @inbounds params[parameter.name] = parameter
     end
+    Configuration{T}(params, name, Dict{String, Any}())
+end
+
+function Configuration(name::String)
+    params = Dict{String, Parameter}()
+    Configuration{Parameter}(params, name, Dict{String, Any}())
 end
 
 function Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration)
@@ -36,10 +36,10 @@ function Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configura
     parameter_array
 end
 
-function getindex(configuration::Configuration, index::ASCIIString)
+function getindex(configuration::Configuration, index::String)
     configuration.parameters[index]
 end
 
-function setindex!{T <: Parameter}(configuration::Configuration, value::T, index::ASCIIString)
+function setindex!{T <: Parameter}(configuration::Configuration, value::T, index::String)
     configuration.parameters[index] = value
 end

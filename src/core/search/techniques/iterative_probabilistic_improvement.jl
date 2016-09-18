@@ -1,5 +1,5 @@
 function iterative_probabilistic_improvement(tuning_run::Run,
-                                             reference::RemoteRef;
+                                             reference::RemoteChannel;
                                              threshold::AbstractFloat = 2.)
     cost_calls         = tuning_run.cost_evaluations
     iteration          = 1

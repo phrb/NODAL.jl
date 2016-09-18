@@ -13,7 +13,7 @@ function update!{T <: Parameter}(configuration::Configuration, parameters::Array
     configuration
 end
 
-function update!{T <: Parameter}(configuration::Configuration, parameters::Dict{ASCIIString, T})
+function update!{T <: Parameter}(configuration::Configuration, parameters::Dict{String, T})
     key_set = collect(keys(parameters))
     for key in key_set
         configuration[key] = deepcopy(parameters[key])

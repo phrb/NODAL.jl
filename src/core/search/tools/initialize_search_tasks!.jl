@@ -2,7 +2,7 @@ function initialize_search_tasks!(tuning_run::Run)
     next_proc      = @task chooseproc()
 
     instance_id    = 1
-    results        = RemoteRef[]
+    results        = RemoteChannel[]
 
     tuning_run.cost_values    = zeros(tuning_run.cost_evaluations)
     tuning_run.starting_cost  = tuning_run.measurement_method(tuning_run,
@@ -16,7 +16,7 @@ function initialize_search_tasks!(tuning_run::Run)
     for i = 1:size(tuning_run.methods, 1)
         for j = 1:tuning_run.methods[i, 2]
             worker = consume(next_proc)
-            push!(results, RemoteRef(() -> ResultChannel(deepcopy(initial_result)), worker))
+            push!(results, RemoteChannel(() -> ResultChannel(deepcopy(initial_result)), worker))
 
             reference = results[instance_id]
             remotecall(worker, eval(tuning_run.methods[i, 1]),

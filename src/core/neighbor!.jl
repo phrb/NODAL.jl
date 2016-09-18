@@ -34,7 +34,7 @@ function neighbor!(permutation::PermutationParameter;
 end
 
 function neighbor!(configuration::Configuration,
-                   intervals::Dict{ASCIIString, Any}; distance::Int = 1)
+                   intervals::Dict{String, Any}; distance::Int = 1)
     key_set = collect(keys(intervals))
     target  = key_set[rand(1:length(key_set))]
     for i = 1:distance
@@ -56,7 +56,7 @@ function neighbor!(configuration::Configuration; distance::Int = 1)
     configuration
 end
 
-function neighbor!(configuration::Configuration, target::ASCIIString;
+function neighbor!(configuration::Configuration, target::String;
                    distance::Int = 1)
     for i = 1:distance
         if !(typeof(configuration[target]) <: StringParameter)

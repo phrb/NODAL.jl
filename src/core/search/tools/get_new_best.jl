@@ -1,4 +1,4 @@
-function get_new_best(results::Array{RemoteRef}, best::Result)
+function get_new_best(results::Array{RemoteChannel}, best::Result)
     for reference in results
         partial = take!(reference)
         if partial.cost_minimum < best.cost_minimum
@@ -8,6 +8,6 @@ function get_new_best(results::Array{RemoteRef}, best::Result)
     best
 end
 
-function get_new_best(results::Array{RemoteRef})
+function get_new_best(results::Array{RemoteChannel})
     take!(results[rand(1:length(results))])
 end

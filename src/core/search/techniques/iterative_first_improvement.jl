@@ -1,5 +1,5 @@
 function iterative_first_improvement(tuning_run::Run,
-                                     reference::RemoteRef;
+                                     reference::RemoteChannel;
                                      cutoff::Integer = 10_000)
     name               = "Iterative First Improvement"
     iteration          = 1

@@ -8,7 +8,7 @@ facts("[Configuration]") do
         c = Configuration(p, "test")
         @fact (c["test1"] == p[1])                   --> true
         @fact (c["test2"] == p[2])                   --> true
-        p = Dict{ASCIIString, Parameter}()
+        p = Dict{String, Parameter}()
         p["test1"] = StringParameter("value",  "test")
         p["test2"] = IntegerParameter(1, 5, 4, "test")
         c = Configuration(p, "test")
@@ -44,11 +44,11 @@ facts("[Configuration]") do
         @fact (typeof(r["i0"])             <: NumberParameter)   --> true
         @fact (typeof(r["i1"])             <: NumberParameter)   --> true
         @fact (typeof(r["i3"])             <: NumberParameter)   --> true
-        d = Dict{ASCIIString, Any}()
+        d = Dict{String, Any}()
         d["i0"]             = 3
         d["i1"]             = 4
         d["i3"]             = 2.3
-        d["test1"]          = Dict{ASCIIString, Any}()
+        d["test1"]          = Dict{String, Any}()
         d["test1"]["test3"] = 2
         @fact (typeof(perturb!(c, d)) <: Configuration)          --> true
         r = perturb!(c, d)
@@ -67,7 +67,7 @@ facts("[Configuration]") do
              IntegerParameter(4, 66, 55, "i1"),
              StringParameter("value", "i2"),
              FloatParameter(2.33, 85.33, 22.2, "i3")]
-        d = Dict{ASCIIString, Any}()
+        d = Dict{String, Any}()
         c = Configuration(l, "test")
         println(c)
         d["i0"] = 5
@@ -76,7 +76,7 @@ facts("[Configuration]") do
         @fact v                                              --> not(exactly(c["i0"].value))
         v = c["i0"].value
         neighbor!(c, d, distance = 9)
-        d = Dict{ASCIIString, Any}()
+        d = Dict{String, Any}()
         d["i2"] = 5
         @fact_throws MethodError neighbor!(c, d)
         @fact_throws MethodError neighbor!(c, d, 2)

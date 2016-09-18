@@ -1,5 +1,5 @@
 function randomized_first_improvement(tuning_run::Run,
-                                      reference::RemoteRef;
+                                      reference::RemoteChannel;
                                       cutoff::Integer          = 10_000,
                                       threshold::AbstractFloat = 0.6)
     cost_calls         = tuning_run.cost_evaluations

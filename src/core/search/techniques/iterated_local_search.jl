@@ -1,7 +1,7 @@
 log_temperature(t::Real) = 1 / log(t)
 
 function iterated_local_search(tuning_run::Run,
-                               reference::RemoteRef;
+                               reference::RemoteChannel;
                                acceptance_criterion::Function = metropolis,
                                temperature::Function          = log_temperature,
                                subsidiary_iterations::Int     = 30,
