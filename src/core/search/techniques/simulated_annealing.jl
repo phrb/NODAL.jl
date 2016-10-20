@@ -1,5 +1,3 @@
-log_temperature(t::Real) = 1 / log(t)
-
 function simulated_annealing(tuning_run::Run,
                              reference::RemoteChannel;
                              temperature::Function = log_temperature)

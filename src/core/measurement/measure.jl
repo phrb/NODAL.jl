@@ -3,8 +3,8 @@ function measure_mean!(tuning_run::Run, x::Configuration)
     @sync begin
         for i = 1:tuning_run.cost_evaluations
             @async begin
-                tuning_run.cost_values[i] = remotecall_fetch(consume(next_proc),
-                                                             tuning_run.cost,
+                tuning_run.cost_values[i] = remotecall_fetch(tuning_run.cost,
+                                                             consume(next_proc),
                                                              x,
                                                              tuning_run.cost_arguments)
             end

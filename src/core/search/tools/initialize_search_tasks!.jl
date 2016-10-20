@@ -19,7 +19,7 @@ function initialize_search_tasks!(tuning_run::Run)
             push!(results, RemoteChannel(() -> ResultChannel(deepcopy(initial_result)), worker))
 
             reference = results[instance_id]
-            remotecall(worker, eval(tuning_run.methods[i, 1]),
+            remotecall(eval(tuning_run.methods[i, 1]), worker,
                        deepcopy(tuning_run), reference)
             instance_id += 1
         end

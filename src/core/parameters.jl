@@ -11,24 +11,24 @@ type NumberParameter{T <: Number} <: Parameter
     value::T
     name::String
 
-    function call{T <: Number}(::Type{NumberParameter{T}}, min::T, max::T, value::T, name::String)
+    function NumberParameter(min::T, max::T, value::T, name::String)
         if min > max
             error("invalid bounds: min > max")
         elseif value < min || value > max
             error("value out of bounds.")
         end
-        new{T}(min, max, value, name)
+        new(min, max, value, name)
     end
-    
-    function call{T <: Number}(::Type{NumberParameter{T}}, value::T, name::String)
-        new{T}(value, value, value, name)
-    end
-    
-    function call{T <: Number}(::Type{NumberParameter{T}}, min::T, max::T, name::String)
+
+    function NumberParameter(min::T, max::T, name::String)
         if min > max
             error("invalid bounds: min > max")
         end
-        new{T}(min, max, rand_in(min, max), name)
+        new(min, max, rand_in(min, max), name)
+    end
+
+    function NumberParameter(value::T, name::String)
+        new(value, value, value, name)
     end
 end
 

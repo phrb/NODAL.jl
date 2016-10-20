@@ -48,7 +48,8 @@ module StochasticSearch
            elapsed_time_criterion,
            iterations_criterion,
            iterations_reporting_criterion,
-           elapsed_time_reporting_criterion
+           elapsed_time_reporting_criterion,
+           log_temperature
 
     # New Methods for Base Functions
     import Base: convert,
@@ -95,6 +96,7 @@ module StochasticSearch
     include("core/search/tools/get_new_best.jl")
     include("core/search/tools/stopping_criteria.jl")
     include("core/search/tools/reporting_criteria.jl")
+    include("core/search/tools/temperatures.jl")
 
     # Optimize
     include("core/search/optimize.jl")
