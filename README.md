@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
 [![GitHub version](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg)](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl)
 [![Documentation Status](https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest)](http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest)
-[![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.4.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.4)
+[![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.5.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5)
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
 
 StochasticSearch.jl is a julia package that provides tools and optimization algorithms for implementing different Stochastic Local Search methods, such as Simulated Annealing and Tabu Search. StochasticSearch.jl is an ongoing project, and will implement more optimization and local search algorithms. The API provides tools for implementing parallel and distributed program autotuners.
@@ -10,7 +10,7 @@ StochasticSearch.jl is a julia package that provides tools and optimization algo
 Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions and technique executions are distributed between `Julia` workers using `remotecall`s. It's possible to instantiate multiple instances of a search technique, or different techniques, that run on the same problem.
 
 ### Installing
-StochasticSearch.jl runs on Julia **v0.4.0**. From the Julia REPL, run:
+StochasticSearch.jl runs on Julia **v0.5.0**. From the Julia REPL, run:
 ```jl
 Pkg.add("StochasticSearch")
 ```
