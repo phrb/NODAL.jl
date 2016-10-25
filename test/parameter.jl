@@ -1,231 +1,231 @@
-using StochasticSearch, FactCheck
+using StochasticSearch, Base.Test
 
-facts("[NumberParameter]") do
-    context("constructor") do
+@testset "NumberParameter" begin
+    @testset "constructor" begin
         p = NumberParameter{Int8}(convert(Int8, 0), convert(Int8, 2),
                                   convert(Int8, 1), "test")
-        @fact (typeof(p.min)   == Int8)               --> true
-        @fact (typeof(p.max)   == Int8)               --> true
-        @fact (typeof(p.value) == Int8)               --> true
-        @fact (p.name          == "test")             --> true
-        @fact (typeof(p) <: NumberParameter{Int8})    --> true
+        @test typeof(p.min)   == Int8
+        @test typeof(p.max)   == Int8
+        @test typeof(p.value) == Int8
+        @test p.name          == "test"
+        @test typeof(p) <: NumberParameter{Int8}
         p = NumberParameter{Float32}(convert(Float32, 0), convert(Float32, 2),
                                      convert(Float32, 1), "test")
-        @fact (typeof(p.min)   == Float32)            --> true
-        @fact (typeof(p.max)   == Float32)            --> true
-        @fact (typeof(p.value) == Float32)            --> true
-        @fact (typeof(p) <: NumberParameter{Float32}) --> true
+        @test typeof(p.min)   == Float32
+        @test typeof(p.max)   == Float32
+        @test typeof(p.value) == Float32
+        @test typeof(p) <: NumberParameter{Float32}
         p = NumberParameter{Int64}(1, 7, 2, "test")
-        @fact (typeof(p) == NumberParameter{Int64})   --> true
+        @test typeof(p) == NumberParameter{Int64}
         p = NumberParameter{Float64}(1.2, 7.2, 2.34, "test")
-        @fact (typeof(p) == NumberParameter{Float64}) --> true
+        @test typeof(p) == NumberParameter{Float64}
         p = NumberParameter{Int64}(1, "test")
-        @fact (p.min == 1)                            --> true
-        @fact (p.max == 1)                            --> true
+        @test p.min == 1
+        @test p.max == 1
         p = NumberParameter{Int64}(0, 10, "test")
-        @fact (0 <= p.value <= 10)                    --> true
+        @test 0 <= p.value <= 10
     end
-    context("neighbor!") do
+    @testset "neighbor!" begin
         p = NumberParameter{Int64}(1, 200, 100, "test")
         n = p.value
         neighbor!(p)
-        @fact n                                       --> not(exactly(p.value))
+        @test n != p.value
         n = p.value
         neighbor!(p, interval = 8)
-        @fact n                                       --> not(exactly(p.value))
+        @test n != p.value
         n = p.value
         neighbor!(p, interval = 8, distance = 1)
-        @fact n                                       --> not(exactly(p.value))
+        @test n != p.value
         p = NumberParameter{Float64}(1.332, 60.2, 44.3, "test")
         n = p.value
         neighbor!(p)
-        @fact n                                       --> not(exactly(p.value))
+        @test n != p.value
         n = p.value
         neighbor!(p, interval = 3.2231)
-        @fact n                                       --> not(exactly(p.value))
+        @test n != p.value
         n = p.value
         neighbor!(p, interval = 8.332, distance = 1)
-        @fact n                                       --> not(exactly(p.value))
-        @fact_throws MethodError neighbor!(p, 8.332, 20.2)
+        @test n != p.value
+        @test_throws MethodError neighbor!(p, 8.332, 20.2)
     end
-    context("constructor") do
-        @fact (IntegerParameter <: NumberParameter)   --> true
+    @testset "IntegerParameter constructor" begin
+        @test IntegerParameter <: NumberParameter
         p = IntegerParameter(0, 10, 3, "test")
-        @fact (typeof(p) <: NumberParameter{Integer}) --> true
-        @fact (typeof(p) <: IntegerParameter)         --> true
-        @fact (p.min   == 0 )                         --> true
-        @fact (p.max   == 10)                         --> true
-        @fact (p.value == 3 )                         --> true
-        @fact (p.name  == "test")                     --> true
-        @fact_throws ErrorException IntegerParameter(3, 1, 2, "test")
-        @fact_throws ErrorException IntegerParameter(1, 3, 0, "test")
-        @fact_throws ErrorException IntegerParameter(1, 3, 4, "test")
-        @fact_throws MethodError    IntegerParameter("a", 3, 4, "test")
-        @fact_throws MethodError    IntegerParameter(1, 3, 2)
-        @fact_throws MethodError    IntegerParameter(1.0, 3, 4, "test")
+        @test typeof(p) <: NumberParameter{Integer}
+        @test typeof(p) <: IntegerParameter
+        @test p.min   == 0
+        @test p.max   == 10
+        @test p.value == 3
+        @test p.name  == "test"
+        @test_throws ErrorException IntegerParameter(3, 1, 2, "test")
+        @test_throws ErrorException IntegerParameter(1, 3, 0, "test")
+        @test_throws ErrorException IntegerParameter(1, 3, 4, "test")
+        @test_throws MethodError    IntegerParameter("a", 3, 4, "test")
+        @test_throws MethodError    IntegerParameter(1, 3, 2)
+        @test_throws MethodError    IntegerParameter(1.0, 3, 4, "test")
         p = IntegerParameter(convert(Int8, 0), convert(Int8, 2),
                              convert(Int8, 1), "test")
-        @fact (typeof(p) == NumberParameter{Integer}) --> true
-        @fact (typeof(p) <: IntegerParameter)         --> true
-        @fact (typeof(p.min)   == Int8)               --> true
-        @fact (typeof(p.max)   == Int8)               --> true
-        @fact (typeof(p.value) == Int8)               --> true
-        @fact (p.min   == 0)                          --> true
-        @fact (p.max   == 2)                          --> true
-        @fact (p.value == 1)                          --> true
+        @test typeof(p)       == NumberParameter{Integer}
+        @test typeof(p) <: IntegerParameter
+        @test typeof(p.min)   == Int8
+        @test typeof(p.max)   == Int8
+        @test typeof(p.value) == Int8
+        @test p.min           == 0
+        @test p.max           == 2
+        @test p.value         == 1
     end
-    context("perturb!") do
+    @testset "IntegerParameter perturb!" begin
         value    = 3
         interval = 10
         p = IntegerParameter(0, 100, value, "rand_test")
         perturb!(p, 10)
-        @fact (typeof(p.value) <: Integer)  --> true
-        @fact (p.value <= p.max)            --> true
-        @fact (p.value >= p.min)            --> true
+        @test typeof(p.value) <: Integer
+        @test p.value <= p.max
+        @test p.value >= p.min
         perturb!(p, interval)
         value = p.value
-        @fact (typeof(p.value) <: Integer)  --> true
-        @fact (p.value <= p.max)            --> true
-        @fact (p.value <= value + interval) --> true
-        @fact (p.value >= p.min)            --> true
-        @fact (p.value >= value - interval) --> true
+        @test typeof(p.value) <: Integer
+        @test p.value <= p.max
+        @test p.value <= value + interval
+        @test p.value >= p.min
+        @test p.value >= value - interval
         interval = 103
         perturb!(p, interval)
-        @fact (typeof(p.value) <: Integer)  --> true
-        @fact (p.value <= p.max)            --> true
-        @fact (p.value >= p.min)            --> true
+        @test typeof(p.value) <: Integer
+        @test p.value <= p.max
+        @test p.value >= p.min
         interval = -1
-        @fact_throws ErrorException perturb!(p, interval)
+        @test_throws ErrorException perturb!(p, interval)
         interval = 0
-        @fact_throws ErrorException perturb!(p, interval)
+        @test_throws ErrorException perturb!(p, interval)
     end
-    context("constructor") do
+    @testset "FloatParameter constructor" begin
         p = FloatParameter(0.223, 10.122, 3.12, "test")
-        @fact (p.min   == 0.223 ) --> true
-        @fact (p.max   == 10.122) --> true
-        @fact (p.value == 3.12  ) --> true
-        @fact (p.name  == "test") --> true
-        @fact_throws ErrorException FloatParameter(3.3, 1.223, 2.4, "test")
-        @fact_throws ErrorException FloatParameter(1.443, 3.2332, 1.442, "test")
-        @fact_throws ErrorException FloatParameter(1.23, 3.2, 3.23, "test")
-        @fact_throws MethodError    FloatParameter("a", 3, 4, "test")
-        @fact_throws MethodError    FloatParameter(1, 3, 2, "test")
-        @fact_throws MethodError    FloatParameter(1, 3, 2)
+        @test p.min   == 0.223
+        @test p.max   == 10.122
+        @test p.value == 3.12
+        @test p.name  == "test"
+        @test_throws ErrorException FloatParameter(3.3, 1.223, 2.4, "test")
+        @test_throws ErrorException FloatParameter(1.443, 3.2332, 1.442, "test")
+        @test_throws ErrorException FloatParameter(1.23, 3.2, 3.23, "test")
+        @test_throws MethodError    FloatParameter("a", 3, 4, "test")
+        @test_throws MethodError    FloatParameter(1, 3, 2, "test")
+        @test_throws MethodError    FloatParameter(1, 3, 2)
         p = FloatParameter(convert(Float32, 0), convert(Float32, 2),
                            convert(Float32, 1), "test")
-        @fact (typeof(p.min)   == Float32)                  --> true
-        @fact (typeof(p.max)   == Float32)                  --> true
-        @fact (typeof(p.value) == Float32)                  --> true
-        @fact (typeof(p) == NumberParameter{AbstractFloat}) --> true
-        @fact (typeof(p) <: FloatParameter)                 --> true
-        @fact (p.min   == 0)                                --> true
-        @fact (p.max   == 2)                                --> true
-        @fact (p.value == 1)                                --> true
+        @test typeof(p.min)   == Float32
+        @test typeof(p.max)   == Float32
+        @test typeof(p.value) == Float32
+        @test typeof(p) == NumberParameter{AbstractFloat}
+        @test typeof(p) <: FloatParameter
+        @test p.min   == 0
+        @test p.max   == 2
+        @test p.value == 1
     end
-    context("perturb!") do
+    @testset "FloatParameter perturb!" begin
         value    = 3.2
         interval = 50.6
         p = FloatParameter(0., 1000., value, "rand_test")
         perturb!(p, 10.)
-        @fact (typeof(p.value) <: AbstractFloat) --> true
-        @fact (p.value <= p.max)                 --> true
-        @fact (p.value >= p.min)                 --> true
+        @test typeof(p.value) <: AbstractFloat
+        @test p.value <= p.max
+        @test p.value >= p.min
         perturb!(p, interval)
         perturb!(p, interval)
         perturb!(p, interval)
         value = p.value
-        @fact (typeof(p.value) <: AbstractFloat) --> true
-        @fact (p.value <= value + interval)      --> true
-        @fact (p.value <= p.max)                 --> true
-        @fact (p.value >= p.min)                 --> true
-        @fact (p.value >= value - interval)      --> true
+        @test typeof(p.value) <: AbstractFloat
+        @test p.value <= value + interval
+        @test p.value <= p.max
+        @test p.value >= p.min
+        @test p.value >= value - interval
         interval = 103.0
         perturb!(p, interval)
         perturb!(p, interval)
         perturb!(p, interval)
-        @fact (typeof(p.value) <: AbstractFloat) --> true
-        @fact (p.value <= p.max)                 --> true
-        @fact (p.value >= p.min)                 --> true
+        @test typeof(p.value) <: AbstractFloat
+        @test p.value <= p.max
+        @test p.value >= p.min
         interval = -1.2
-        @fact_throws ErrorException perturb!(p, interval)
+        @test_throws ErrorException perturb!(p, interval)
         interval = 0
-        @fact_throws ErrorException perturb!(p, interval)
+        @test_throws ErrorException perturb!(p, interval)
     end
 end
 
-facts("[EnumParameter]") do
-    p = EnumParameter([IntegerParameter(1, 3, 2, "test")], "test")
-    @fact (typeof(p.current) == IntegerParameter)               --> true
-    @fact (typeof(p)         <: EnumParameter)                  --> true
-    p = EnumParameter([IntegerParameter(1, 3, 2, "test"),
-                       FloatParameter(1.1,2.3,1.4, "test")],
-                       "test")
-    @fact (typeof(p.current) <: NumberParameter)                --> true
-    @fact (typeof(p)         <: EnumParameter)                  --> true
-    p = EnumParameter([IntegerParameter(1, 3, 2, "test"),
-                       FloatParameter(1.1,2.3,1.4, "test"),
-                       StringParameter("value", "test")],
-                       "test")
-    @fact (typeof(p.current) <: Parameter)                      --> true
-    @fact (typeof(p)         <: EnumParameter)                  --> true
-    p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
-                       EnumParameter([StringParameter("b", "test")], "test"),
-                       EnumParameter([StringParameter("c", "test")], "test")],
-                       "test")
-    @fact (typeof(p)       <: EnumParameter)                    --> true
-    p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
-                       StringParameter("b", "test"),
-                       EnumParameter([StringParameter("c", "test")], "test")],
-                       "test")
-    println(p)
-    @fact (typeof(p)       <: EnumParameter)                    --> true
-    context("constructors") do
+@testset "EnumParameter" begin
+    @testset "constructor" begin
+        p = EnumParameter([IntegerParameter(1, 3, 2, "test")], "test")
+        @test typeof(p.current) == IntegerParameter
+        @test typeof(p)         <: EnumParameter
+        p = EnumParameter([IntegerParameter(1, 3, 2, "test"),
+                           FloatParameter(1.1,2.3,1.4, "test")],
+                           "test")
+        @test typeof(p.current) <: NumberParameter
+        @test typeof(p)         <: EnumParameter
+        p = EnumParameter([IntegerParameter(1, 3, 2, "test"),
+                           FloatParameter(1.1,2.3,1.4, "test"),
+                           StringParameter("value", "test")],
+                           "test")
+        @test typeof(p.current) <: Parameter
+        @test typeof(p)         <: EnumParameter
+        p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
+                           EnumParameter([StringParameter("b", "test")], "test"),
+                           EnumParameter([StringParameter("c", "test")], "test")],
+                           "test")
+        @test typeof(p)       <: EnumParameter
+        p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
+                           StringParameter("b", "test"),
+                           EnumParameter([StringParameter("c", "test")], "test")],
+                           "test")
+        print(p)
+        @test typeof(p)       <: EnumParameter
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            IntegerParameter(1, 6, 3, "test")], "test")
-        @fact (typeof(p)         <: EnumParameter)              --> true
-        @fact (typeof(p.values)  <: AbstractArray)              --> true
-        @fact (typeof(p.values)  == Array{IntegerParameter, 1}) --> true
-        @fact (p.values[1].value == 3)                          --> true
-        @fact (p.values[2].value == 3)                          --> true
-        @fact (p.values[1].name  == "test")                     --> true
-        @fact (p.values[2].name  == "test")                     --> true
-        @fact (p.name            == "test")                     --> true
+        @test typeof(p)         <: EnumParameter
+        @test typeof(p.values)  <: AbstractArray
+        @test typeof(p.values)  == Array{IntegerParameter, 1}
+        @test p.values[1].value == 3
+        @test p.values[2].value == 3
+        @test p.values[1].name  == "test"
+        @test p.values[2].name  == "test"
+        @test p.name            == "test"
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            IntegerParameter(1, 6, 2, "test")], 1, "test")
-        @fact (p.value           == 1)                          --> true
-        @fact (p.current.value   == 3)                          --> true
+        @test p.value           == 1
+        @test p.current.value   == 3
         p = EnumParameter([FloatParameter(1.2, 4.3, 3.2, "test"),
                            IntegerParameter(1, 6, 2, "test")], 1, "test")
-        @fact (typeof(p)         <: EnumParameter)              --> true
+        @test typeof(p)         <: EnumParameter
         p = EnumParameter([FloatParameter(1.2, 4.3, 3.2, "test"),
                            IntegerParameter(1, 6, 2, "test"),
                            StringParameter("value", "test")], "test")
-        @fact (typeof(p)         <: EnumParameter)              --> true
-        @fact_throws MethodError    EnumParameter([3, 4], "test")
-        @fact_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, "test")])
-        @fact_throws ErrorException EnumParameter([IntegerParameter(1, 4, 3, "test"),
+        @test typeof(p)         <: EnumParameter
+        @test_throws MethodError    EnumParameter([3, 4], "test")
+        @test_throws MethodError    EnumParameter([IntegerParameter(1, 4, 3, "test")])
+        @test_throws ErrorException EnumParameter([IntegerParameter(1, 4, 3, "test"),
                                                    IntegerParameter(1, 6, 3, "test")], 3, "test")
     end
-    context("perturb! and perturb_elements!") do
+    @testset "perturb! and perturb_elements!" begin
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            StringParameter("b", "test"),
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         perturb_elements!(p)
         perturb_elements!(p)
         perturb_elements!(p)
-        @fact (p.value == 2)                                --> true
+        @test p.value == 2
         p = EnumParameter([FloatParameter(1.1, 4.2, 3.221, "test"),
                            FloatParameter(2.3, 4.4, 3.1, "test")], "test")
         perturb!(p)
         perturb!(p)
         perturb!(p)
-        @fact (p.values[1].value == 3.221)                  --> true
+        @test p.values[1].value == 3.221
         p = EnumParameter([StringParameter("valuea", "test"),
                            StringParameter("valueb", "test")], "test")
         perturb!(p)
         perturb!(p)
         perturb!(p)
-        @fact (p.values[1].value == "valuea")               --> true
+        @test p.values[1].value == "valuea"
         p = EnumParameter([EnumParameter([StringParameter("a", "test")], "test"),
                            StringParameter("b", "test"),
                            IntegerParameter(1, 4, 3, "test"),
@@ -235,93 +235,97 @@ facts("[EnumParameter]") do
         perturb_elements!(p, 3, 2)
         perturb_elements!(p, 3, 2)
         perturb_elements!(p, 3, 2)
-        @fact (p.current == v)                              --> true
+        @test p.current == v
         v = p.values[3]
-        @fact (v.value <= v.max)                            --> true
-        @fact (v.value >= v.min)                            --> true
+        @test v.value <= v.max
+        @test v.value >= v.min
         perturb_elements!(p, [2, 3, 4])
         v = p.values[3]
-        @fact (v.value <= v.max)                            --> true
-        @fact (v.value >= v.min)                            --> true
-        @fact_throws MethodError    perturb_elements!(p, 2, 2)
-        @fact_throws MethodError    perturb_elements!(p, 2)
-        @fact_throws ErrorException perturb_elements!(p, [1,3,4,5,6,3])
+        @test v.value <= v.max
+        @test v.value >= v.min
+        @test_throws MethodError    perturb_elements!(p, 2, 2)
+        @test_throws MethodError    perturb_elements!(p, 2)
+        @test_throws ErrorException perturb_elements!(p, [1,3,4,5,6,3])
     end
-    context("neighbor!") do
+    @testset "neighbor!" begin
         p = EnumParameter([IntegerParameter(1, 4, 3, "test"),
                            StringParameter("b", "test"),
                            IntegerParameter(1, 6, 3, "test")], 2, "test")
         n = p.current
         neighbor!(p)
-        @fact n                                       --> not(exactly(p.value))
-        @fact_throws MethodError neighbor!(p, 8, 20)
-        @fact_throws MethodError neighbor!(p, 3.2231)
+        @test n != p.value
+        @test_throws MethodError neighbor!(p, 8, 20)
+        @test_throws MethodError neighbor!(p, 3.2231)
     end
 end
 
-facts("[PermutationParameter]") do
-    context("constructor") do
+@testset "PermutationParameter" begin
+    @testset "constructor" begin
         a = [1, 2, 3, 4, 5, 6]
         p = PermutationParameter(a, "test")
-        @fact (typeof(p) <: PermutationParameter) --> true
-        @fact (p.value == a)                      --> true
-        @fact (p.size == length(a))               --> true
+        @test typeof(p) <: PermutationParameter
+        @test p.value == a
+        @test p.size == length(a)
     end
-    context("neighbor!") do
+    @testset "neighbor!" begin
         a = [1, 2, 3, 4, 5, 6]
         b = [1, 2, 3, 4, 5, 6]
         p = PermutationParameter(a, "test")
-        @fact p.value == b                        --> true
+        @test p.value == b
         print(p)
         neighbor!(p)
         print(p)
         print(p)
         neighbor!(p, interval = 2)
         print(p)
-        @fact p.value != b                        --> true
-        @fact p.size == length(b)                 --> true
+        @test p.value != b
+        @test p.size == length(b)
     end
-    context("perturb!") do
+    @testset "perturb!" begin
         a = [1, 2, 3, 4, 5, 6]
         b = [1, 2, 3, 4, 5, 6]
         p = PermutationParameter(a, "test")
-        @fact p.value == b                        --> true
+        @test p.value == b
         print(p)
         perturb!(p)
         print(p)
-        @fact p.value != b                        --> true
-        @fact p.size == length(b)                 --> true
+        @test p.value != b
+        @test p.size == length(b)
     end
 end
 
-facts("[StringParameter]") do
-    p = StringParameter("value", "test")
-    @fact (typeof(p) == StringParameter) --> true
-    @fact (typeof(p) <: Parameter)       --> true
-    @fact (p.value == "value")           --> true
-    @fact (p.name  == "test")            --> true
-    @fact_throws MethodError perturb!(p)
-    @fact_throws MethodError StringParameter(2, "test")
-    @fact_throws MethodError StringParameter("value")
+@testset "StringParameter" begin
+    @testset "constructor" begin
+        p = StringParameter("value", "test")
+        @test typeof(p) == StringParameter
+        @test typeof(p) <: Parameter
+        @test p.value == "value"
+        @test p.name  == "test"
+        @test_throws MethodError perturb!(p)
+        @test_throws MethodError StringParameter(2, "test")
+        @test_throws MethodError StringParameter("value")
+    end
 end
 
-facts("[BoolParameter]") do
-    p = BoolParameter(false, "test")
-    @fact (typeof(p.value) == Bool)      --> true
-    p = BoolParameter(0, "test")
-    @fact (p.value == false)             --> true
-    p = BoolParameter(1, "test")
-    @fact (p.value == true)              --> true
-    @fact_throws MethodError BoolParameter("must have start value")
-    context("perturb!") do
+@testset "BoolParameter" begin
+    @testset "constructor" begin
+        p = BoolParameter(false, "test")
+        @test typeof(p.value) == Bool
+        p = BoolParameter(0, "test")
+        @test p.value == false
+        p = BoolParameter(1, "test")
+        @test p.value == true
+        @test_throws MethodError BoolParameter("must have start value")
+    end
+    @testset "perturb!" begin
         p = BoolParameter(false, "test")
         perturb!(p)
-        @fact (p.value == true)          --> true
+        @test p.value == true
     end
-    context("neighbor!") do
+    @testset "neighbor!" begin
         p = BoolParameter(false, "test")
         neighbor!(p)
-        @fact (p.value == true)          --> true
+        @test p.value == true
         print(p)
     end
 end
