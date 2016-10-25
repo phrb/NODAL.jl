@@ -1,8 +1,8 @@
-using StochasticSearch, FactCheck
+using StochasticSearch, Base.Test
 
-facts("[Run]") do
-    context("constructors") do
+@testset "Run" begin
+    @testset "constructors" begin
         tuning_run = Run()
-        @fact (typeof(tuning_run) <: Run) --> true
+        @test typeof(tuning_run) <: Run
     end
 end

@@ -1,7 +1,7 @@
-using StochasticSearch, FactCheck
+using StochasticSearch, Base.Test
 
-facts("[unit_value]") do
-    context("EnumParameter") do
+@testset "unit_value" begin
+    @testset "EnumParameter" begin
         p = EnumParameter([StringParameter("value", "i0"),
                            FloatParameter(1.3, 56.3, 3.3, "i1"),
                            IntegerParameter(1, 40, 3, "i3")],
@@ -9,24 +9,24 @@ facts("[unit_value]") do
         c = p.value
         u = unit_value(p)
         v = unit_value!(p, u)
-        @fact (unit_value!(p, u) == c)     --> true
-        @fact (1 <= v <= length(p.values)) --> true
+        @test unit_value!(p, u) == c
+        @test 1 <= v <= length(p.values)
     end
-    context("IntegerParameter") do
+    @testset "IntegerParameter" begin
         p = IntegerParameter(1, 40, 23, "i0")
         c = p.value
         u = unit_value(p)
         v = unit_value!(p, u)
-        @fact (unit_value!(p, u) == c)     --> true
-        @fact (p.min <= v <= p.max)        --> true
+        @test unit_value!(p, u) == c
+        @test p.min <= v <= p.max
     end
-    context("FloatParameter") do
+    @testset "FloatParameter" begin
         p = FloatParameter(1.0, 40.0, 23.0, "i0")
         c = p.value
         u = unit_value(p)
         v = unit_value!(p, u)
         # Inexact conversion.
-        @fact (p.min <= v <= p.max)        --> true
-        @fact (unit_value!(p, u) == c)     --> true
+        @test p.min <= v <= p.max
+        @test unit_value!(p, u) == c
     end
 end

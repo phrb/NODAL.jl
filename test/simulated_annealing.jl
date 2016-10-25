@@ -1,7 +1,7 @@
-using StochasticSearch, FactCheck, Base.Test
+using StochasticSearch, Base.Test
 
-facts("[Search]") do
-    context("optimize and simulated_annealing") do
+@testset "Search" begin
+    @testset "optimize and simulated_annealing" begin
         function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any} = Dict{Symbol, Any}())
             return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
         end
@@ -26,8 +26,8 @@ facts("[Search]") do
         rr = rosenbrock(result.minimum)
         rc = result.cost_minimum
         @test_approx_eq rc rr
-        @fact (rosenbrock(result.minimum) <= rosenbrock(configuration))   --> true
-        @fact_throws Exception optimize(rosenbrock, configuration, [:bozo_search])
+        @test rosenbrock(result.minimum) <= rosenbrock(configuration)
+        @test_throws Exception optimize(rosenbrock, configuration, [:bozo_search])
         println(rosenbrock(result.minimum))
     end
 end
