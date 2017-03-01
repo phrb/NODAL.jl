@@ -27,7 +27,7 @@ using StochasticSearch, Base.Test
         end
         rr = rosenbrock(result.minimum)
         rc = result.cost_minimum
-        @test_approx_eq rc rr
+        @test isapprox(rc, rr)
         @test rosenbrock(result.minimum) <= rosenbrock(configuration)
         @test_throws Exception optimize(rosenbrock, configuration, [:bozo_search])
         println(rosenbrock(result.minimum))
