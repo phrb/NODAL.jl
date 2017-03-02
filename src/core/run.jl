@@ -11,7 +11,7 @@ type Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
     stopping_criterion::Function
     duration::I
     methods::Array{Any, 2}
-    channel_size::I
+    channel::RemoteChannel
 end
 
 function Run{F <: AbstractFloat, I <: Integer, C <: Configuration}(;
@@ -27,7 +27,7 @@ function Run{F <: AbstractFloat, I <: Integer, C <: Configuration}(;
     stopping_criterion::Function      = iterations_criterion,
     duration::I                       = 1_000,
     methods::Array{Any, 2}            = [[:simulated_annealing 2];],
-    channel_size::I                   = 4096)
+    channel::RemoteChannel            = RemoteChannel(()->Channel{Result}(128)))
 
     Run{F, I, C}(cost,
                  cost_arguments,
@@ -41,5 +41,5 @@ function Run{F <: AbstractFloat, I <: Integer, C <: Configuration}(;
                  stopping_criterion,
                  duration,
                  methods,
-                 channel_size)
+                 channel)
 end

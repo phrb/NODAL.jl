@@ -1,13 +1,14 @@
 function iterative_probabilistic_improvement(tuning_run::Run,
-                                             reference::RemoteChannel;
+                                             channel::RemoteChannel;
                                              threshold::AbstractFloat = 2.)
-    cost_calls         = tuning_run.cost_evaluations
-    iteration          = 1
-    name               = "Iterative Probabilistic Improvement"
-    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = consume(stopping_criterion)
+    cost_calls = tuning_run.cost_evaluations
+    iteration  = 1
+    name       = "Iterative Probabilistic Improvement"
+    stop       = RemoteChannel(()->Channel{Bool}(1))
 
-    while !stop
+    @spawn tuning_run.stopping_criterion(tuning_run.duration, stop)
+
+    while !take!(stop)
         iteration                 += 1
         result                     = probabilistic_improvement(tuning_run,
                                                                threshold = threshold)
@@ -19,7 +20,8 @@ function iterative_probabilistic_improvement(tuning_run::Run,
         result.current_iteration   = iteration
         tuning_run.starting_point  = result.minimum
         tuning_run.starting_cost   = result.cost_minimum
-        stop                       = consume(stopping_criterion)
-        put!(reference, result)
+        put!(channel, result)
     end
+
+    close(stop)
 end

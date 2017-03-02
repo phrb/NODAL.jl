@@ -1,14 +1,15 @@
 function iterated_local_search(tuning_run::Run,
-                               reference::RemoteChannel;
+                               channel::RemoteChannel;
                                acceptance_criterion::Function = metropolis,
                                temperature::Function          = log_temperature,
                                subsidiary_iterations::Int     = 30,
                                threshold::AbstractFloat       = 2.)
-    name               = "Iterated Local Search"
-    iteration          = 1
-    cost_calls         = tuning_run.cost_evaluations
-    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = consume(stopping_criterion)
+    name       = "Iterated Local Search"
+    iteration  = 1
+    cost_calls = tuning_run.cost_evaluations
+    stop       = RemoteChannel(()->Channel{Bool}(1))
+
+    @spawn tuning_run.stopping_criterion(tuning_run.duration, stop)
 
     subsidiary_tuning_run                    = deepcopy(tuning_run)
     subsidiary_tuning_run.stopping_criterion = iterations_criterion
@@ -17,7 +18,7 @@ function iterated_local_search(tuning_run::Run,
     result = probabilistic_improvement(subsidiary_tuning_run,
                                        threshold = threshold)
 
-    while !stop
+    while !take!(stop)
         iteration += 1
 
         for i = 1:subsidiary_tuning_run.duration
@@ -34,7 +35,7 @@ function iterated_local_search(tuning_run::Run,
             subsidiary_tuning_run.starting_point = result.minimum
             subsidiary_tuning_run.starting_cost  = result.cost_minimum
 
-            put!(reference, result)
+            put!(channel, result)
         end
 
         result = probabilistic_improvement(subsidiary_tuning_run,
@@ -50,7 +51,8 @@ function iterated_local_search(tuning_run::Run,
         subsidiary_tuning_run.starting_point  = result.minimum
         subsidiary_tuning_run.starting_cost   = result.cost_minimum
 
-        stop                                  = consume(stopping_criterion)
-        put!(reference, result)
+        put!(channel, result)
     end
+
+    close(stop)
 end

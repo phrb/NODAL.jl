@@ -44,6 +44,7 @@ module StochasticSearch
 
     # Search Tools
     export initialize_search_tasks!,
+           end_search_tasks!,
            get_new_best,
            elapsed_time_criterion,
            iterations_criterion,
@@ -93,6 +94,7 @@ module StochasticSearch
 
     # Tools
     include("core/search/tools/initialize_search_tasks!.jl")
+    include("core/search/tools/end_search_tasks!.jl")
     include("core/search/tools/get_new_best.jl")
     include("core/search/tools/stopping_criteria.jl")
     include("core/search/tools/reporting_criteria.jl")

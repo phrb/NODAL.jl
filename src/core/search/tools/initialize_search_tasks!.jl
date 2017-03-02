@@ -1,6 +1,4 @@
 function initialize_search_tasks!(tuning_run::Run)
-    next_proc      = @task chooseproc()
-
     instance_id    = 1
     results        = RemoteChannel[]
 
@@ -15,12 +13,10 @@ function initialize_search_tasks!(tuning_run::Run)
 
     for i = 1:size(tuning_run.methods, 1)
         for j = 1:tuning_run.methods[i, 2]
-            worker = consume(next_proc)
-            push!(results, RemoteChannel(() -> ResultChannel(deepcopy(initial_result))))
+            push!(results, RemoteChannel(()->ResultChannel(deepcopy(initial_result))))
 
-            reference = results[instance_id]
-            remotecall(eval(tuning_run.methods[i, 1]), worker,
-                       deepcopy(tuning_run), reference)
+            channel = results[instance_id]
+            @spawn eval(tuning_run.methods[i, 1])(deepcopy(tuning_run), channel)
             instance_id += 1
         end
     end

@@ -13,12 +13,14 @@ using StochasticSearch, Base.Test
                             starting_point = configuration,
                             methods        = [[:iterative_greedy_construction 1];])
 
-        search_task = @task optimize(tuning_run)
-        result = consume(search_task)
+        @spawn optimize(tuning_run)
+        result = take!(tuning_run.channel)
         print(result)
-        while result.is_final == false
-            result = consume(search_task)
-            print(result)
+        while !result.is_final
+            try
+                result = take!(tuning_run.channel)
+                print(result)
+            end
         end
         rr = rosenbrock(result.minimum)
         rc = result.cost_minimum

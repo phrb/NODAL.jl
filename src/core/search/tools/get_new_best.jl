@@ -1,13 +1,17 @@
 function get_new_best(results::Array{RemoteChannel}, best::Result)
-    for reference in results
-        partial = take!(reference)
-        if partial.cost_minimum < best.cost_minimum
-            best = deepcopy(partial)
+    for channel in results
+        try
+            partial = take!(channel)
+            if partial.cost_minimum < best.cost_minimum
+                best = deepcopy(partial)
+            end
         end
     end
     best
 end
 
 function get_new_best(results::Array{RemoteChannel})
-    take!(results[rand(1:length(results))])
+    try
+        take!(results[rand(1:length(results))])
+    end
 end

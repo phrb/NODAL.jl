@@ -1,14 +1,15 @@
 function iterative_greedy_construction(tuning_run::Run,
-                                       reference::RemoteChannel;
+                                       channel::RemoteChannel;
                                        cutoff::Integer = 10_000)
-    key_set            = collect(keys(tuning_run.starting_point.parameters))
-    name               = "Iterative Greedy Construction"
-    iteration          = 1
-    cost_calls         = tuning_run.cost_evaluations
-    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = consume(stopping_criterion)
+    key_set    = collect(keys(tuning_run.starting_point.parameters))
+    name       = "Iterative Greedy Construction"
+    iteration  = 1
+    cost_calls = tuning_run.cost_evaluations
+    stop       = RemoteChannel(()->Channel{Bool}(1))
 
-    while !stop
+    @spawn tuning_run.stopping_criterion(tuning_run.duration, stop)
+
+    while !take!(stop)
         iteration += 1
         for key in key_set
             result                     = greedy_construction(tuning_run,
@@ -22,9 +23,10 @@ function iterative_greedy_construction(tuning_run::Run,
             result.current_iteration   = iteration
             tuning_run.starting_point  = result.minimum
             tuning_run.starting_cost   = result.cost_minimum
-            put!(reference, result)
+            put!(channel, result)
         end
-        stop = consume(stopping_criterion)
         shuffle!(key_set)
     end
+
+    close(stop)
 end

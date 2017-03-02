@@ -1,13 +1,14 @@
 function simulated_annealing(tuning_run::Run,
-                             reference::RemoteChannel;
+                             channel::RemoteChannel;
                              temperature::Function = log_temperature)
-    name               = "Simulated Annealing"
-    iteration          = 1
-    cost_calls         = tuning_run.cost_evaluations
-    stopping_criterion = @task tuning_run.stopping_criterion(tuning_run.duration)
-    stop               = consume(stopping_criterion)
+    name       = "Simulated Annealing"
+    iteration  = 1
+    cost_calls = tuning_run.cost_evaluations
+    stop       = RemoteChannel(()->Channel{Bool}(1))
 
-    while !stop
+    @spawn tuning_run.stopping_criterion(tuning_run.duration, stop)
+
+    while !take!(stop)
         iteration                 += 1
         p                          = temperature(iteration)
         result                     = probabilistic_improvement(tuning_run, threshold = p)
@@ -19,7 +20,8 @@ function simulated_annealing(tuning_run::Run,
         result.current_iteration   = iteration
         tuning_run.starting_point  = result.minimum
         tuning_run.starting_cost   = result.cost_minimum
-        stop                       = consume(stopping_criterion)
-        put!(reference, result)
+        put!(channel, result)
     end
+
+    close(stop)
 end
