@@ -3,7 +3,7 @@ type Configuration{T <: Parameter} <: Parameter
     name::String
     value::Dict{String, Any}
 
-    function Configuration(parameters::Dict{String, T}, name::String, values::Dict{String, Any})
+    function Configuration{T}(parameters::Dict{String, T}, name::String, values::Dict{String, Any}) where T <: Parameter
         for key in keys(parameters)
             @inbounds values[key] = parameters[key].value
         end
