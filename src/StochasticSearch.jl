@@ -35,7 +35,8 @@ module StochasticSearch
            random_walk
 
     # Search Techniques
-    export simulated_annealing,
+    export technique,
+           simulated_annealing,
            iterative_gredy_construction,
            iterative_first_improvement,
            randomized_first_improvement,
@@ -85,6 +86,7 @@ module StochasticSearch
     include("core/search/blocks/random_walk.jl")
 
     # Techniques
+    include("core/search/techniques/technique.jl")
     include("core/search/techniques/iterative_first_improvement.jl")
     include("core/search/techniques/iterative_probabilistic_improvement.jl")
     include("core/search/techniques/randomized_first_improvement.jl")
