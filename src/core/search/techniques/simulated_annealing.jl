@@ -1,7 +1,6 @@
 function simulated_annealing(tuning_run::Run,
                              channel::RemoteChannel;
                              temperature::Function = log_temperature)
-    name      = "Simulated Annealing"
     iteration = 1
 
     function iterate(tuning_run::Run)
@@ -13,5 +12,5 @@ function simulated_annealing(tuning_run::Run,
     technique(tuning_run,
               channel,
               iterate,
-              name = name)
+              name = "Simulated Annealing")
 end

@@ -9,9 +9,13 @@ using StochasticSearch, Base.Test
                                        FloatParameter(-2.0,2.0,0.0,"i1")],
                                        "rosenbrock_config")
 
-        tuning_run    = Run(cost           = rosenbrock,
-                            starting_point = configuration,
-                            methods        = [[:iterative_first_improvement 1];])
+        tuning_run    = Run(cost                = rosenbrock,
+                            starting_point      = configuration,
+                            methods             = [[:iterative_first_improvement 1];],
+                            stopping_criterion  = elapsed_time_criterion,
+                            duration            = 8,
+                            reporting_criterion = elapsed_time_reporting_criterion,
+                            report_after        = 1)
 
         @spawn optimize(tuning_run)
         result = take!(tuning_run.channel)

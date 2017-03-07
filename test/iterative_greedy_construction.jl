@@ -11,7 +11,11 @@ using StochasticSearch, Base.Test
 
         tuning_run    = Run(cost           = rosenbrock,
                             starting_point = configuration,
-                            methods        = [[:iterative_greedy_construction 1];])
+                            methods        = [[:iterative_greedy_construction 1];],
+                            stopping_criterion  = elapsed_time_criterion,
+                            duration            = 8,
+                            reporting_criterion = elapsed_time_reporting_criterion,
+                            report_after        = 1)
 
         @spawn optimize(tuning_run)
         result = take!(tuning_run.channel)

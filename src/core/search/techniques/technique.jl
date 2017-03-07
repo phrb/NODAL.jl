@@ -13,7 +13,6 @@ function technique(tuning_run::Run,
 
     while !take!(stop)
         result                     = iterate(tuning_run)
-
         iteration                 += 1
 
         cost_calls                += result.cost_calls
