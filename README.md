@@ -10,7 +10,7 @@ StochasticSearch.jl is a julia package that provides tools and optimization algo
 Currently, it's possible to optimize user-defined functions with a few Stochastic Local Search basic methods, that are composed by building blocks also provided in the package. Evaluations of functions and technique executions are distributed between `Julia` workers using `remotecall`s. It's possible to instantiate multiple instances of a search technique, or different techniques, that run on the same problem.
 
 ### Installing
-StochasticSearch.jl runs on Julia **v0.5.0**. From the Julia REPL, run:
+StochasticSearch.jl runs on Julia **v0.6**. From the Julia REPL, run:
 ```jl
 Pkg.add("StochasticSearch")
 ```
