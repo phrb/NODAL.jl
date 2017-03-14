@@ -1,3 +1,5 @@
+addprocs(2)
+
 @everywhere begin
     using StochasticSearch
     function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
@@ -9,18 +11,24 @@ configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0,"i0"),
                                FloatParameter(-2.0, 2.0, 0.0,"i1")],
                                "rosenbrock_config")
 
-tuning_run = Run(cost               = rosenbrock,
-                 starting_point     = configuration,
-                 methods            = [[:simulated_annealing 1];
-                                       [:iterative_first_improvement 1];
-                                       [:randomized_first_improvement 1];
-                                       [:iterative_greedy_construction 1];
-                                       [:iterative_probabilistic_improvement 1];])
+tuning_run = Run(cost                = rosenbrock,
+                 starting_point      = configuration,
+                 stopping_criterion  = elapsed_time_criterion,
+                 report_after        = 10,
+                 reporting_criterion = elapsed_time_reporting_criterion,
+                 duration            = 30,
+                 methods             = [[:simulated_annealing 1];
+                                        [:iterative_first_improvement 1];
+                                        [:randomized_first_improvement 1];
+                                        [:iterative_greedy_construction 1];
+                                        [:iterative_probabilistic_improvement 1];])
 
-search_task = @task optimize(tuning_run)
-result = consume(search_task)
+@spawn optimize(tuning_run)
+result = take!(tuning_run.channel)
 print(result)
-while result.is_final == false
-    result = consume(search_task)
-    print(result)
+while !result.is_final
+    try
+        result = take!(tuning_run.channel)
+        print(result)
+    end
 end
