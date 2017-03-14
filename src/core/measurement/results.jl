@@ -1,6 +1,6 @@
 abstract type AbstractResult end
 
-type Result{T <: Configuration, R <: Number} <: AbstractResult
+mutable struct Result{T <: Configuration, R <: Number} <: AbstractResult
     technique::String
     start::T
     minimum::T
