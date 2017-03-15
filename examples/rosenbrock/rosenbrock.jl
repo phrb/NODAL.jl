@@ -1,4 +1,6 @@
-addprocs(2)
+#addprocs(2)
+
+import StochasticSearch
 
 @everywhere begin
     using StochasticSearch
@@ -16,9 +18,10 @@ tuning_run = Run(cost                = rosenbrock,
                  stopping_criterion  = elapsed_time_criterion,
                  report_after        = 10,
                  reporting_criterion = elapsed_time_reporting_criterion,
-                 duration            = 30,
+                 duration            = 60,
                  methods             = [[:simulated_annealing 1];
                                         [:iterative_first_improvement 1];
+                                        [:iterated_local_search 1];
                                         [:randomized_first_improvement 1];
                                         [:iterative_greedy_construction 1];
                                         [:iterative_probabilistic_improvement 1];])
