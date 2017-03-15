@@ -56,7 +56,6 @@ module StochasticSearch
     # Utilities
     include("util/random.jl")
     include("util/show.jl")
-    include("util/chooseproc.jl")
     include("util/resultchannel.jl")
 
     # Types
