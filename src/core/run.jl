@@ -1,4 +1,4 @@
-type Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
+mutable struct Run{F <: AbstractFloat, I <: Integer, C <: Configuration}
     cost::Function
     cost_arguments::Dict{Symbol, Any}
     cost_evaluations::I
@@ -27,7 +27,7 @@ function Run{F <: AbstractFloat, I <: Integer, C <: Configuration}(;
     stopping_criterion::Function      = iterations_criterion,
     duration::I                       = 1_000,
     methods::Array{Any, 2}            = [[:simulated_annealing 2];],
-    channel::RemoteChannel            = RemoteChannel(()->Channel{Result}(128)))
+    channel::RemoteChannel            = RemoteChannel(()->Channel{Any}(128)))
 
     Run{F, I, C}(cost,
                  cost_arguments,

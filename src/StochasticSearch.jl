@@ -1,58 +1,6 @@
 __precompile__()
 
 module StochasticSearch
-    # Types
-    export Parameter,
-           NumberParameter,
-           IntegerParameter,
-           FloatParameter,
-           PermutationParameter,
-           EnumParameter,
-           StringParameter,
-           BoolParameter,
-           Configuration,
-           Result,
-           ResultChannel,
-           Run
-
-    # Methods
-    export perturb!,
-           perturb_elements!,
-           neighbor!,
-           optimize,
-           update!,
-           unit_value,
-           unit_value!
-
-    # Measurement Tools
-    export measure_mean!,
-           sequential_measure_mean!
-
-    # Search Building Blocks
-    export first_improvement,
-           probabilistic_improvement,
-           greedy_construction,
-           random_walk
-
-    # Search Techniques
-    export technique,
-           simulated_annealing,
-           iterative_gredy_construction,
-           iterative_first_improvement,
-           randomized_first_improvement,
-           iterative_probabilistic_improvement,
-           iterated_local_search
-
-    # Search Tools
-    export initialize_search_tasks!,
-           end_search_tasks!,
-           get_new_best,
-           elapsed_time_criterion,
-           iterations_criterion,
-           iterations_reporting_criterion,
-           elapsed_time_reporting_criterion,
-           log_temperature
-
     # New Methods for Base Functions
     import Base: convert,
                  show,
@@ -110,4 +58,58 @@ module StochasticSearch
     include("util/show.jl")
     include("util/chooseproc.jl")
     include("util/resultchannel.jl")
+
+    # Types
+    export Parameter,
+           NumberParameter,
+           IntegerParameter,
+           FloatParameter,
+           PermutationParameter,
+           EnumParameter,
+           StringParameter,
+           BoolParameter,
+           Configuration,
+           Result,
+           ResultChannel,
+           Run
+
+    # Methods
+    export perturb!,
+           perturb_elements!,
+           neighbor!,
+           optimize,
+           test_names,
+           test_A,
+           update!,
+           unit_value,
+           unit_value!
+
+    # Measurement Tools
+    export measure_mean!,
+           sequential_measure_mean!
+
+    # Search Building Blocks
+    export first_improvement,
+           probabilistic_improvement,
+           greedy_construction,
+           random_walk
+
+    # Search Techniques
+    export technique,
+           simulated_annealing,
+           iterative_gredy_construction,
+           iterative_first_improvement,
+           randomized_first_improvement,
+           iterative_probabilistic_improvement,
+           iterated_local_search
+
+    # Search Tools
+    export initialize_search_tasks!,
+           end_search_tasks!,
+           get_new_best,
+           elapsed_time_criterion,
+           iterations_criterion,
+           iterations_reporting_criterion,
+           elapsed_time_reporting_criterion,
+           log_temperature
 end
