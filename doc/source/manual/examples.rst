@@ -209,8 +209,9 @@ Running the complete example, we get:
 
     The Rosenbrock function is by no means a good autotuning objetive, although
     it is a good tool to help you get familiar with the API.
-    StochasticSearch.jl certainly performs worse for this kind of function.
-    Look at further examples is this page for more fitting applications.
+    StochasticSearch.jl certainly performs worse than most tools for this kind
+    of function.  Look at further examples is this page for more fitting
+    applications.
 
 Autotuning Genetic Algorithms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
