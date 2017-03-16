@@ -8,18 +8,30 @@ This page provides examples that
 will help you learn the package's
 API.
 
+.. note::
+
+    The package is in heavy development. If something does not work as is show
+    here, it is likely the API changed but the docs didn't. Submit an issue at the
+    `GitHub repository`_ and the docs will be updated.
+
+.. _GitHub repository: https://github.com/phrb/StochasticSearch.jl
+
 The Rosenbrock Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following is a very simple example, and you can find `source code
-<https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl>`_ for its latest version in the GitHub repository.
+The following is a very simple example, and you can find the `source code`_ for
+its latest version in the GitHub repository.
 
-We will optimize the
-`Rosenbrock
-<http://en.wikipedia.org/wiki/Rosenbrock_function>`_ cost function.
+.. _source code: https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl
+
+We will optimize the `Rosenbrock`_ cost function.
 For this we must define a ``Configuration`` that represents the arguments to
 be tuned. We also have to create and configure a tuning run. First, let's
-import StochasticSearch.jl and define the cost function::
+import StochasticSearch.jl and define the cost function:
+
+.. _Rosenbrock: http://en.wikipedia.org/wiki/Rosenbrock_function
+
+.. code:: julia
 
     addprocs()
 
@@ -45,10 +57,12 @@ Our cost function simply ignores the parameter dictionary, and uses the
 ``"i0"`` and ``"i1"`` parameters of the received configuration to calculate a
 value. There is no restriction on the names of ``Configuration`` parameter.
 
-Our configuration will have two ``FloatParameter``\s, which will be
-``Float64`` values constrained to an interval. The intervals are ``[-2.0,
-2.0]`` for both parameters, and their values start at ``0.0``. Since we
-already used the names ``"i0"`` and ``"i1"``, we name the parameters the same way::
+Our configuration will have two ``FloatParameter``\s, which will be ``Float64``
+values constrained to an interval. The intervals are ``[-2.0, 2.0]`` for both
+parameters, and their values start at ``0.0``. Since we already used the names
+``"i0"`` and ``"i1"``, we name the parameters the same way:
+
+.. code:: julia
 
     configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0, "i0"),
                                    FloatParameter(-2.0, 2.0, 0.0, "i1")],
@@ -56,9 +70,11 @@ already used the names ``"i0"`` and ``"i1"``, we name the parameters the same wa
 
 Now we must configure a new tuning run using the ``Run`` type. There are many
 parameters to configure, but they all have default values. Since we won't be
-using them all, please see ``Run``'s
-`source code <https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl>`_
-for further details::
+using them all, please see ``Run``'s `source`_ for further details:
+
+.. _source: https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl
+
+.. code:: julia
 
     tuning_run = Run(cost                = rosenbrock,
                      starting_point      = configuration,
@@ -79,22 +95,24 @@ defined by ``starting_point``.
 
 The ``stopping_criterion`` parameter is a function. It tells your autotuner
 when to stop iterating. The two default criteria implemented are
-``elapsed_time_criterion`` and ``iterations_criterion``.
-The ``reporting_criterion`` parameter is also function, but it tells your
-autotuner when to report the current results. The two default implementations
-are ``elapsed_time_reporting_criterion`` and
-``iterations_reporting_criterion``.
-Take a look at the `source code
-<https://github.com/phrb/StochasticSearch.jl/tree/master/src/core/search/tools>`_
-if you want to dive deeper.
+``elapsed_time_criterion`` and ``iterations_criterion``.  The
+``reporting_criterion`` parameter is also function, but it tells your autotuner
+when to report the current results. The two default implementations are
+``elapsed_time_reporting_criterion`` and ``iterations_reporting_criterion``.
+Take a look at the `code`_ if you want to dive deeper.
+
+.. _code: https://github.com/phrb/StochasticSearch.jl/tree/master/src/core/search/tools
 
 We are ready to start autotuning, using the ``@spawn`` macro. For more
 information on how parallel and distributed computing works in Julia, please check
-the `Julia Docs
-<http://docs.julialang.org/en/latest>`_.
+the `Julia Docs`_.
 This macro call will run the ``optimize`` method, which receives a tuning run
 configuration and runs the search techniques in the background. The autotuner
-will write its results to a ``RemoteChannel`` stored in the tuning run configuration::
+will write its results to a ``RemoteChannel`` stored in the tuning run configuration:
+
+.. _Julia Docs: http://docs.julialang.org/en/latest
+
+.. code:: julia
 
     @spawn optimize(tuning_run)
     result = take!(tuning_run.channel)
@@ -102,7 +120,9 @@ will write its results to a ``RemoteChannel`` stored in the tuning run configura
 The tuning run will use the default neighboring and perturbation methods
 implemented by StochasticSearch.jl to find new results. Now we can process the
 current result. In this example we just ``print`` it and loop until ``optimize`` is
-done::
+done:
+
+.. code:: julia
 
     print(result)
     while !result.is_final
@@ -110,7 +130,9 @@ done::
         print(result)
     end
 
-Running the complete example, we get::
+Running the complete example, we get:
+
+.. code::
 
     $ julia --color=yes rosenbrock.jl
     [Result]
@@ -183,8 +205,15 @@ Running the complete example, we get::
         max  : 2.000000
         value: 0.920639
 
+.. note::
+
+    The Rosenbrock function is by no means a good autotuning objetive, although
+    it is a good tool to help you get familiar with the API.
+    StochasticSearch.jl certainly performs worse for this kind of function.
+    Look at further examples is this page for more fitting applications.
+
 Autotuning Genetic Algorithms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Autotuning LLVM Pass Ordering and Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
