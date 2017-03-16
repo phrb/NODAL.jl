@@ -11,15 +11,19 @@ API.
 The Rosenbrock Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following is a very simple example, and you can find its source code `here
-<https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl>`_.
+The following is a very simple example, and you can find `source code
+<https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl>`_ for its latest version in the GitHub repository.
 
 We will optimize the
 `Rosenbrock
 <http://en.wikipedia.org/wiki/Rosenbrock_function>`_ cost function.
 For this we must define a ``Configuration`` that represents the arguments to
 be tuned. We also have to create and configure a tuning run. First, let's
-import StochasticSearch and define the cost function::
+import StochasticSearch.jl and define the cost function::
+
+    addprocs()
+
+    import StochasticSearch
 
     @everywhere begin
         using StochasticSearch
@@ -28,12 +32,18 @@ import StochasticSearch and define the cost function::
         end
     end
 
-We use the ``@everywhere`` macro to define the function in all Julia workers available.
+We use the ``addprocs()`` function to add the default number of Julia workers,
+one per processing core, to our application. The ``import`` statement loads
+StochasticSearch.jl in the current Julia worker, and the ``@everywhere`` macro defines
+the ``rosenbrock`` function and the module in all Julia workers available.
 
 Cost functions must accept a ``Configuration`` and a ``Dict{Symbol, Any}`` as
-input. Our cost function simply ignores the parameter dictionary, and uses the
+input. The ``Configuration`` is used to define the autotuner's search space,
+and the parameter dictionary can store data or function configurations.
+
+Our cost function simply ignores the parameter dictionary, and uses the
 ``"i0"`` and ``"i1"`` parameters of the received configuration to calculate a
-value. There is no restriction on ``Configuration`` parameter naming.
+value. There is no restriction on the names of ``Configuration`` parameter.
 
 Our configuration will have two ``FloatParameter``\s, which will be
 ``Float64`` values constrained to an interval. The intervals are ``[-2.0,
@@ -46,61 +56,102 @@ already used the names ``"i0"`` and ``"i1"``, we name the parameters the same wa
 
 Now we must configure a new tuning run using the ``Run`` type. There are many
 parameters to configure, but they all have default values. Since we won't be
-using them all, please see
-`Run
-<https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl>`_\'s
-source code for further details::
+using them all, please see ``Run``'s
+`source code <https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl>`_
+for further details::
 
-    tuning_run = Run(cost               = rosenbrock,
-                     starting_point     = configuration,
-                     methods            = [[:simulated_annealing 1];
-                                           [:iterative_first_improvement 1];
-                                           [:randomized_first_improvement 1];
-                                           [:iterative_greedy_construction 1];
-                                           [:iterative_probabilistic_improvement 1];])
+    tuning_run = Run(cost                = rosenbrock,
+                     starting_point      = configuration,
+                     stopping_criterion  = elapsed_time_criterion,
+                     report_after        = 10,
+                     reporting_criterion = elapsed_time_reporting_criterion,
+                     duration            = 60,
+                     methods             = [[:simulated_annealing 1];
+                                            [:iterative_first_improvement 1];
+                                            [:iterated_local_search 1];
+                                            [:randomized_first_improvement 1];
+                                            [:iterative_greedy_construction 1];
 
 The ``methods`` array defines the search methods, and their respective number of
 instances, that will be used in this tuning run. This example uses one instance
 of every implemented search technique. The search will start at the point
 defined by ``starting_point``.
 
-We are ready to create a search task using the ``@task`` macro. For more
-information on how tasks work, please check the `Julia Documentation
-<http://docs.julialang.org/en/latest/manual/control-flow/#man-tasks>`_.
-This new task will run the ``optimize`` method, which receives a tuning run
-configuration and runs the search techniques in background. The task will
-produce ``optimize``\'s current best result whenever we call ``consume`` on it::
+The ``stopping_criterion`` parameter is a function. It tells your autotuner
+when to stop iterating. The two default criteria implemented are
+``elapsed_time_criterion`` and ``iterations_criterion``.
+The ``reporting_criterion`` parameter is also function, but it tells your
+autotuner when to report the current results. The two default implementations
+are ``elapsed_time_reporting_criterion`` and
+``iterations_reporting_criterion``.
+Take a look at the `source code
+<https://github.com/phrb/StochasticSearch.jl/tree/master/src/core/search/tools>`_
+if you want to dive deeper.
 
-    search_task = @task optimize(tuning_run)
-    result = consume(search_task)
+We are ready to start autotuning, using the ``@spawn`` macro. For more
+information on how parallel and distributed computing works in Julia, please check
+the `Julia Docs
+<http://docs.julialang.org/en/latest>`_.
+This macro call will run the ``optimize`` method, which receives a tuning run
+configuration and runs the search techniques in the background. The autotuner
+will write its results to a ``RemoteChannel`` stored in the tuning run configuration::
+
+    @spawn optimize(tuning_run)
+    result = take!(tuning_run.channel)
 
 The tuning run will use the default neighboring and perturbation methods
 implemented by StochasticSearch.jl to find new results. Now we can process the
-current result, in this case we just ``print`` it, and loop until ``optimize`` is
+current result. In this example we just ``print`` it and loop until ``optimize`` is
 done::
 
     print(result)
-    while result.is_final == false
-        result = consume(search_task)
+    while !result.is_final
+        result = take!(tuning_run.channel)
         print(result)
     end
 
 Running the complete example, we get::
 
-    $ julia --color=yes examples/rosenbrock/rosenbrock.jl
+    $ julia --color=yes rosenbrock.jl
     [Result]
-    Cost              : 40.122073057715546
+    Cost              : 1.0
     Found in Iteration: 1
     Current Iteration : 1
     Technique         : Initialize
     Function Calls    : 1
       ***
+    [Result]
+    Cost              : 1.0
+    Found in Iteration: 1
+    Current Iteration : 3973
+    Technique         : Initialize
+    Function Calls    : 1
+      ***
+    [Result]
+    Current Iteration : 52289
+    Technique         : Iterative First Improvement
+    Function Calls    : 455
+      ***
+    [Result]
+    Cost              : 0.01301071782455056
+    Found in Iteration: 10
+    Current Iteration : 70282
+    Technique         : Randomized First Improvement
+    Function Calls    : 3940
+      ***
+    [Result]
+    Cost              : 0.009463518035824526
+    Found in Iteration: 11
+    Current Iteration : 87723
+    Technique         : Randomized First Improvement
+    Function Calls    : 4594
+      ***
     [Final Result]
-    Cost                  : 0.03839419856300206
-    Found in Iteration    : 237
-    Current Iteration     : 1001
-    Technique             : Simulated Annealing
-    Function Calls        : 237
+    Cost                  : 0.009463518035824526
+    Found in Iteration    : 11
+    Current Iteration     : 104261
+    Technique             : Randomized First Improvement
+    Function Calls        : 4594
     Starting Configuration:
       [Configuration]
       name      : rosenbrock_config
@@ -109,13 +160,13 @@ Running the complete example, we get::
         name : i0
         min  : -2.000000
         max  : 2.000000
-        value: 0.787244
+        value: 1.100740
         ***
         [NumberParameter]
         name : i1
         min  : -2.000000
         max  : 2.000000
-        value: 0.656131
+        value: 1.216979
     Minimum Configuration :
       [Configuration]
       name      : rosenbrock_config
@@ -124,16 +175,16 @@ Running the complete example, we get::
         name : i0
         min  : -2.000000
         max  : 2.000000
-        value: 0.813772
+        value: 0.954995
         ***
         [NumberParameter]
         name : i1
         min  : -2.000000
         max  : 2.000000
-        value: 0.656131
+        value: 0.920639
 
-Autotuning Sorting Algorithms Cutoff
+Autotuning Genetic Algorithms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Travelling Salesperson Problem
+Autotuning LLVM Pass Ordering and Parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

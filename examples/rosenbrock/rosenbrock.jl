@@ -27,13 +27,10 @@ tuning_run = Run(cost                = rosenbrock,
                                         [:iterative_probabilistic_improvement 1];])
 
 @spawn optimize(tuning_run)
-
 result = take!(tuning_run.channel)
 
 print(result)
 while !result.is_final
-    try
-        result = take!(tuning_run.channel)
-        print(result)
-    end
+    result = take!(tuning_run.channel)
+    print(result)
 end
