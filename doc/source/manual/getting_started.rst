@@ -10,30 +10,30 @@ test and contribute to the package.
 Installing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-StochasticSearch.jl runs on Julia **v0.4.0**. From the Julia REPL, run::
+StochasticSearch.jl runs on Julia `nightly`_. To get the latest version run:
 
-    julia> Pkg.add("StochasticSearch")
+.. _nightly: http://julialang.org/downloads/
 
-If you want the latest version, which may be unstable, run instead::
+.. code:: julia
 
     julia> Pkg.clone("StochasticSearch")
 
 Running Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can check that all tests pass with::
+Run all tests with:
+
+.. code:: julia
 
     $ julia --color=yes test/runtests.jl
 
 Contributing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You will need **Julia v0.4.3** and the FactCheck
-module. Check the project's ``REQUIRE`` file for an up-to-date
-dependency list.
+You will need Julia `nightly`_.  Check the project's ``REQUIRE`` file for an
+up-to-date dependency list.  Please, feel free to fork the `repository`_ and
+submit a pull request.  You can also check the **GitHub** `issues page`_ for
+things that need to be done.
 
-Please, feel free to fork the `repository
-<https://github.com/phrb/StochasticSearch.jl>`_ and submit a pull request.
-You can also check the **GitHub** `issues page
-<https://github.com/phrb/StochasticSearch.jl/issues>`_ for things that
-need to be done.
+.. _issues page: https://github.com/phrb/StochasticSearch.jl/issues
+.. _repository: https://github.com/phrb/StochasticSearch.jl
