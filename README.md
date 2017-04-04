@@ -5,6 +5,8 @@
 [![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.5.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5)
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
 
+---
+
 StochasticSearch.jl provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
 algorithms for implementing different Stochastic Local Search methods, such as
