@@ -23,7 +23,8 @@ Pkg.clone("StochasticSearch")
 
 Please, refer to the [documentation](http://stochasticsearchjl.readthedocs.org/) for more information and examples.
 
-===
+---
+
 ### Example: The Rosenbrock Function
 The following is a very simple example, and you can find its source code [here](https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl). 
 
@@ -118,4 +119,4 @@ Minimum Configuration :
     max  : 2.000000
     value: 0.656131
 ```
-===
+---
