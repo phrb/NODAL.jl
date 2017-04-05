@@ -1,12 +1,10 @@
-<img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" align="middle">
+<img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" align="center" width=20%>
 
 [![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
 [![GitHub version](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg)](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl)
 [![Documentation Status](https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest)](http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest)
 [![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.5.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5)
 [![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
-
----
 
 StochasticSearch.jl provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
@@ -39,8 +37,6 @@ Pkg.clone("StochasticSearch")
 Please, refer to the
 [documentation](http://stochasticsearchjl.readthedocs.org/) for more
 information and examples.
-
----
 
 ### Example: The Rosenbrock Function
 
@@ -167,5 +163,3 @@ Minimum Configuration :
     max  : 2.000000
     value: 0.656131
 ```
-
----
