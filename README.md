@@ -51,16 +51,16 @@ tuned. We also have to create and configure a tuning run. First, let's import
 StochasticSearch.jl and define the cost function:
 
 ``` julia
-    addprocs()
+addprocs()
 
-    import StochasticSearch
+import StochasticSearch
 
-    @everywhere begin
-        using StochasticSearch
-        function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
-            return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
-        end
+@everywhere begin
+    using StochasticSearch
+    function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
+        return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
     end
+end
 ```    
 
 We use the `addprocs()` function to add the default number of Julia workers,
@@ -94,17 +94,17 @@ using them all, please see `Run`'s
 for further details:
 
 ``` julia
-    tuning_run = Run(cost                = rosenbrock,
-                     starting_point      = configuration,
-                     stopping_criterion  = elapsed_time_criterion,
-                     report_after        = 10,
-                     reporting_criterion = elapsed_time_reporting_criterion,
-                     duration            = 60,
-                     methods             = [[:simulated_annealing 1];
-                                            [:iterative_first_improvement 1];
-                                            [:iterated_local_search 1];
-                                            [:randomized_first_improvement 1];
-                                            [:iterative_greedy_construction 1];
+tuning_run = Run(cost                = rosenbrock,
+                 starting_point      = configuration,
+                 stopping_criterion  = elapsed_time_criterion,
+                 report_after        = 10,
+                 reporting_criterion = elapsed_time_reporting_criterion,
+                 duration            = 60,
+                 methods             = [[:simulated_annealing 1];
+                                        [:iterative_first_improvement 1];
+                                        [:iterated_local_search 1];
+                                        [:randomized_first_improvement 1];
+                                        [:iterative_greedy_construction 1];
 ```
 
 The `methods` array defines the search methods, and their respective number of
@@ -130,8 +130,8 @@ runs the search techniques in the background. The autotuner will write its
 results to a `RemoteChannel` stored in the tuning run configuration:
 
 ``` julia
-    @spawn optimize(tuning_run)
-    result = take!(tuning_run.channel)
+@spawn optimize(tuning_run)
+result = take!(tuning_run.channel)
 ```
 
 The tuning run will use the default neighboring and perturbation methods
@@ -140,86 +140,86 @@ current result. In this example we just `print` it and loop until `optimize` is
 done:
 
 ``` julia
+print(result)
+while !result.is_final
+    result = take!(tuning_run.channel)
     print(result)
-    while !result.is_final
-        result = take!(tuning_run.channel)
-        print(result)
-    end
+end
 ```
 
 Running the complete example, we get:
 
 ``` bash
-    $ julia --color=yes rosenbrock.jl
-    [Result]
-    Cost              : 1.0
-    Found in Iteration: 1
-    Current Iteration : 1
-    Technique         : Initialize
-    Function Calls    : 1
-      ***
-    [Result]
-    Cost              : 1.0
-    Found in Iteration: 1
-    Current Iteration : 3973
-    Technique         : Initialize
-    Function Calls    : 1
-      ***
-    [Result]
-    Current Iteration : 52289
-    Technique         : Iterative First Improvement
-    Function Calls    : 455
-      ***
-    [Result]
-    Cost              : 0.01301071782455056
-    Found in Iteration: 10
-    Current Iteration : 70282
-    Technique         : Randomized First Improvement
-    Function Calls    : 3940
-      ***
-    [Result]
-    Cost              : 0.009463518035824526
-    Found in Iteration: 11
-    Current Iteration : 87723
-    Technique         : Randomized First Improvement
-    Function Calls    : 4594
-      ***
-    [Final Result]
-    Cost                  : 0.009463518035824526
-    Found in Iteration    : 11
-    Current Iteration     : 104261
-    Technique             : Randomized First Improvement
-    Function Calls        : 4594
-    Starting Configuration:
-      [Configuration]
-      name      : rosenbrock_config
-      parameters:
-        [NumberParameter]
-        name : i0
-        min  : -2.000000
-        max  : 2.000000
-        value: 1.100740
-        ***
-        [NumberParameter]
-        name : i1
-        min  : -2.000000
-        max  : 2.000000
-        value: 1.216979
-    Minimum Configuration :
-      [Configuration]
-      name      : rosenbrock_config
-      parameters:
-        [NumberParameter]
-        name : i0
-        min  : -2.000000
-        max  : 2.000000
-        value: 0.954995
-        ***
-        [NumberParameter]
-        name : i1
-        min  : -2.000000
-        max  : 2.000000
-        value: 0.920639
+$ julia --color=yes rosenbrock.jl
+[Result]
+Cost              : 1.0
+Found in Iteration: 1
+Current Iteration : 1
+Technique         : Initialize
+Function Calls    : 1
+  ***
+[Result]
+Cost              : 1.0
+Found in Iteration: 1
+Current Iteration : 3973
+Technique         : Initialize
+Function Calls    : 1
+  ***
+[Result]
+Current Iteration : 52289
+Technique         : Iterative First Improvement
+Function Calls    : 455
+  ***
+[Result]
+Cost              : 0.01301071782455056
+Found in Iteration: 10
+Current Iteration : 70282
+Technique         : Randomized First Improvement
+Function Calls    : 3940
+  ***
+[Result]
+Cost              : 0.009463518035824526
+Found in Iteration: 11
+Current Iteration : 87723
+Technique         : Randomized First Improvement
+Function Calls    : 4594
+  ***
+[Final Result]
+Cost                  : 0.009463518035824526
+Found in Iteration    : 11
+Current Iteration     : 104261
+Technique             : Randomized First Improvement
+Function Calls        : 4594
+Starting Configuration:
+  [Configuration]
+  name      : rosenbrock_config
+  parameters:
+    [NumberParameter]
+    name : i0
+    min  : -2.000000
+    max  : 2.000000
+    value: 1.100740
+    ***
+    [NumberParameter]
+    name : i1
+    min  : -2.000000
+    max  : 2.000000
+    value: 1.216979
+Minimum Configuration :
+  [Configuration]
+  name      : rosenbrock_config
+  parameters:
+    [NumberParameter]
+    name : i0
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.954995
+    ***
+    [NumberParameter]
+    name : i1
+    min  : -2.000000
+    max  : 2.000000
+    value: 0.920639
 ```
 
 **Note**:
