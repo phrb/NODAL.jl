@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" align="center" width=20%>
+<img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" align="center" width=30%>
 
 [![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
 [![GitHub version](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg)](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl)
