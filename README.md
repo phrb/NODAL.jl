@@ -82,9 +82,9 @@ parameters, and their values start at `0.0`. Since we already used the names
 `"i0"` and `"i1"`, we name the parameters the same way:
 
 ``` julia
-    configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0, "i0"),
-                                   FloatParameter(-2.0, 2.0, 0.0, "i1")],
-                                   "rosenbrock_config")
+configuration = Configuration([FloatParameter(-2.0, 2.0, 0.0, "i0"),
+                               FloatParameter(-2.0, 2.0, 0.0, "i1")],
+                               "rosenbrock_config")
 ```
 
 Now we must configure a new tuning run using the `Run` type. There are many
