@@ -104,7 +104,7 @@ tuning_run = Run(cost                = rosenbrock,
                                         [:iterative_first_improvement 1];
                                         [:iterated_local_search 1];
                                         [:randomized_first_improvement 1];
-                                        [:iterative_greedy_construction 1];
+                                        [:iterative_greedy_construction 1];])
 ```
 
 The `methods` array defines the search methods, and their respective number of
