@@ -86,7 +86,7 @@ using them all, please see ``Run``'s `source`_ for further details:
                                             [:iterative_first_improvement 1];
                                             [:iterated_local_search 1];
                                             [:randomized_first_improvement 1];
-                                            [:iterative_greedy_construction 1];
+                                            [:iterative_greedy_construction 1];])
 
 The ``methods`` array defines the search methods, and their respective number of
 instances, that will be used in this tuning run. This example uses one instance
