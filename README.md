@@ -1,6 +1,4 @@
-<div align="center"> <img
-src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.svg"
-alt="StochasticSearch Logo" width="210"></img> </div>
+<div align="center"> <img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" alt="StochasticSearch Logo" width="250"></img> </div>
 
 | **Package Stats** |
 |:-----------------:|
