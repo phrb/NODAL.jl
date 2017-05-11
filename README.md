@@ -1,18 +1,30 @@
-<img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" align="center" width=30%>
+<div align="center"> <img
+src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.svg"
+alt="StochasticSearch Logo" width="210"></img> </div>
 
-[![Build Status](https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master)](https://travis-ci.org/phrb/StochasticSearch.jl)
-[![GitHub version](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg)](https://badge.fury.io/gh/phrb%2FStochasticSearch.jl)
-[![Documentation Status](https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest)](http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest)
-[![StochasticSearch](http://pkg.julialang.org/badges/StochasticSearch_0.5.svg)](http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5)
-[![Coverage Status](https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master)](https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master)
+| **Package Stats** |
+|:-----------------:|
+| [![Build Status][build-status-img]][build-status-url] [![Coverage Status][cov-status-img]][cov-status-url] [![GitHub version][git-version-img]][git-version-url] [![Documentation Status][docs-status-img]][docs-status-url] [![StochasticSearch][julia-version-img]][julia-version-url] |
 
-StochasticSearch.jl provides tools for implementing parallel and distributed
+[build-status-img]: https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master
+[cov-status-img]: https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master
+[git-version-img]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg
+[docs-status-img]: https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest
+[julia-version-img]: http://pkg.julialang.org/badges/StochasticSearch_0.5.svg
+
+[build-status-url]: https://travis-ci.org/phrb/StochasticSearch.jl
+[cov-status-url]: https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master
+[git-version-url]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl
+[docs-status-url]: http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest
+[julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5
+
+StochasticSearch provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
 algorithms for implementing different Stochastic Local Search methods, such as
-Simulated Annealing and Tabu Search. StochasticSearch.jl is an ongoing project,
+Simulated Annealing and Tabu Search. StochasticSearch is an ongoing project,
 and will implement more optimization and local search algorithms.
 
-You can use StochasticSearch.jl to optimize user-defined functions with a few
+You can use StochasticSearch to optimize user-defined functions with a few
 Stochastic Local Search basic methods, that are composed by building blocks
 also provided in the package. The package distributes evaluations of functions
 and technique executions between Julia workers. It is possible to have multiple
@@ -20,7 +32,7 @@ instances of search techniques running on the same problem.
 
 ### Installing
 
-StochasticSearch.jl runs on Julia **v0.6**. From the Julia REPL, run:
+StochasticSearch.jl runs on Julia **nightly**. From the Julia REPL, run:
 
 ```jl
 Pkg.add("StochasticSearch")
