@@ -1,4 +1,4 @@
-<div align="center"> <img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" alt="StochasticSearch Logo" width="250"></img> </div>
+<div align="center"> <img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" alt="StochasticSearch Logo" width="290"></img> </div>
 
 | **Package Stats** |
 |:-----------------:|
