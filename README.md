@@ -1,20 +1,24 @@
 <div align="center"> <img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" alt="StochasticSearch Logo" width="290"></img> </div>
 
-| **Package Stats** |
-|:-----------------:|
-| [![Build Status][build-status-img]][build-status-url] [![Coverage Status][cov-status-img]][cov-status-url] [![GitHub version][git-version-img]][git-version-url] [![Documentation Status][docs-status-img]][docs-status-url] [![StochasticSearch][julia-version-img]][julia-version-url] |
+<center>
+
+| **Version** | **Build Stats** | **Documentation** |
+|:-----------------:|:-----------------:|:-----------------:|
+[![GitHub version][git-version-img]][git-version-url] | [![Build Status][build-status-img]][build-status-url] [![StochasticSearch][julia-version-img]][julia-version-url] [![Coverage Status][cov-status-img]][cov-status-url] | [![Documentation Status][docs-status-img]][docs-status-url] |
+
+</center>
 
 [build-status-img]: https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master
 [cov-status-img]: https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master
 [git-version-img]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg
 [docs-status-img]: https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest
-[julia-version-img]: http://pkg.julialang.org/badges/StochasticSearch_0.5.svg
+[julia-version-img]: http://pkg.julialang.org/badges/StochasticSearch_0.6.svg
 
 [build-status-url]: https://travis-ci.org/phrb/StochasticSearch.jl
 [cov-status-url]: https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master
 [git-version-url]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl
 [docs-status-url]: http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest
-[julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch&ver=0.5
+[julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch
 
 StochasticSearch provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
