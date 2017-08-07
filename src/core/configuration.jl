@@ -1,4 +1,4 @@
-type Configuration{T <: Parameter} <: Parameter
+mutable struct Configuration{T <: Parameter} <: Parameter
     parameters::Dict{String, T}
     name::String
     value::Dict{String, Any}
@@ -11,11 +11,11 @@ type Configuration{T <: Parameter} <: Parameter
     end
 end
 
-function Configuration{T <: Parameter}(parameters::Dict{String, T}, name::String)
+function Configuration(parameters::Dict{String, T}, name::String) where T <: Parameter
     Configuration{T}(parameters, name, Dict{String, Any}())
 end
 
-function Configuration{T <: Parameter}(parameters::Array{T, 1}, name::String)
+function Configuration(parameters::Array{T, 1}, name::String) where T <: Parameter
     params = Dict{String, T}()
     for parameter in parameters
         @inbounds params[parameter.name] = parameter
@@ -28,7 +28,7 @@ function Configuration(name::String)
     Configuration{Parameter}(params, name, Dict{String, Any}())
 end
 
-function Base.convert{T <: Parameter}(::Type{Array{T}}, configuration::Configuration)
+function Base.convert(::Type{Array{T}}, configuration::Configuration) where T <: Parameter
     parameter_array = T[]
     for key in collect(keys(configuration.parameters))
         push!(parameter_array, configuration[key])
@@ -40,6 +40,6 @@ function getindex(configuration::Configuration, index::String)
     configuration.parameters[index]
 end
 
-function setindex!{T <: Parameter}(configuration::Configuration, value::T, index::String)
+function setindex!(configuration::Configuration, value::T, index::String) where T <: Parameter
     configuration.parameters[index] = value
 end

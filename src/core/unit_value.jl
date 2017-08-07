@@ -1,12 +1,12 @@
-function unit_value{T <: NumberParameter}(parameter::T)
+function unit_value(parameter::T) where T <: NumberParameter
     (parameter.value - parameter.min) / (parameter.max - parameter.min)
 end
 
-function unit_value{T <: EnumParameter}(parameter::T)
+function unit_value(parameter::T) where T <: EnumParameter
     (parameter.value - 1) / (length(parameter.values) - 1)
 end
 
-function unit_value!{T <: EnumParameter}(parameter::T, unit::Float64)
+function unit_value!(parameter::T, unit::Float64) where T <: EnumParameter
     @assert 0.0 <= unit <= 1.0
     value = round((unit * (length(parameter.values) - 1)) + 1)
     @inbounds parameter.current = parameter.values[parameter.value]

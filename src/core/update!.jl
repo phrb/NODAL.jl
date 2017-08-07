@@ -5,7 +5,7 @@ function update!(configuration::Configuration)
     configuration
 end
 
-function update!{T <: Parameter}(configuration::Configuration, parameters::Array{T})
+function update!(configuration::Configuration, parameters::Array{T}) where T <: Parameter
     for param in parameters
         configuration[param.name] = deepcopy(param)
     end
@@ -13,7 +13,7 @@ function update!{T <: Parameter}(configuration::Configuration, parameters::Array
     configuration
 end
 
-function update!{T <: Parameter}(configuration::Configuration, parameters::Dict{String, T})
+function update!(configuration::Configuration, parameters::Dict{String, T}) where T <: Parameter
     key_set = collect(keys(parameters))
     for key in key_set
         configuration[key] = deepcopy(parameters[key])

@@ -51,11 +51,11 @@ mutable struct EnumParameter{P <: Parameter, T <: AbstractArray} <: Parameter
     end
 end
 
-function EnumParameter{T <: AbstractArray}(values::T, value::Int, name::String)
+function EnumParameter(values::T, value::Int, name::String) where T <: AbstractArray
     EnumParameter{Parameter, T}(values, value, name)
 end
 
-function EnumParameter{T <: AbstractArray}(values::T, name::String)
+function EnumParameter(values::T, name::String) where T <: AbstractArray
     EnumParameter{Parameter, T}(values, name)
 end
 
@@ -69,7 +69,7 @@ mutable struct PermutationParameter{T <: AbstractArray} <: Parameter
     end
 end
 
-function PermutationParameter{T <: AbstractArray}(value::T, name::String)
+function PermutationParameter(value::T, name::String) where T <: AbstractArray
     PermutationParameter{T}(value, name)
 end
 

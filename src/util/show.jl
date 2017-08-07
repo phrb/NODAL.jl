@@ -1,4 +1,4 @@
-Base.show{T <: NumberParameter}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: NumberParameter
     @printf io "    ["
     print_with_color(:blue, io, "NumberParameter")
     @printf io "]\n"
@@ -18,7 +18,7 @@ Base.show{T <: NumberParameter}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: EnumParameter}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: EnumParameter
     @printf io "    ["
     print_with_color(:blue, io, "EnumParameter")
     @printf io "]\n"
@@ -39,7 +39,7 @@ Base.show{T <: EnumParameter}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: PermutationParameter}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: PermutationParameter
     @printf io "    ["
     print_with_color(:blue, io, "PermutationParameter")
     @printf io "]\n"
@@ -58,7 +58,7 @@ Base.show{T <: PermutationParameter}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: StringParameter}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: StringParameter
     @printf io "    ["
     print_with_color(:blue, io, "StringParameter")
     @printf io "]\n"
@@ -70,7 +70,7 @@ Base.show{T <: StringParameter}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: BoolParameter}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: BoolParameter
     @printf io "    ["
     print_with_color(:blue, io, "BoolParameter")
     @printf io "]\n"
@@ -82,7 +82,7 @@ Base.show{T <: BoolParameter}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: Configuration}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: Configuration
     @printf io "  ["
     print_with_color(:blue, io, "Configuration")
     @printf io "]\n"
@@ -101,7 +101,7 @@ Base.show{T <: Configuration}(io::IO, n::T) = begin
     return
 end
 
-Base.show{T <: Result}(io::IO, n::T) = begin
+function Base.show(io::IO, n::T) where T <: Result
     if n.is_final
         @printf io "["
         print_with_color(:blue, io, "Final Result")

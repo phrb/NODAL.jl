@@ -24,14 +24,14 @@ mutable struct Result{T <: Configuration, R <: Number} <: AbstractResult
     end
 end
 
-function Result{T <: Configuration, R <: Number}(technique::String,
-                                                 start::T,
-                                                 minimum::T,
-                                                 cost_minimum::R,
-                                                 iterations::Int,
-                                                 current_iteration::Int,
-                                                 cost_calls::Int,
-                                                 is_final::Bool)
+function Result(technique::String,
+                start::T,
+                minimum::T,
+                cost_minimum::R,
+                iterations::Int,
+                current_iteration::Int,
+                cost_calls::Int,
+                is_final::Bool) where {T <: Configuration, R <: Number}
     Result{T, R}(technique, start, minimum, cost_minimum,
                  iterations, current_iteration, cost_calls, is_final)
 end
