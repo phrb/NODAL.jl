@@ -303,7 +303,6 @@ end
         @test p.name  == "test"
         @test_throws MethodError perturb!(p)
         @test_throws MethodError StringParameter(2, "test")
-        @test_throws MethodError StringParameter("value")
     end
 end
 

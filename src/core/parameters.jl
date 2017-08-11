@@ -78,5 +78,9 @@ mutable struct StringParameter <: Parameter
     name::String
 end
 
+function StringParameter(value::String)
+    StringParameter(value, value)
+end
+
 const IntegerParameter = NumberParameter{Integer}
 const FloatParameter   = NumberParameter{AbstractFloat}
