@@ -1,13 +1,12 @@
-# Uncomment the following
-# line to run this example
-# with more julia workers:
-addprocs(4)
+addprocs()
+
+import StochasticSearch
 
 @everywhere begin
     using StochasticSearch
 
     function tour_cost(x::Configuration, parameters::Dict{Symbol, Any})
-        result = float(readall(`./tour_cost $(x["Tour"].value)`))
+        result = float(read(`./tour_cost $(x["Tour"].value)`, String))
         result
     end
 
@@ -24,19 +23,24 @@ configuration = Configuration([PermutationParameter(tour ,"Tour")],
 
 tuning_run = Run(cost                = tour_cost,
                  starting_point      = configuration,
-                 methods             = [[iterated_local_search 4];],
                  stopping_criterion  = elapsed_time_criterion,
-                 duration            = 600,
+                 duration            = 60,
                  reporting_criterion = elapsed_time_reporting_criterion,
-                 report_after        = 30)
+                 report_after        = 5,
+                 methods             = [[:iterative_first_improvement 2];
+                                        [:iterative_greedy_construction 2];
+                                        [:iterative_probabilistic_improvement 2];
+                                        [:randomized_first_improvement 2];
+                                        [:simulated_annealing 2];])
 
-search_task = @task optimize(tuning_run)
+@spawn optimize(tuning_run)
+result = take!(tuning_run.channel)
 
-result = consume(search_task)
 print("$(result.current_time) ")
 println(result.cost_minimum)
-while result.is_final == false
-    result = consume(search_task)
+
+while !result.is_final
+    result = take!(tuning_run.channel)
     print("$(result.current_time) ")
     println(result.cost_minimum)
 end

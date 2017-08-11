@@ -1,4 +1,6 @@
-addprocs(4)
+addprocs()
+
+import StochasticSearch
 
 @everywhere begin
     using StochasticSearch
@@ -52,7 +54,7 @@ end
 
 # Defining the array properties
 # and algorithm cutoff.
-array_size   = 1_000
+array_size   = 10_000
 cutoff       = 15
 
 # Adding extra function arguments
@@ -80,11 +82,11 @@ tuning_run = Run(cost                = sorting_cutoff,
                  reporting_criterion = elapsed_time_reporting_criterion,
                  report_after        = 6)
 
-search_task = @task optimize(tuning_run)
+@spawn optimize(tuning_run)
+result = take!(tuning_run.channel)
 
-result = consume(search_task)
 print(result)
-while result.is_final == false
-    result = consume(search_task)
+while !result.is_final
+    result = take!(tuning_run.channel)
     print(result)
 end
