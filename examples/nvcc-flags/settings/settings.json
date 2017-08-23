@@ -1,0 +1,11 @@
+{
+    "final_configuration": "final_configuration.txt",
+    "report_after": 20,
+    "duration": 300,
+    "cost_evaluations": 5,
+    "source_dir": "vec_add_example",
+    "source": "vec_add.cu",
+    "executable": "vec_add",
+    "make_cmd": "nvcc -w --Wno-deprecated-gpu-targets",
+    "cuda_path": "-I/opt/cuda/include"
+}

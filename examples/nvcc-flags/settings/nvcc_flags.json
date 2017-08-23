@@ -1,0 +1,42 @@
+{
+    "gcc": {
+        "prefix": "-Xcompiler",
+        "flags": [],
+        "enumeration_parameters": { },
+        "numeric_parameters": { }
+    },
+    "nvcc": {
+        "prefix": "",
+        "flags": ["--no-align-double", "--use_fast_math"],
+        "enumeration_parameters": {
+            "--gpu-architecture=": ["sm_20", "sm_21", "sm_30", "sm_35", "sm_50", "sm_52"],
+            "--relocatable-device-code=" : ["true", "false"],
+            "--ftz="                     : ["true", "false"],
+            "--prec-div="                : ["true", "false"],
+            "--prec-sqrt="               : ["true", "false"]
+        },
+        "numeric_parameters": { }
+    },
+    "ptxas": {
+        "prefix": "-Xptxas",
+        "flags": [],
+        "enumeration_parameters": {
+            "--def-load-cache="                : [ "ca", "cg", "cv", "cs" ],
+            "--opt-level="                     : [ "0", "1", "2", "3" ],
+            "--fmad="                          : [ "true", "false" ],
+            "--allow-expensive-optimizations=" : [ "true", "false" ]
+        },
+        "numeric_parameters": {
+            "--maxrregcount=": {
+                "min": 16,
+                "max": 63
+            }
+        }
+    },
+    "nvlink": {
+        "prefix": "-Xnvlink",
+        "flags": ["--preserve-relocs"],
+        "enumeration_parameters": { },
+        "numeric_parameters": { }
+    }
+}
