@@ -1,13 +1,3 @@
-<div align="center"> <img src="https://raw.githubusercontent.com/phrb/StochasticSearch.jl/master/img/logo.png" alt="StochasticSearch Logo" width="290"></img> </div>
-
-<center>
-
-| **Version** | **Build Stats** | **Documentation** |
-|:-----------------:|:-----------------:|:-----------------:|
-[![GitHub version][git-version-img]][git-version-url] | [![Build Status][build-status-img]][build-status-url] [![StochasticSearch][julia-version-img]][julia-version-url] [![Coverage Status][cov-status-img]][cov-status-url] | [![Documentation Status][docs-status-img]][docs-status-url] |
-
-</center>
-
 [build-status-img]: https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master
 [cov-status-img]: https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master
 [git-version-img]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg
@@ -19,6 +9,33 @@
 [git-version-url]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl
 [docs-status-url]: http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest
 [julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch
+
+<p align="center">
+    <img src="https://github.com/phrb/StochasticSearch.jl/blob/master/img/logo.svg"
+         height="200">
+</p>
+<p align="center">
+    <a href="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl">
+        <img src="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg"
+             alt="Git Version">
+    </a>
+    <a href="http://pkg.julialang.org/?pkg=StochasticSearch">
+        <img src="http://pkg.julialang.org/badges/StochasticSearch_0.6.svg"
+             alt="Julia Package Version">
+    </a>
+    <a href="https://travis-ci.org/phrb/StochasticSearch.jl">
+        <img src="https://travis-ci.org/phrb/StochasticSearch.jl.svg"
+             alt="Build Status">
+    </a>
+    <a href="https://coveralls.io/r/phrb/StochasticSearch.jl">
+        <img src="https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg"
+             alt="Coverage">
+    </a>
+    <a href="http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest">
+        <img src="https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest"
+             alt="Documentation Status">
+    </a>
+</p>
 
 StochasticSearch provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
@@ -76,6 +93,13 @@ import StochasticSearch
     end
 end
 ```    
+**Note**:
+
+>The Rosenbrock function is by no means a good autotuning objetive, although
+>it is a good tool to help you get familiar with the API.
+>StochasticSearch.jl certainly performs worse than most tools for this kind
+>of function.  Look at further examples is this page for more fitting
+>applications.
 
 We use the `addprocs()` function to add the default number of Julia workers,
 one per processing core, to our application. The `import` statement loads
@@ -235,11 +259,3 @@ Minimum Configuration :
     max  : 2.000000
     value: 0.920639
 ```
-
-**Note**:
-
->The Rosenbrock function is by no means a good autotuning objetive, although
->it is a good tool to help you get familiar with the API.
->StochasticSearch.jl certainly performs worse than most tools for this kind
->of function.  Look at further examples is this page for more fitting
->applications.
