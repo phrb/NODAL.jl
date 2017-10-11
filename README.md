@@ -12,9 +12,8 @@
 
 <p align="center">
     <img src="https://github.com/phrb/StochasticSearch.jl/blob/master/img/logo.svg"
-         height="200">
+         height="280">
 </p>
-<p align="center"><strong>A parallel and distributed domain-agnostic autotuning library</strong></p>
 <p align="center">
     <a href="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl">
         <img src="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg"
