@@ -1,34 +1,34 @@
-[build-status-img]: https://travis-ci.org/phrb/StochasticSearch.jl.svg?branch=master
-[cov-status-img]: https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg?branch=master
-[git-version-img]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg
+[build-status-img]: https://travis-ci.org/phrb/NODAL.jl.svg?branch=master
+[cov-status-img]: https://coveralls.io/repos/phrb/NODAL.jl/badge.svg?branch=master
+[git-version-img]: https://badge.fury.io/gh/phrb%2FNODAL.jl.svg
 [docs-status-img]: https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest
 [julia-version-img]: http://pkg.julialang.org/badges/StochasticSearch_0.6.svg
 
-[build-status-url]: https://travis-ci.org/phrb/StochasticSearch.jl
-[cov-status-url]: https://coveralls.io/r/phrb/StochasticSearch.jl?branch=master
-[git-version-url]: https://badge.fury.io/gh/phrb%2FStochasticSearch.jl
+[build-status-url]: https://travis-ci.org/phrb/NODAL.jl
+[cov-status-url]: https://coveralls.io/r/phrb/NODAL.jl?branch=master
+[git-version-url]: https://badge.fury.io/gh/phrb%2FNODAL.jl
 [docs-status-url]: http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest
 [julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch
 
 <p align="center">
-    <img src="https://github.com/phrb/StochasticSearch.jl/blob/master/img/logo.svg"
+    <img src="https://github.com/phrb/NODAL.jl/blob/master/img/logo.svg"
          height="280">
 </p>
 <p align="center">
-    <a href="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl">
-        <img src="https://badge.fury.io/gh/phrb%2FStochasticSearch.jl.svg"
+    <a href="https://badge.fury.io/gh/phrb%2FNODAL.jl">
+        <img src="https://badge.fury.io/gh/phrb%2FNODAL.jl.svg"
              alt="Git Version">
     </a>
     <a href="http://pkg.julialang.org/?pkg=StochasticSearch">
         <img src="http://pkg.julialang.org/badges/StochasticSearch_0.6.svg"
              alt="Julia Package Version">
     </a>
-    <a href="https://travis-ci.org/phrb/StochasticSearch.jl">
-        <img src="https://travis-ci.org/phrb/StochasticSearch.jl.svg"
+    <a href="https://travis-ci.org/phrb/NODAL.jl">
+        <img src="https://travis-ci.org/phrb/NODAL.jl.svg"
              alt="Build Status">
     </a>
-    <a href="https://coveralls.io/r/phrb/StochasticSearch.jl">
-        <img src="https://coveralls.io/repos/phrb/StochasticSearch.jl/badge.svg"
+    <a href="https://coveralls.io/r/phrb/NODAL.jl">
+        <img src="https://coveralls.io/repos/phrb/NODAL.jl/badge.svg"
              alt="Coverage">
     </a>
     <a href="http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest">
@@ -51,7 +51,7 @@ instances of search techniques running on the same problem.
 
 ### Installing
 
-NODAL.jl runs on Julia **nightly**. From the Julia REPL, run:
+NODAL runs on Julia **nightly**. From the Julia REPL, run:
 
 ```jl
 Pkg.add("NODAL")
