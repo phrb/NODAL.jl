@@ -114,7 +114,7 @@ Our cost function simply ignores the parameter dictionary, and uses the
 `"i0"` and `"i1"` parameters of the received configuration to calculate a
 value. There is no restriction on the names of `Configuration` parameter.
 
-Our configuration will have two `FloatParameter`\s, which will be `Float64`
+Our configuration will have two `FloatParameter`s, which will be `Float64`
 values constrained to an interval. The intervals are `[-2.0, 2.0]` for both
 parameters, and their values start at `0.0`. Since we already used the names
 `"i0"` and `"i1"`, we name the parameters the same way:
