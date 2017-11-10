@@ -1,13 +1,13 @@
 [build-status-img]: https://travis-ci.org/phrb/NODAL.jl.svg?branch=master
 [cov-status-img]: https://coveralls.io/repos/phrb/NODAL.jl/badge.svg?branch=master
 [git-version-img]: https://badge.fury.io/gh/phrb%2FNODAL.jl.svg
-[docs-status-img]: https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest
+[docs-status-img]: https://readthedocs.org/projects/nodal/badge/?version=latest
 [julia-version-img]: http://pkg.julialang.org/badges/StochasticSearch_0.6.svg
 
 [build-status-url]: https://travis-ci.org/phrb/NODAL.jl
 [cov-status-url]: https://coveralls.io/r/phrb/NODAL.jl?branch=master
 [git-version-url]: https://badge.fury.io/gh/phrb%2FNODAL.jl
-[docs-status-url]: http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest
+[docs-status-url]: http://nodal.readthedocs.org/en/latest/?badge=latest
 [julia-version-url]: http://pkg.julialang.org/?pkg=StochasticSearch
 
 <p align="center">
@@ -31,8 +31,8 @@
         <img src="https://coveralls.io/repos/phrb/NODAL.jl/badge.svg"
              alt="Coverage">
     </a>
-    <a href="http://stochasticsearchjl.readthedocs.org/en/latest/?badge=latest">
-        <img src="https://readthedocs.org/projects/stochasticsearchjl/badge/?version=latest"
+    <a href="http://nodal.readthedocs.org/en/latest/?badge=latest">
+        <img src="https://readthedocs.org/projects/nodal/badge/?version=latest"
              alt="Documentation Status">
     </a>
 </p>
