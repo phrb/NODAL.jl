@@ -1,4 +1,4 @@
-using StochasticSearch, Base.Test
+using NODAL, Base.Test
 
 @testset "Search" begin
     @testset "optimize and simulated_annealing" begin

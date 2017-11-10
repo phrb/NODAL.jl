@@ -1,4 +1,4 @@
-using StochasticSearch
+using NODAL
 
 include("parameter.jl")
 include("configuration.jl")

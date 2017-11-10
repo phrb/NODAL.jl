@@ -1,4 +1,4 @@
-using StochasticSearch, Base.Test
+using NODAL, Base.Test
 
 @testset "unit_value" begin
     @testset "EnumParameter" begin

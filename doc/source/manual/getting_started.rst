@@ -10,13 +10,13 @@ test and contribute to the package.
 Installing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-StochasticSearch.jl runs on Julia `nightly`_. To get the latest version run:
+NODAL.jl runs on Julia `nightly`_. To get the latest version run:
 
 .. _nightly: http://julialang.org/downloads/
 
 .. code:: julia
 
-    julia> Pkg.clone("StochasticSearch")
+    julia> Pkg.clone("NODAL")
 
 Running Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,5 +35,5 @@ up-to-date dependency list.  Please, feel free to fork the `repository`_ and
 submit a pull request.  You can also check the **GitHub** `issues page`_ for
 things that need to be done.
 
-.. _issues page: https://github.com/phrb/StochasticSearch.jl/issues
-.. _repository: https://github.com/phrb/StochasticSearch.jl
+.. _issues page: https://github.com/phrb/NODAL.jl/issues
+.. _repository: https://github.com/phrb/NODAL.jl

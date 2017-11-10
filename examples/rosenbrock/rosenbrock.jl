@@ -1,9 +1,9 @@
 addprocs()
 
-import StochasticSearch
+import NODAL
 
 @everywhere begin
-    using StochasticSearch
+    using NODAL
     function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
         return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
     end

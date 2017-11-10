@@ -1,9 +1,9 @@
 addprocs()
 
-import StochasticSearch
+import NODAL
 
 @everywhere begin
-    using StochasticSearch
+    using NODAL
 
     function insertionsort!(A, i, j)
         for m = i + 1:j

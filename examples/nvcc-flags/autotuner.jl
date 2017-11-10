@@ -1,9 +1,9 @@
 addprocs()
 
-import StochasticSearch, JSON
+import NODAL, JSON
 
 @everywhere begin
-    using StochasticSearch
+    using NODAL
 
     function create_unique_dir(settings::Dict{Symbol, Any})
         unique_dir = string(tempdir(), "/", Base.Random.uuid4())

@@ -1,4 +1,4 @@
-using StochasticSearch, Base.Test
+using NODAL, Base.Test
 
 @testset "Configuration" begin
     @testset "constructors" begin

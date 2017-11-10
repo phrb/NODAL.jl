@@ -2,7 +2,7 @@
 >6th NVIDIA GPU Workshop @ USP
 
 This diretory contains resources for autotuning CUDA compiler parameters
-using the [StochasticSearch autotuning library](https://github.com/phrb/StochasticSearch.jl).
+using the [NODAL autotuning library](https://github.com/phrb/NODAL.jl).
 This code was presented at the 6th NVIDIA GPU Workshop in 2017.
 
 ### Autotuner Dependencies
@@ -20,7 +20,7 @@ $ JULIA_NIGHTLY/bin/julia
 You should be greeted with the Julia logo and the prompt. Then, run:
 
 ```
-julia> Pkg.clone("StochasticSearch")
+julia> Pkg.clone("NODAL")
 ...
 julia> Pkg.add("JSON")
 ...

@@ -1,9 +1,9 @@
 addprocs()
 
-import StochasticSearch
+import NODAL
 
 @everywhere begin
-    using StochasticSearch
+    using NODAL
 
     function tour_cost(x::Configuration, parameters::Dict{Symbol, Any})
         result = float(read(`./tour_cost $(x["Tour"].value)`, String))

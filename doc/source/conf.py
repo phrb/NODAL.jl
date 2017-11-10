@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# StochasticSearch.jl documentation build configuration file, created by
+# NODAL.jl documentation build configuration file, created by
 # sphinx-quickstart on Thu Mar 24 16:26:38 2016.
 #
 # This file is execfile()d with the current directory set to its
@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'StochasticSearch.jl'
+project = u'NODAL.jl'
 copyright = u'2016, Pedro Bruel'
 author = u'Pedro Bruel'
 
@@ -203,7 +203,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'StochasticSearchjldoc'
+htmlhelp_basename = 'NODALjldoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -225,7 +225,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'StochasticSearchjl.tex', u'StochasticSearch.jl Documentation',
+    (master_doc, 'NODALjl.tex', u'NODAL.jl Documentation',
      u'Pedro Bruel', 'manual'),
 ]
 
@@ -255,7 +255,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'stochasticsearchjl', u'StochasticSearch.jl Documentation',
+    (master_doc, 'stochasticsearchjl', u'NODAL.jl Documentation',
      [author], 1)
 ]
 
@@ -269,8 +269,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'StochasticSearchjl', u'StochasticSearch.jl Documentation',
-     author, 'StochasticSearchjl', 'One line description of project.',
+    (master_doc, 'NODALjl', u'NODAL.jl Documentation',
+     author, 'NODALjl', 'One line description of project.',
      'Miscellaneous'),
 ]
 

@@ -14,7 +14,7 @@ API.
     here, it is likely the API changed but the docs didn't. Submit an issue at the
     `GitHub repository`_ and the docs will be updated.
 
-.. _GitHub repository: https://github.com/phrb/StochasticSearch.jl
+.. _GitHub repository: https://github.com/phrb/NODAL.jl
 
 The Rosenbrock Function
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,12 +22,12 @@ The Rosenbrock Function
 The following is a very simple example, and you can find the `source code`_ for
 its latest version in the GitHub repository.
 
-.. _source code: https://github.com/phrb/StochasticSearch.jl/blob/master/examples/rosenbrock/rosenbrock.jl
+.. _source code: https://github.com/phrb/NODAL.jl/blob/master/examples/rosenbrock/rosenbrock.jl
 
 We will optimize the `Rosenbrock`_ cost function.
 For this we must define a ``Configuration`` that represents the arguments to
 be tuned. We also have to create and configure a tuning run. First, let's
-import StochasticSearch.jl and define the cost function:
+import NODAL.jl and define the cost function:
 
 .. _Rosenbrock: http://en.wikipedia.org/wiki/Rosenbrock_function
 
@@ -35,10 +35,10 @@ import StochasticSearch.jl and define the cost function:
 
     addprocs()
 
-    import StochasticSearch
+    import NODAL
 
     @everywhere begin
-        using StochasticSearch
+        using NODAL
         function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any})
             return (1.0 - x["i0"].value)^2 + 100.0 * (x["i1"].value - x["i0"].value^2)^2
         end
@@ -46,7 +46,7 @@ import StochasticSearch.jl and define the cost function:
 
 We use the ``addprocs()`` function to add the default number of Julia workers,
 one per processing core, to our application. The ``import`` statement loads
-StochasticSearch.jl in the current Julia worker, and the ``@everywhere`` macro defines
+NODAL.jl in the current Julia worker, and the ``@everywhere`` macro defines
 the ``rosenbrock`` function and the module in all Julia workers available.
 
 Cost functions must accept a ``Configuration`` and a ``Dict{Symbol, Any}`` as
@@ -72,7 +72,7 @@ Now we must configure a new tuning run using the ``Run`` type. There are many
 parameters to configure, but they all have default values. Since we won't be
 using them all, please see ``Run``'s `source`_ for further details:
 
-.. _source: https://github.com/phrb/StochasticSearch.jl/blob/master/src/core/run.jl
+.. _source: https://github.com/phrb/NODAL.jl/blob/master/src/core/run.jl
 
 .. code:: julia
 
@@ -101,7 +101,7 @@ when to report the current results. The two default implementations are
 ``elapsed_time_reporting_criterion`` and ``iterations_reporting_criterion``.
 Take a look at the `code`_ if you want to dive deeper.
 
-.. _code: https://github.com/phrb/StochasticSearch.jl/tree/master/src/core/search/tools
+.. _code: https://github.com/phrb/NODAL.jl/tree/master/src/core/search/tools
 
 We are ready to start autotuning, using the ``@spawn`` macro. For more
 information on how parallel and distributed computing works in Julia, please check
@@ -118,7 +118,7 @@ will write its results to a ``RemoteChannel`` stored in the tuning run configura
     result = take!(tuning_run.channel)
 
 The tuning run will use the default neighboring and perturbation methods
-implemented by StochasticSearch.jl to find new results. Now we can process the
+implemented by NODAL.jl to find new results. Now we can process the
 current result. In this example we just ``print`` it and loop until ``optimize`` is
 done:
 
@@ -209,7 +209,7 @@ Running the complete example, we get:
 
     The Rosenbrock function is by no means a good autotuning objetive, although
     it is a good tool to help you get familiar with the API.
-    StochasticSearch.jl certainly performs worse than most tools for this kind
+    NODAL.jl certainly performs worse than most tools for this kind
     of function.  Look at further examples is this page for more fitting
     applications.
 

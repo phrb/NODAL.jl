@@ -1,6 +1,6 @@
 __precompile__()
 
-module StochasticSearch
+module NODAL
     # New Methods for Base Functions
     import Base: convert,
                  show,

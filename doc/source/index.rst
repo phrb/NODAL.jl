@@ -1,14 +1,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    StochasticSearch Documentation
+    NODAL Documentation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-StochasticSearch provides tools for implementing parallel and distributed
+NODAL provides tools for implementing parallel and distributed
 program autotuners.  This Julia package provides tools and optimization
 algorithms for implementing different Stochastic Local Search methods, such as
-Simulated Annealing and Tabu Search. StochasticSearch is an ongoing project,
+Simulated Annealing and Tabu Search. NODAL is an ongoing project,
 and will implement more optimization and local search algorithms.
 
-You can use StochasticSearch to optimize user-defined functions with a few
+You can use NODAL to optimize user-defined functions with a few
 Stochastic Local Search basic methods, that are composed by building blocks
 also provided in the package. The package distributes evaluations of functions
 and technique executions between Julia workers. It is possible to have multiple
