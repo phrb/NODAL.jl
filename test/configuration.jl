@@ -1,4 +1,4 @@
-using NODAL, Base.Test
+using NODAL, Test
 
 @testset "Configuration" begin
     @testset "constructors" begin

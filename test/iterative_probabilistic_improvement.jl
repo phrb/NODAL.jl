@@ -1,4 +1,4 @@
-using NODAL, Base.Test
+using NODAL, Test
 
 @testset "Search" begin
     @testset "iterative_probabilistic_improvement" begin

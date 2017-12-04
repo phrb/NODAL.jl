@@ -1,4 +1,4 @@
-using NODAL, Base.Test
+using NODAL, Test
 
 @testset "unit_value" begin
     @testset "EnumParameter" begin
