@@ -1,6 +1,10 @@
 __precompile__()
 
 module NODAL
+    using Reexport
+
+    @reexport using Distributed
+
     # New Methods for Base Functions
     import Base: convert,
                  show,
