@@ -1,39 +1,39 @@
 function Base.show(io::IO, n::T) where T <: NumberParameter
     @printf io "    ["
-    print_with_color(:blue, io, "NumberParameter")
+    printstyled(io, "NumberParameter", color = :blue)
     @printf io "]\n"
 
-    print_with_color(:blue, io, "    name")
+    printstyled(io, "    name", color = :blue)
     @printf io " : "
-    print_with_color(:bold, io, "$(n.name)\n")
+    printstyled(io, "$(n.name)\n", color = :bold)
 
-    print_with_color(:green, io, "    min")
+    printstyled(io, "    min", color = :green)
     @printf io "  : %6f\n" n.min
 
-    print_with_color(:red, io, "    max")
+    printstyled(io, "    max", color = :red)
     @printf io "  : %6f\n" n.max
 
-    print_with_color(:yellow, io, "    value")
+    printstyled(io, "    value", color = :yellow)
     @printf io ": %6f\n" n.value
     return
 end
 
 function Base.show(io::IO, n::T) where T <: EnumParameter
     @printf io "    ["
-    print_with_color(:blue, io, "EnumParameter")
+    printstyled(io, "EnumParameter", color = :blue)
     @printf io "]\n"
-    print_with_color(:blue, io, "    name")
+    printstyled(io, "    name", color = :blue)
     @printf io "   : "
-    print_with_color(:bold, io, "$(n.name)\n")
-    print_with_color(:yellow, io, "    current")
+    printstyled(io, "$(n.name)\n", color = :bold)
+    printstyled(io, "    current", color = :yellow)
     @printf io ": "
-    print_with_color(:bold, io, "$(n.current.name)\n")
-    print_with_color(:green, io, "    values")
+    printstyled(io, "$(n.current.name)\n", color = :bold)
+    printstyled(io, "    values", color = :green)
     @printf io " : \n"
     for i = 1:length(n.values)
         show(io, n.values[i])
         if i < length(n.values) && length(n.values) > 1
-            print_with_color(:blue, io, "    ***\n")
+            printstyled(io, "    ***\n", color = :blue)
         end
     end
     return
@@ -41,61 +41,61 @@ end
 
 function Base.show(io::IO, n::T) where T <: PermutationParameter
     @printf io "    ["
-    print_with_color(:blue, io, "PermutationParameter")
+    printstyled(io, "PermutationParameter", color = :blue)
     @printf io "]\n"
 
-    print_with_color(:blue, io, "    name")
+    printstyled(io, "    name", color = :blue)
     @printf io " : "
-    print_with_color(:bold, io, "$(n.name)\n")
+    printstyled(io, "$(n.name)\n", color = :bold)
 
-    print_with_color(:yellow, io, "    value")
+    printstyled(io, "    value", color = :yellow)
     @printf io ": "
     show(io, n.value)
     @printf io "\n"
 
-    print_with_color(:green, io, "    size")
+    printstyled(io, "    size", color = :green)
     @printf io " : %d\n" n.size
     return
 end
 
 function Base.show(io::IO, n::T) where T <: StringParameter
     @printf io "    ["
-    print_with_color(:blue, io, "StringParameter")
+    printstyled(io, "StringParameter", color = :blue)
     @printf io "]\n"
-    print_with_color(:blue, io, "    name")
+    printstyled(io, "    name", color = :blue)
     @printf io " : "
-    print_with_color(:bold, io, "$(n.name)\n")
-    print_with_color(:yellow, io, "    value")
+    printstyled(io, "$(n.name)\n", color = :bold)
+    printstyled(io, "    value", color = :yellow)
     @printf io ": \"%s\"\n" n.value
     return
 end
 
 function Base.show(io::IO, n::T) where T <: BoolParameter
     @printf io "    ["
-    print_with_color(:blue, io, "BoolParameter")
+    printstyled(io, "BoolParameter", color = :blue)
     @printf io "]\n"
-    print_with_color(:blue, io, "    name")
+    printstyled(io, "    name", color = :blue)
     @printf io " : "
-    print_with_color(:bold, io, "$(n.name)\n")
-    print_with_color(:yellow, io, "    value")
+    printstyled(io, "$(n.name)\n", color = :bold)
+    printstyled(io, "    value", color = :yellow)
     @printf io ": %s\n" n.value
     return
 end
 
 function Base.show(io::IO, n::T) where T <: Configuration
     @printf io "  ["
-    print_with_color(:blue, io, "Configuration")
+    printstyled(io, "Configuration", color = :blue)
     @printf io "]\n"
-    print_with_color(:blue, io, "  name")
+    printstyled(io, "  name", color = :blue)
     @printf io "      : "
-    print_with_color(:bold, io, "$(n.name)\n")
-    print_with_color(:blue, io, "  parameters")
+    printstyled(io, "$(n.name)\n", color = :bold)
+    printstyled(io, "  parameters", color = :blue)
     @printf io ":\n"
     p = collect(keys(n.parameters))
     for i = 1:length(p)
         show(io, n[p[i]])
         if i < length(p) && length(p) > 1
-            print_with_color(:blue, io, "    ***\n")
+            printstyled(io, "    ***\n", color = :blue)
         end
     end
     return
@@ -104,49 +104,49 @@ end
 function Base.show(io::IO, n::T) where T <: Result
     if n.is_final
         @printf io "["
-        print_with_color(:blue, io, "Final Result")
+        printstyled(:bio, "Final Result", color = lue)
         @printf io "]\n"
-        print_with_color(:yellow, io, "Cost")
+        printstyled(io, "Cost", color = :yellow)
         @printf io "                  : "
-        print_with_color(:bold, io, "$(n.cost_minimum)\n")
-        print_with_color(:yellow, io, "Found in Iteration")
+        printstyled(io, "$(n.cost_minimum)\n", color = :bold)
+        printstyled(io, "Found in Iteration", color = :yellow)
         @printf io "    : "
-        print_with_color(:bold, io, "$(n.iterations)\n")
-        print_with_color(:blue, io, "Current Iteration")
+        printstyled(io, "$(n.iterations)\n", color = :bold)
+        printstyled(io, "Current Iteration", color = :blue)
         @printf io "     : "
-        print_with_color(:bold, io, "$(n.current_iteration)\n")
-        print_with_color(:blue, io, "Technique")
+        printstyled(io, "$(n.current_iteration)\n", color = :bold)
+        printstyled(io, "Technique", color = :blue)
         @printf io "             : "
-        print_with_color(:bold, io, "$(n.technique)\n")
-        print_with_color(:blue, io, "Function Calls")
+        printstyled(io, "$(n.technique)\n", color = :bold)
+        printstyled(io, "Function Calls", color = :blue)
         @printf io "        : "
-        print_with_color(:bold, io, "$(n.cost_calls)\n")
-        print_with_color(:blue, io, "Starting Configuration")
+        printstyled(io, "$(n.cost_calls)\n", color = :bold)
+        printstyled(io, "Starting Configuration", color = :blue)
         @printf io ":\n"
         show(io, n.start)
-        print_with_color(:blue, io, "Minimum Configuration")
+        printstyled(io, "Minimum Configuration", color = :blue)
         @printf io " :\n"
         show(io, n.minimum)
     else
         @printf io "["
-        print_with_color(:blue, io, "Result")
+        printstyled(io, "Result", color = :blue)
         @printf io "]\n"
-        print_with_color(:yellow, io, "Cost")
+        printstyled(io, "Cost", color = :yellow)
         @printf io "              : "
-        print_with_color(:bold, io, "$(n.cost_minimum)\n")
-        print_with_color(:yellow, io, "Found in Iteration")
+        printstyled(io, "$(n.cost_minimum)\n", color = :bold)
+        printstyled(io, "Found in Iteration", color = :yellow)
         @printf io ": "
-        print_with_color(:bold, io, "$(n.iterations)\n")
-        print_with_color(:blue, io, "Current Iteration")
+        printstyled(io, "$(n.iterations)\n", color = :bold)
+        printstyled(io, "Current Iteration", color = :blue)
         @printf io " : "
-        print_with_color(:bold, io, "$(n.current_iteration)\n")
-        print_with_color(:blue, io, "Technique")
+        printstyled(io, "$(n.current_iteration)\n", color = :bold)
+        printstyled(io, "Technique", color = :blue)
         @printf io "         : "
-        print_with_color(:bold, io, "$(n.technique)\n")
-        print_with_color(:blue, io, "Function Calls")
+        printstyled(io, "$(n.technique)\n", color = :bold)
+        printstyled(io, "Function Calls", color = :blue)
         @printf io "    : "
-        print_with_color(:bold, io, "$(n.cost_calls)\n")
-        print_with_color(:blue, io, "  ***\n")
+        printstyled(io, "$(n.cost_calls)\n", color = :bold)
+        printstyled(io, "  ***\n", color = :blue)
     end
     return
 end

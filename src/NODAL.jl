@@ -3,7 +3,7 @@ __precompile__()
 module NODAL
     using Reexport
 
-    @reexport using Distributed
+    @reexport using Distributed, Random, Printf
 
     # New Methods for Base Functions
     import Base: convert,
