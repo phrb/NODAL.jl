@@ -1,12 +1,13 @@
+using Distributed
+import NODAL, JSON, Random
+
 addprocs()
 
-import NODAL, JSON
-
 @everywhere begin
-    using NODAL
+    using NODAL, JSON, Random
 
     function create_unique_dir(settings::Dict{Symbol, Any})
-        unique_dir = string(tempdir(), "/", Base.Random.uuid4())
+        unique_dir = string(tempdir(), "/", Random.uuid4())
         mkpath(unique_dir)
 
         cp(settings[:source_dir], "$unique_dir/$(settings[:source_dir])")
@@ -42,7 +43,7 @@ import NODAL, JSON
 
         try
             run(`$compile_command`)
-            time = @elapsed run(`/$unique_dir/$(settings[:source_dir])/$(settings[:executable])`)
+            time = @elapsed run(`optirun /$unique_dir/$(settings[:source_dir])/$(settings[:executable])`)
 
             rm(unique_dir, recursive = true)
             return time
@@ -88,51 +89,55 @@ function generate_search_space(filename::String)
     return parameters
 end
 
-settings      = JSON.parsefile("settings/settings.json",
-                               dicttype = Dict{Symbol, Any})
+function nvcc_flags()
+    settings      = JSON.parsefile("settings/settings.json",
+                                   dicttype = Dict{Symbol, Any})
 
-configuration = Configuration(generate_search_space("settings/nvcc_flags.json"),
-                              "nvcc_configuration")
+    configuration = Configuration(generate_search_space("settings/nvcc_flags.json"),
+                                  "nvcc_configuration")
 
-tuning_run = Run(cost                = execution_time,
-                 cost_arguments      = settings,
-                 cost_evaluations    = settings[:cost_evaluations],
-                 starting_point      = configuration,
-                 stopping_criterion  = elapsed_time_criterion,
-                 measurement_method  = sequential_measure_mean!,
-                 report_after        = settings[:report_after],
-                 reporting_criterion = elapsed_time_reporting_criterion,
-                 duration            = settings[:duration],
-                 methods             = [[:simulated_annealing 1];
-                                        [:randomized_first_improvement 1];])
-                                        #[:iterated_local_search 1];
-                                        #[:iterative_probabilistic_improvement 1];])
+    tuning_run = Run(cost                = execution_time,
+                     cost_arguments      = settings,
+                     cost_evaluations    = settings[:cost_evaluations],
+                     starting_point      = configuration,
+                     stopping_criterion  = elapsed_time_criterion,
+                     measurement_method  = sequential_measure_mean!,
+                     report_after        = settings[:report_after],
+                     reporting_criterion = elapsed_time_reporting_criterion,
+                     duration            = settings[:duration],
+                     methods             = [[:simulated_annealing 1];
+                                            [:randomized_first_improvement 1];])
+                                            #[:iterated_local_search 1];
+                                            #[:iterative_probabilistic_improvement 1];])
 
-println("Starting tuning run...")
+    println("Starting tuning run...")
 
-@spawn optimize(tuning_run)
-result = take!(tuning_run.channel)
-
-@printf("Time: %.2f Cost: %.4f (Found by %s)\n",
-        result.current_time,
-        result.cost_minimum,
-        result.technique)
-
-while !result.is_final
+    @spawn optimize(tuning_run)
     result = take!(tuning_run.channel)
+
     @printf("Time: %.2f Cost: %.4f (Found by %s)\n",
             result.current_time,
             result.cost_minimum,
             result.technique)
+
+    while !result.is_final
+        result = take!(tuning_run.channel)
+        @printf("Time: %.2f Cost: %.4f (Found by %s)\n",
+                result.current_time,
+                result.cost_minimum,
+                result.technique)
+    end
+
+    println("Done.")
+    println("Generating autotuned command...")
+
+    file    = open("$(settings[:final_configuration])", "w+")
+    command = join(generate_compile_command(result.minimum, ".", settings), " ")
+
+    write(file, command)
+    close(file)
+
+    println("Done.")
 end
 
-println("Done.")
-println("Generating autotuned command...")
-
-file    = open("$(settings[:final_configuration])", "w+")
-command = join(generate_compile_command(result.minimum, ".", settings), " ")
-
-write(file, command)
-close(file)
-
-println("Done.")
+nvcc_flags()

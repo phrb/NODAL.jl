@@ -1,6 +1,7 @@
-addprocs()
-
+using Distributed
 import NODAL
+
+addprocs()
 
 @everywhere begin
     using NODAL
@@ -52,41 +53,45 @@ import NODAL
     end
 end
 
-# Defining the array properties
-# and algorithm cutoff.
-array_size   = 10_000
-cutoff       = 15
+function sorting()
+    # Defining the array properties
+    # and algorithm cutoff.
+    array_size   = 10_000
+    cutoff       = 15
 
-# Adding extra function arguments
-# for the array.
-args  = Dict{Symbol, Any}()
-args[:array] = rand(array_size)
+    # Adding extra function arguments
+    # for the array.
+    args  = Dict{Symbol, Any}()
+    args[:array] = rand(array_size)
 
-# Making sure code is already compiled.
-@elapsed quicksort!(rand(10), 5)
+    # Making sure code is already compiled.
+    @elapsed quicksort!(rand(10), 5)
 
-configuration = Configuration([IntegerParameter(0, array_size, cutoff, "cutoff")],
-                               "Sorting Cutoff")
+    configuration = Configuration([IntegerParameter(0, array_size, cutoff, "cutoff")],
+                                   "Sorting Cutoff")
 
-tuning_run = Run(cost                = sorting_cutoff,
-                 cost_arguments      = args,
-                 cost_evaluations    = 4,
-                 starting_point      = configuration,
-                 methods             = [[:iterative_first_improvement 2];
-                                        [:iterative_greedy_construction 2];
-                                        [:iterative_probabilistic_improvement 2];
-                                        [:randomized_first_improvement 2];
-                                        [:simulated_annealing 2];],
-                 stopping_criterion  = elapsed_time_criterion,
-                 duration            = 30,
-                 reporting_criterion = elapsed_time_reporting_criterion,
-                 report_after        = 6)
+    tuning_run = Run(cost                = sorting_cutoff,
+                     cost_arguments      = args,
+                     cost_evaluations    = 4,
+                     starting_point      = configuration,
+                     methods             = [[:iterative_first_improvement 2];
+                                            [:iterative_greedy_construction 2];
+                                            [:iterative_probabilistic_improvement 2];
+                                            [:randomized_first_improvement 2];
+                                            [:simulated_annealing 2];],
+                     stopping_criterion  = elapsed_time_criterion,
+                     duration            = 30,
+                     reporting_criterion = elapsed_time_reporting_criterion,
+                     report_after        = 6)
 
-@spawn optimize(tuning_run)
-result = take!(tuning_run.channel)
-
-print(result)
-while !result.is_final
+    @spawn optimize(tuning_run)
     result = take!(tuning_run.channel)
+
     print(result)
+    while !result.is_final
+        result = take!(tuning_run.channel)
+        print(result)
+    end
 end
+
+sorting()
