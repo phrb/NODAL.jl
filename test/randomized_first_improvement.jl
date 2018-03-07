@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "Search" begin
     @testset "randomized_first_improvement" begin
         function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any} = Dict{Symbol, Any}())

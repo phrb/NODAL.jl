@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "Search" begin
     @testset "iterated local search" begin
         function rosenbrock(x::Configuration, parameters::Dict{Symbol, Any} = Dict{Symbol, Any}())

@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "NumberParameter" begin
     @testset "constructor" begin
         p = NumberParameter{Int8}(convert(Int8, 0), convert(Int8, 2),

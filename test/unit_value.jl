@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "unit_value" begin
     @testset "EnumParameter" begin
         p = EnumParameter([StringParameter("value", "i0"),

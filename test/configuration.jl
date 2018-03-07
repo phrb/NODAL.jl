@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "Configuration" begin
     @testset "constructors" begin
         c = Configuration("test")

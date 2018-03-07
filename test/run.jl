@@ -1,5 +1,3 @@
-using NODAL, Test
-
 @testset "Run" begin
     @testset "constructors" begin
         tuning_run = Run()
