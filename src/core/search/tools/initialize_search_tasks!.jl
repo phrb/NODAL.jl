@@ -20,5 +20,6 @@ function initialize_search_tasks!(tuning_run::Run)
             instance_id += 1
         end
     end
+
     results
 end

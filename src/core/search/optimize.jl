@@ -9,7 +9,6 @@ function optimize(tuning_run::Run)
     best       = get_new_best(results)
     iteration  = 1
     start_time = time()
-
     put!(tuning_run.channel, best)
 
     while !take!(stop)

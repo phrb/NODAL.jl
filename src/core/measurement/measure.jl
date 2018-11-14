@@ -1,5 +1,5 @@
 function measure_mean!(tuning_run::Run, x::Configuration)
-    configurations = Array{Configuration}(uninitialized, tuning_run.cost_evaluations)
+    configurations = Array{Configuration}(undef, tuning_run.cost_evaluations)
     fill!(configurations, deepcopy(x))
 
     pmap_cost(x::Configuration) = tuning_run.cost(x, tuning_run.cost_arguments)

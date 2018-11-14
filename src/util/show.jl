@@ -104,7 +104,7 @@ end
 function Base.show(io::IO, n::T) where T <: Result
     if n.is_final
         @printf io "["
-        printstyled(:bio, "Final Result", color = lue)
+        printstyled(:bio, "Final Result", color = :blue)
         @printf io "]\n"
         printstyled(io, "Cost", color = :yellow)
         @printf io "                  : "

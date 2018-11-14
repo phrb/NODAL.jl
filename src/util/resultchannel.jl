@@ -1,4 +1,4 @@
-mutable struct ResultChannel <: AbstractChannel
+mutable struct ResultChannel <: AbstractChannel{Result}
     current_result::Result
     ResultChannel(result::Result) = new(result)
 end

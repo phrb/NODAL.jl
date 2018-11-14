@@ -1,7 +1,7 @@
 __precompile__()
 
 module NODAL
-    using Distributed, Random, Printf
+    using Distributed, Statistics, Random, Printf
 
     # New Methods for Base Functions
     import Base: convert,

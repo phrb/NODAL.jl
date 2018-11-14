@@ -1,4 +1,4 @@
-using NODAL, Distributed, Test
+using NODAL, Distributed, Statistics, Test
 
 include("parameter.jl")
 include("configuration.jl")

@@ -21,6 +21,7 @@
             try
                 result = take!(tuning_run.channel)
                 print(result)
+            catch
             end
         end
         rr = rosenbrock(result.minimum)
